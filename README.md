@@ -1,7 +1,7 @@
 # Loss Landscape Lab
 
 ## AI Notice
-The development of this project was AI-generated assisted, specifically using the Claude Opus 5.5 model with Claude Code. Please have this in mind while using this project. 
+The development of this project was AI assisted, specifically using the Claude Opus 5.5 model with Claude Code. Please have this in mind while using this software. 
 
 ## Overview
 
