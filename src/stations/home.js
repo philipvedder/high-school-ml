@@ -19,7 +19,7 @@ export function createHome() {
           <div class="kicker" data-i18n="home.kicker"></div>
           <h1>Loss Landscape Lab</h1>
           <p class="lead" data-i18n="home.lead"></p>
-          <div class="btn-row"><a class="btn primary big" href="#neuron" data-i18n="home.start"></a><a class="btn big" href="#guide" data-i18n="home.guide"></a></div>
+          <div class="btn-row"><a class="btn primary big" href="#neuron" data-i18n="home.start"></a><a class="btn big" href="./slides.html" data-i18n="home.slides"></a><a class="btn big" href="#guide" data-i18n="home.guide"></a></div>
         </div>
       </div>
       <div class="story card" data-i18n="home.story"></div>

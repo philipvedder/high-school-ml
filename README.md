@@ -1,6 +1,11 @@
 # Loss Landscape Lab
 
-An interactive web app for a 60-minute **Math & AI workshop** (11th grade). It goes from a single neuron, through loss and gradient descent, to real neural networks and their loss landscapes.
+## AI Notice
+The development of this project was AI-generated assisted, specifically using the Claude Opus 5.5 model with Claude Code. Please have this in mind while using this project. 
+
+## Overview
+
+An interactive web app for a 60-minute **Math & AI workshop**. It goes from a single neuron, through loss and gradient descent, to real neural networks and their loss landscapes.
 
 - 📋 Didactic concept, schedule and full feature spec: **[WORKSHOP.md](WORKSHOP.md)**
 - 🌐 Bilingual (DE/EN), presenter mode, works on laptops and tablets
@@ -14,6 +19,17 @@ An interactive web app for a 60-minute **Math & AI workshop** (11th grade). It g
 | 4 | Fog game | Find the deepest valley blindfolded in 12 steps, then compare with gradient descent. High-score table |
 | 5 | Network | Train an MLP live (circle, XOR, moons, spiral) with neuron thumbnails |
 | 6 | Research | Random 2D slices (filter-normalized), training trajectory in PCA plane, interpolation & permutation symmetry |
+
+## Intro slides (`slides.html`)
+
+A reveal.js deck (about 25–30 min) for the first half of the workshop, linked from the app (🎞️ button) and deployed alongside it at `…/slides.html`.
+
+**Story:** neuron & decision line → sigmoid → XOR fails → hidden layer without activation (still linear!) → ReLU solves XOR → loss function → loss landscape → gradient descent (1D, partial derivatives, gradient) → backpropagation on a numeric example → training loop → what can go wrong → into the Lab.
+
+- 33 main slides + 4 optional **deep dives** (press ↓): geometry of a neuron, sigmoid derivative, proof that XOR is not linearly separable, matrix form.
+- 9 live figures: drag weights, morph input space → hidden space, ReLU sums fitting a curve, a loss landscape linked to its classifier (2D + 3D), 1D/2D gradient descent with learning-rate presets, partial derivatives as slices.
+- Keys: **→/Space** next · **↓** deep dive · **S** speaker notes (English talking points per slide) · **L** switch DE/EN · **F** fullscreen · **Esc** overview.
+- Before the workshop: replace `[Name] · [Institute] · [Date]` on the title slide and `[URL / QR code]` on the last slide in `slides.html`.
 
 ## Run locally
 
@@ -77,6 +93,8 @@ src/
     linechart.js     loss curves
     ui.js            sliders, toggles, missions, confetti
   stations/          one file per station (+ home/guide)
+  slides/            reveal.js deck: main.js (setup), widgets.js (live figures), slides.css (theme)
+slides.html          slide content (EN + DE side by side, speaker notes in <aside class="notes">)
 ```
 
 To add your institute's own content, put research text in `research.notes.*` in `src/strings.js` and talking points in `guide.body`.

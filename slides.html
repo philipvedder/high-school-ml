@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <title>How do machines learn? · Loss Landscape Lab</title>
+</head>
+<body>
+<div class="lang-toggle"><button data-lang="de">DE</button><button data-lang="en">EN</button><a href="./index.html">Lab →</a></div>
+<div class="brandmark">Loss Landscape Lab</div>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ======================= OPENING ======================= -->
+<section class="title-slide">
+  <div class="hero-anim" data-widget="hero"></div>
+  <div class="title-wrap">
+    <div class="kicker"><span class="dot"></span><span class="en">Math &amp; AI workshop</span><span class="de">Workshop Mathe &amp; KI</span></div>
+    <h1><span class="en">How do machines <em>learn</em>?</span><span class="de">Wie <em>lernen</em> Maschinen?</span></h1>
+    <p class="subtitle"><span class="en">From a single neuron to the landscapes of learning</span><span class="de">Vom einzelnen Neuron zu den Landschaften des Lernens</span></p>
+    <p class="presenter">[Name] · [Institute] · [Date]</p>
+  </div>
+  <aside class="notes">Welcome. Ask: "Who has used an AI today?" (Phone unlock, translation, recommendations, ChatGPT). Promise: in 30 minutes you will understand the core mathematics behind all of these, then you'll play with it yourselves. Press L to switch the language, S for these speaker notes.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span><span class="en">The big picture</span><span class="de">Das große Bild</span></div>
+  <h2><span class="en">An AI is a <em>function</em> with many knobs</span><span class="de">Eine KI ist eine <em>Funktion</em> mit vielen Drehknöpfen</span></h2>
+  <div class="cols wide-left">
+    <div>
+      <div class="box">
+        <p>🖼️ <span class="en">image</span><span class="de">Bild</span> $\;\longmapsto\;$ <span class="en">“cat”</span><span class="de">„Katze“</span></p>
+        <p>🗣️ <span class="en">audio</span><span class="de">Audio</span> $\;\longmapsto\;$ <span class="en">text</span><span class="de">Text</span></p>
+        <p>♟️ <span class="en">board position</span><span class="de">Spielstellung</span> $\;\longmapsto\;$ <span class="en">best move</span><span class="de">bester Zug</span></p>
+        <p style="margin:0">💬 <span class="en">sentence</span><span class="de">Satz</span> $\;\longmapsto\;$ <span class="en">next word</span><span class="de">nächstes Wort</span></p>
+      </div>
+    </div>
+    <div>
+      <div class="formula-big">$$\hat y = f_{\color{#a78bfa}\theta}(x)$$</div>
+      <p class="small"><b>$x$</b> <span class="en">input</span><span class="de">Eingabe</span><br>
+        <b>$\hat y$</b> <span class="en">prediction</span><span class="de">Vorhersage</span><br>
+        <b class="violet">$\theta$</b> <span class="en">parameters: the “knobs”</span><span class="de">Parameter: die „Drehknöpfe“</span></p>
+    </div>
+  </div>
+  <div class="takeaway fragment"><span class="en"><b>Learning</b> = finding knob settings $\theta$ so that $f_\theta$ makes good predictions.</span><span class="de"><b>Lernen</b> = Knopfstellungen $\theta$ finden, mit denen $f_\theta$ gute Vorhersagen macht.</span></div>
+  <aside class="notes">Everything is a function from inputs to outputs. The function has parameters (theta). Different theta = different behaviour. The whole talk answers two questions: what does f look like (neural networks) and how do we find theta (training).</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span><span class="en">Roadmap</span><span class="de">Fahrplan</span></div>
+  <h2><span class="en">Today’s journey</span><span class="de">Unsere Reise heute</span></h2>
+  <div class="cols-4 mt">
+    <div class="box"><div class="bignum roman-num">I</div><h3><span class="en">The neuron</span><span class="de">Das Neuron</span></h3><p class="small muted"><span class="en">weighted sum, decision line, sigmoid</span><span class="de">gewichtete Summe, Entscheidungsgerade, Sigmoid</span></p></div>
+    <div class="box"><div class="bignum roman-num">II</div><h3><span class="en">Networks</span><span class="de">Netze</span></h3><p class="small muted"><span class="en">XOR, layers, why we need ReLU</span><span class="de">XOR, Schichten, warum wir ReLU brauchen</span></p></div>
+    <div class="box"><div class="bignum roman-num">III</div><h3><span class="en">Loss</span><span class="de">Fehler</span></h3><p class="small muted"><span class="en">measuring “wrong”, the loss landscape</span><span class="de">„falsch“ messen, die Verlustlandschaft</span></p></div>
+    <div class="box"><div class="bignum roman-num">IV</div><h3><span class="en">Training</span><span class="de">Training</span></h3><p class="small muted"><span class="en">gradient descent, backpropagation</span><span class="de">Gradientenabstieg, Backpropagation</span></p></div>
+  </div>
+  <p class="mt center">⟶ <b><span class="en">then: you train networks yourselves in the Loss Landscape Lab</span><span class="de">danach: ihr trainiert selbst Netze im Loss Landscape Lab</span></b></p>
+  <aside class="notes">About 30 minutes. Slides marked "deep dive" (press down arrow) are optional extras for strong classes.</aside>
+</section>
+
+<!-- ======================= PART I ======================= -->
+<section class="divider">
+  <div class="roman">I</div>
+  <h2><span class="en">The neuron</span><span class="de">Das Neuron</span></h2>
+  <p><span class="en">The smallest building block: multiply, add, decide.</span><span class="de">Der kleinste Baustein: multiplizieren, addieren, entscheiden.</span></p>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>I · <span class="en">The neuron</span><span class="de">Das Neuron</span></div>
+  <h2><span class="en">An artificial neuron</span><span class="de">Ein künstliches Neuron</span></h2>
+  <div class="cols wide-left">
+    <svg class="neuron-fig" viewBox="0 0 640 300">
+      <path class="edge" d="M80 80 L268 140"/><path class="edge" d="M80 220 L268 160"/>
+      <path class="edge" d="M330 150 L400 150"/><path class="edge" d="M500 150 L560 150"/>
+      <path class="edge" d="M300 262 L300 190"/>
+      <circle cx="55" cy="80" r="34" class="nd"/><text x="55" y="89">x₁</text>
+      <circle cx="55" cy="220" r="34" class="nd"/><text x="55" y="229">x₂</text>
+      <text x="170" y="92" class="w">· w₁</text><text x="170" y="228" class="w">· w₂</text>
+      <circle cx="300" cy="150" r="38" class="nd sum"/><text x="300" y="160">Σ</text>
+      <text x="300" y="290" class="lbl">+ b</text>
+      <rect x="402" y="110" width="96" height="80" rx="16" class="nd act"/>
+      <path d="M414 172 C440 172 445 128 486 128" stroke="#facc15" stroke-width="3" fill="none"/>
+      <circle cx="590" cy="150" r="32" class="nd"/><text x="590" y="159">ŷ</text>
+      <text x="300" y="98" class="lbl">z</text><text x="450" y="94" class="lbl">φ</text>
+    </svg>
+    <div>
+      <p><span class="en">1. Weighted sum</span><span class="de">1. Gewichtete Summe</span></p>
+      <div class="formula-big">$z = w_1x_1 + w_2x_2 + b$</div>
+      <p class="fragment"><span class="en">2. Activation function $\varphi$ decides</span><span class="de">2. Aktivierungsfunktion $\varphi$ entscheidet</span></p>
+      <div class="formula-big fragment">$\hat y = \varphi(z)$</div>
+      <p class="small muted fragment"><span class="en">weights $w_i$: how important is each input? &nbsp;bias $b$: how easily does the neuron fire?</span><span class="de">Gewichte $w_i$: Wie wichtig ist jede Eingabe? &nbsp;Bias $b$: Wie leicht „feuert“ das Neuron?</span></p>
+    </div>
+  </div>
+  <aside class="notes">Biological inspiration: dendrites collect signals, the cell fires if the total input exceeds a threshold. Mathematically: a weighted vote. Example: should I go to the party? x1 = friends going, x2 = exam tomorrow; weights say how much each matters; bias = general mood.</aside>
+</section>
+
+<section>
+  <section>
+    <div class="kicker"><span class="dot"></span>I · <span class="en">The neuron</span><span class="de">Das Neuron</span></div>
+    <h2><span class="en">Task: separate orange from blue</span><span class="de">Aufgabe: Trenne Orange von Blau</span></h2>
+    <div class="widget neuron" data-widget="neuron" data-opts='{"data":"fruit","act":"step","vector":true,"w":[1.5,-0.4,0.3]}'></div>
+    <p class="small muted mt"><span class="en">Rule: $z &gt; 0 \Rightarrow$ orange, otherwise blue. The border $z = 0$ is a <b>straight line</b>. Who finds weights for 100 %?</span><span class="de">Regel: $z &gt; 0 \Rightarrow$ orange, sonst blau. Die Grenze $z = 0$ ist eine <b>Gerade</b>. Wer findet Gewichte für 100 %?</span></p>
+    <div class="deep">⬇ deep dive</div>
+    <aside class="notes">Live demo: move w1, w2, b. Let students shout instructions. Observe: w turns the line (yellow arrow = normal vector), b shifts it. With the step activation the neuron is a "perceptron" (Rosenblatt 1958).</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">Geometry of a neuron</span><span class="de">Geometrie eines Neurons</span></h2>
+    <div class="cols">
+      <div>
+        <p><span class="en">With $\vec w = \binom{w_1}{w_2}$ and $\vec x = \binom{x_1}{x_2}$:</span><span class="de">Mit $\vec w = \binom{w_1}{w_2}$ und $\vec x = \binom{x_1}{x_2}$:</span></p>
+        <div class="formula-big">$z = \vec w \cdot \vec x + b$</div>
+        <ul class="small">
+          <li><span class="en">$\vec w\cdot\vec x + b = 0$ is a line in <b>normal form</b>, so $\vec w$ is perpendicular to it.</span><span class="de">$\vec w\cdot\vec x + b = 0$ ist eine Gerade in <b>Normalenform</b>, also steht $\vec w$ senkrecht auf ihr.</span></li>
+          <li class="fragment"><span class="en">Distance from the origin: $\dfrac{|b|}{\|\vec w\|}$</span><span class="de">Abstand zum Ursprung: $\dfrac{|b|}{\|\vec w\|}$</span></li>
+          <li class="fragment"><span class="en">$z$ is proportional to the signed distance of $\vec x$ from the line: the sign says which side.</span><span class="de">$z$ ist proportional zum vorzeichenbehafteten Abstand von $\vec x$ zur Geraden: Das Vorzeichen sagt, welche Seite.</span></li>
+        </ul>
+      </div>
+      <div class="box accent fragment">
+        <h3><span class="en">In higher dimensions</span><span class="de">In höheren Dimensionen</span></h3>
+        <p class="small"><span class="en">With $n$ inputs, $\vec w\cdot\vec x + b = 0$ is a <b>hyperplane</b>: a plane in 3D, and so on. A single neuron always cuts the space into two half-spaces.</span><span class="de">Bei $n$ Eingaben ist $\vec w\cdot\vec x + b = 0$ eine <b>Hyperebene</b>: in 3D eine Ebene, usw. Ein einzelnes Neuron teilt den Raum immer in zwei Halbräume.</span></p>
+      </div>
+    </div>
+    <aside class="notes">Link to school geometry (Hessian normal form / Normalenform). For advanced students only.</aside>
+  </section>
+</section>
+
+<section>
+  <section>
+    <div class="kicker"><span class="dot"></span>I · <span class="en">The neuron</span><span class="de">Das Neuron</span></div>
+    <h2><span class="en">From a jump to a smooth step: the sigmoid</span><span class="de">Vom Sprung zur sanften Stufe: die Sigmoidfunktion</span></h2>
+    <div class="cols wide-right">
+      <div>
+        <div class="formula-big">$\sigma(z) = \dfrac{1}{1 + e^{-z}}$</div>
+        <ol class="small">
+          <li class="fragment"><span class="en"><b>Confidence:</b> $\sigma(z)\in(0,1)$ reads like a probability: “73 % orange”.</span><span class="de"><b>Sicherheit:</b> $\sigma(z)\in(0,1)$ lässt sich wie eine Wahrscheinlichkeit lesen: „73 % orange“.</span></li>
+          <li class="fragment"><span class="en"><b>Smooth:</b> a small change in $w$ gives a small change in $\hat y$. With the step, nothing happens and then suddenly everything does.</span><span class="de"><b>Glatt:</b> Kleine Änderung von $w$ ergibt kleine Änderung von $\hat y$. Bei der Stufe passiert nichts und dann plötzlich alles.</span></li>
+          <li class="fragment"><span class="en"><b>Differentiable:</b> we will need the derivative for <em>learning</em> (Part IV). The step has derivative 0 everywhere.</span><span class="de"><b>Differenzierbar:</b> Die Ableitung brauchen wir fürs <em>Lernen</em> (Teil IV). Die Stufe hat überall Ableitung 0.</span></li>
+        </ol>
+      </div>
+      <div class="widget sigmoidPlot" data-widget="sigmoidPlot" style="grid-template-columns:1fr; font-size:0.58em"></div>
+    </div>
+    <div class="deep">⬇ deep dive</div>
+    <aside class="notes">Point 3 is the most important one for later: gradient descent needs slopes. If the derivative is zero everywhere, the computer gets no hint which direction to change the weights. Move the z slider, toggle the derivative.</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">Properties of the sigmoid</span><span class="de">Eigenschaften der Sigmoidfunktion</span></h2>
+    <div class="cols">
+      <div>
+        <p>$\sigma(0) = \tfrac12$</p><p>$\displaystyle\lim_{z\to\infty}\sigma(z) = 1,\qquad \lim_{z\to-\infty}\sigma(z) = 0$</p>
+        <p class="fragment"><span class="en">Symmetry:</span><span class="de">Symmetrie:</span> $\;\sigma(-z) = 1 - \sigma(z)$</p>
+        <p class="fragment"><span class="en">Derivative (chain rule):</span><span class="de">Ableitung (Kettenregel):</span></p>
+        <div class="fragment">$$\sigma'(z) = \frac{e^{-z}}{(1+e^{-z})^2} = \underbrace{\frac{1}{1+e^{-z}}}_{\sigma(z)}\cdot\underbrace{\frac{e^{-z}}{1+e^{-z}}}_{1-\sigma(z)}$$</div>
+        <div class="formula-big fragment">$\sigma' = \sigma\,(1-\sigma)$</div>
+      </div>
+      <div class="box fragment">
+        <h3><span class="en">Steepness</span><span class="de">Steilheit</span></h3>
+        <p class="small"><span class="en">$\sigma(k\cdot z)$ becomes steeper for large $k$ and tends to the step function as $k\to\infty$. Large weights therefore mean a “confident” neuron.</span><span class="de">$\sigma(k\cdot z)$ wird für großes $k$ steiler und strebt für $k\to\infty$ gegen die Stufenfunktion. Große Gewichte bedeuten also ein „selbstsicheres“ Neuron.</span></p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>I · <span class="en">The neuron</span><span class="de">Das Neuron</span></div>
+  <h2><span class="en">The neuron with sigmoid: a soft border</span><span class="de">Das Neuron mit Sigmoid: eine weiche Grenze</span></h2>
+  <div class="widget neuron" data-widget="neuron" data-opts='{"data":"fruit","act":"sigmoid","vector":true,"scale":true,"w":[1.2,0.9,0.1]}'></div>
+  <p class="small muted mt"><span class="en">The border line stays the same, but now we see <b>how sure</b> the neuron is. Scaling all weights with $k$ sharpens the transition.</span><span class="de">Die Grenzgerade bleibt gleich, aber jetzt sehen wir, <b>wie sicher</b> das Neuron ist. Alle Gewichte mit $k$ skalieren macht den Übergang schärfer.</span></p>
+  <aside class="notes">Show: scaling k does not move the line (z=0 stays z=0) but changes the sharpness. Near the line the neuron is unsure (≈50 %).</aside>
+</section>
+
+<!-- ======================= PART II ======================= -->
+<section class="divider">
+  <div class="roman">II</div>
+  <h2><span class="en">Networks</span><span class="de">Netze</span></h2>
+  <p><span class="en">What one neuron cannot do, and how a team of neurons does it.</span><span class="de">Was ein Neuron nicht kann, und wie ein Team von Neuronen es schafft.</span></p>
+</section>
+
+<section>
+  <section>
+    <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+    <h2><span class="en">The XOR problem</span><span class="de">Das XOR-Problem</span></h2>
+    <div class="widget neuron" data-widget="neuron" data-opts='{"data":"xor","act":"step","vector":false,"w":[1,1,-0.5]}'></div>
+    <p class="small mt"><span class="en">Orange if <b>exactly one</b> of $x_1, x_2$ is 1. Try it: more than <b>75 %</b> is impossible!</span><span class="de">Orange, wenn <b>genau eines</b> von $x_1, x_2$ gleich 1 ist. Probiert es: Mehr als <b>75 %</b> geht nicht!</span></p>
+    <div class="deep">⬇ deep dive: proof</div>
+    <aside class="notes">XOR = "exclusive or". Let students try for a minute. Historical note: Minsky &amp; Papert (1969) pointed out this limitation of single-layer perceptrons, which contributed to the first "AI winter".</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">Proof: no line separates XOR</span><span class="de">Beweis: Keine Gerade trennt XOR</span></h2>
+    <p><span class="en">Suppose $w_1, w_2, b$ classify all four corners correctly (orange $\Leftrightarrow z&gt;0$):</span><span class="de">Angenommen, $w_1, w_2, b$ klassifizieren alle vier Ecken richtig (orange $\Leftrightarrow z&gt;0$):</span></p>
+    <div class="cols">
+      <div>
+        <p>$(0,0)$ <span class="blue">●</span>: $\quad b \le 0$</p>
+        <p>$(1,0)$ <span class="orange">●</span>: $\quad w_1 + b &gt; 0$</p>
+        <p>$(0,1)$ <span class="orange">●</span>: $\quad w_2 + b &gt; 0$</p>
+        <p>$(1,1)$ <span class="blue">●</span>: $\quad w_1 + w_2 + b \le 0$</p>
+      </div>
+      <div>
+        <p class="fragment"><span class="en">Add the middle two:</span><span class="de">Die mittleren zwei addieren:</span> $\;w_1 + w_2 + 2b &gt; 0$</p>
+        <p class="fragment">$\Rightarrow\; w_1+w_2+b &gt; -b \ge 0$</p>
+        <p class="fragment"><span class="en">This contradicts the last line.</span><span class="de">Das widerspricht der letzten Zeile.</span> ↯</p>
+        <div class="box good fragment small"><span class="en">So <b>no</b> single neuron can solve XOR. ∎</span><span class="de">Also kann <b>kein</b> einzelnes Neuron XOR lösen. ∎</span></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+  <h2><span class="en">Idea: a hidden layer with two neurons</span><span class="de">Idee: eine versteckte Schicht mit zwei Neuronen</span></h2>
+  <div class="widget xorNet" data-widget="xorNet" data-opts='{"act":"none","toggle":false}'></div>
+  <p class="small mt"><span class="en">Two neurons $h_1, h_2$ compute new features, and the output neuron combines them. The result is… <b>still a straight line?!</b> Slide the morph to see what the hidden layer does to the points.</span><span class="de">Zwei Neuronen $h_1, h_2$ berechnen neue Merkmale, das Ausgabeneuron kombiniert sie. Das Ergebnis ist… <b>immer noch eine Gerade?!</b> Schiebt den Regler, um zu sehen, was die versteckte Schicht mit den Punkten macht.</span></p>
+  <aside class="notes">Weights are chosen by hand (they will turn out to be the correct ones later!). Without activation, the hidden layer maps all points onto one line (the morph slider) and the classes stay mixed. Ask the class: why?</aside>
+</section>
+
+<section>
+  <section>
+    <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+    <h2><span class="en">Linear + linear = linear</span><span class="de">Linear + linear = linear</span></h2>
+    <div class="cols">
+      <div>
+        <p class="small muted"><span class="en">Our network without activation:</span><span class="de">Unser Netz ohne Aktivierung:</span></p>
+        <p>$h_1 = x_1 + x_2$, &nbsp;$h_2 = x_1 + x_2 - 1$</p>
+        <p class="fragment">$\hat z = h_1 - 2h_2 - \tfrac12$</p>
+        <p class="fragment">$\phantom{\hat z} = (x_1 + x_2) - 2(x_1 + x_2 - 1) - \tfrac12$</p>
+        <p class="fragment">$\phantom{\hat z} = \boxed{-x_1 - x_2 + \tfrac32}$</p>
+        <p class="small fragment"><span class="en">That is exactly <b>one</b> neuron, and so a straight line.</span><span class="de">Das ist genau <b>ein</b> Neuron, also eine Gerade.</span></p>
+      </div>
+      <div class="box accent fragment">
+        <h3><span class="en">In general</span><span class="de">Allgemein</span></h3>
+        <p class="small"><span class="en">Plugging linear functions into linear functions always gives a linear function:</span><span class="de">Lineare Funktionen in lineare Funktionen eingesetzt ergibt immer eine lineare Funktion:</span></p>
+        <p>$a(b(x)) = a\cdot(bx + c) + d = (ab)\,x + (ac + d)$</p>
+        <p class="small"><span class="en">So <b>100 layers</b> without activation are no more powerful than <b>one</b> neuron!</span><span class="de"><b>100 Schichten</b> ohne Aktivierung können also nicht mehr als <b>ein</b> Neuron!</span></p>
+      </div>
+    </div>
+    <div class="takeaway fragment"><span class="en">We need a <b>non-linear</b> activation function between the layers.</span><span class="de">Wir brauchen eine <b>nichtlineare</b> Aktivierungsfunktion zwischen den Schichten.</span></div>
+    <div class="deep">⬇ deep dive: matrices</div>
+    <aside class="notes">This is the key insight of Part II. Walk through the algebra step by step.</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">The same in matrix form</span><span class="de">Dasselbe in Matrixschreibweise</span></h2>
+    <p><span class="en">A layer computes $\vec h = W_1\vec x + \vec b_1$, the next one $\hat z = W_2 \vec h + b_2$:</span><span class="de">Eine Schicht berechnet $\vec h = W_1\vec x + \vec b_1$, die nächste $\hat z = W_2 \vec h + b_2$:</span></p>
+    $$\hat z = W_2(W_1\vec x + \vec b_1) + b_2 = \underbrace{(W_2W_1)}_{W'}\,\vec x + \underbrace{(W_2\vec b_1 + b_2)}_{b'}$$
+    <p class="fragment"><span class="en">Our example:</span><span class="de">Unser Beispiel:</span> $\;W_1 = \begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix},\; \vec b_1 = \binom{0}{-1},\; W_2 = (1\;\;{-2}),\; b_2 = -\tfrac12$</p>
+    <p class="fragment">$W' = (1\;\;{-2})\begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix} = (-1\;\;{-1}),\qquad b' = 2 - \tfrac12 = \tfrac32 \;\checkmark$</p>
+  </section>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+  <h2><span class="en">The simplest kink: ReLU</span><span class="de">Der einfachste Knick: ReLU</span></h2>
+  <div class="cols">
+    <div>
+      <div class="formula-big">$\mathrm{ReLU}(z) = \max(0, z)$</div>
+      <p class="small"><span class="en">“Rectified Linear Unit”: negative values become 0, positive values pass unchanged.</span><span class="de">„Rectified Linear Unit“: Negative Werte werden 0, positive bleiben unverändert.</span></p>
+      <ul class="small">
+        <li><span class="en">piecewise linear, but <b>not</b> linear (there is a kink at 0)</span><span class="de">stückweise linear, aber <b>nicht</b> linear (Knick bei 0)</span></li>
+        <li><span class="en">super cheap to compute, and the most used activation today</span><span class="de">extrem billig zu berechnen, heute die meistgenutzte Aktivierung</span></li>
+        <li><span class="en">others: sigmoid $\sigma$, $\tanh$, …</span><span class="de">andere: Sigmoid $\sigma$, $\tanh$, …</span></li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 420 300" style="width:100%">
+      <line x1="20" y1="230" x2="400" y2="230" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+      <line x1="210" y1="20" x2="210" y2="290" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+      <path d="M30 230 L210 230 L380 60" stroke="#facc15" stroke-width="7" fill="none" stroke-linejoin="round"/>
+      <circle cx="210" cy="230" r="9" fill="#f97316"/>
+      <text x="390" y="255" fill="#9aa4c7" font-size="22" font-family="Inter Variable">z</text>
+      <text x="225" y="42" fill="#facc15" font-size="22" font-family="Inter Variable">ReLU(z)</text>
+      <text x="150" y="268" fill="#f97316" font-size="18" font-family="Inter Variable">kink</text>
+    </svg>
+  </div>
+  <aside class="notes">ReLU is the activation used in most modern networks. Its derivative is 0 for z&lt;0 and 1 for z&gt;0, which will be easy for backpropagation later.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+  <h2><span class="en">Same network + ReLU = XOR solved ✓</span><span class="de">Gleiches Netz + ReLU = XOR gelöst ✓</span></h2>
+  <div class="cols" style="grid-template-columns: 1fr 250px; gap: 18px">
+    <div class="widget xorNet" data-widget="xorNet" data-opts='{"act":"relu","toggle":true}' style="grid-template-columns: 280px 315px 315px"></div>
+    <div>
+      <table class="mini" style="font-size:0.58em; width:100%">
+      <tr><th>$(x_1,x_2)$</th><th>$h_1$</th><th>$h_2$</th><th>$h_1 - 2h_2$</th></tr>
+      <tr><td>(0,0)</td><td>0</td><td>0</td><td class="c0">0</td></tr>
+      <tr><td>(1,0)</td><td>1</td><td>0</td><td class="c1">1</td></tr>
+      <tr><td>(0,1)</td><td>1</td><td>0</td><td class="c1">1</td></tr>
+      <tr><td>(1,1)</td><td>2</td><td>1</td><td class="c0">0</td></tr>
+    </table>
+      <p class="tiny" style="margin-top:0.5em"><span class="en">ReLU cuts off $h_2$ below zero. In the <b>hidden space</b> the points can suddenly be separated by a line. <b>Networks learn new representations of the data.</b></span><span class="de">ReLU schneidet $h_2$ unter null ab. Im <b>versteckten Raum</b> sind die Punkte plötzlich durch eine Gerade trennbar. <b>Netze lernen neue Darstellungen der Daten.</b></span></p>
+    </div>
+  </div>
+  <aside class="notes">Toggle between "no activation" and "ReLU" with identical weights. Then move the morph slider: with ReLU, (1,0) and (0,1) land on the same point (1,0), and (1,1) goes to (2,1). Now the output neuron's line h1 - 2 h2 = 1/2 separates them. This "change of representation" is the core idea of deep learning.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+  <h2><span class="en">More neurons → (almost) any shape</span><span class="de">Mehr Neuronen → (fast) jede Form</span></h2>
+  <div class="widget bricks" data-widget="bricks"></div>
+  <p class="small mt"><span class="en"><b>Universal approximation theorem</b> (Cybenko 1989, Hornik 1991, Leshno et al. 1993): one hidden layer with enough neurons can approximate every continuous function on a bounded region as accurately as we like.</span><span class="de"><b>Universeller Approximationssatz</b> (Cybenko 1989, Hornik 1991, Leshno et al. 1993): Eine versteckte Schicht mit genug Neuronen kann jede stetige Funktion auf einem beschränkten Bereich beliebig genau annähern.</span></p>
+  <aside class="notes">Each ReLU neuron contributes one kink. Sums of kinks are piecewise linear functions, which can follow any curve. Increase the number of neurons. Caveat for strong students: the theorem says such weights EXIST, but not how to FIND them. That leads to Part III.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
+  <h2><span class="en">Neural networks in general</span><span class="de">Neuronale Netze allgemein</span></h2>
+  <div class="cols">
+    <svg viewBox="0 0 460 300" style="width:100%">
+      <g stroke="rgba(154,164,199,.45)" stroke-width="2">
+        <line x1="50" y1="110" x2="180" y2="60"/><line x1="50" y1="110" x2="180" y2="130"/><line x1="50" y1="110" x2="180" y2="200"/><line x1="50" y1="110" x2="180" y2="270"/>
+        <line x1="50" y1="200" x2="180" y2="60"/><line x1="50" y1="200" x2="180" y2="130"/><line x1="50" y1="200" x2="180" y2="200"/><line x1="50" y1="200" x2="180" y2="270"/>
+        <line x1="180" y1="60" x2="310" y2="95"/><line x1="180" y1="60" x2="310" y2="165"/><line x1="180" y1="60" x2="310" y2="235"/>
+        <line x1="180" y1="130" x2="310" y2="95"/><line x1="180" y1="130" x2="310" y2="165"/><line x1="180" y1="130" x2="310" y2="235"/>
+        <line x1="180" y1="200" x2="310" y2="95"/><line x1="180" y1="200" x2="310" y2="165"/><line x1="180" y1="200" x2="310" y2="235"/>
+        <line x1="180" y1="270" x2="310" y2="95"/><line x1="180" y1="270" x2="310" y2="165"/><line x1="180" y1="270" x2="310" y2="235"/>
+        <line x1="310" y1="95" x2="420" y2="165"/><line x1="310" y1="165" x2="420" y2="165"/><line x1="310" y1="235" x2="420" y2="165"/>
+      </g>
+      <g fill="#0d1330" stroke-width="3">
+        <circle cx="50" cy="110" r="18" stroke="#9aa4c7"/><circle cx="50" cy="200" r="18" stroke="#9aa4c7"/>
+        <circle cx="180" cy="60" r="18" stroke="#22d3ee"/><circle cx="180" cy="130" r="18" stroke="#22d3ee"/><circle cx="180" cy="200" r="18" stroke="#22d3ee"/><circle cx="180" cy="270" r="18" stroke="#22d3ee"/>
+        <circle cx="310" cy="95" r="18" stroke="#22d3ee"/><circle cx="310" cy="165" r="18" stroke="#22d3ee"/><circle cx="310" cy="235" r="18" stroke="#22d3ee"/>
+        <circle cx="420" cy="165" r="18" stroke="#facc15"/>
+      </g>
+      <g fill="#9aa4c7" font-size="16" font-family="Inter Variable" text-anchor="middle">
+        <text x="50" y="40" class="en">input</text><text x="50" y="40" class="de">Eingabe</text>
+        <text x="245" y="25" class="en">hidden layers</text><text x="245" y="25" class="de">versteckte Schichten</text>
+        <text x="420" y="130" class="en">output</text><text x="420" y="130" class="de">Ausgabe</text>
+      </g>
+    </svg>
+    <div>
+      <p class="small"><span class="en">Each layer: weighted sums + activation</span><span class="de">Jede Schicht: gewichtete Summen + Aktivierung</span></p>
+      $$\vec a^{(l)} = \varphi\big(W^{(l)}\,\vec a^{(l-1)} + \vec b^{(l)}\big)$$
+      <p class="small"><span class="en"><b>All</b> weights and biases together form $\theta$.</span><span class="de"><b>Alle</b> Gewichte und Biases zusammen bilden $\theta$.</span></p>
+      <div class="box small fragment"><span class="en">Our XOR network: $\underbrace{2\cdot2 + 2}_{\text{hidden}} + \underbrace{2 + 1}_{\text{output}} = 9$ parameters.</span><span class="de">Unser XOR-Netz: $\underbrace{2\cdot2 + 2}_{\text{versteckt}} + \underbrace{2 + 1}_{\text{Ausgabe}} = 9$ Parameter.</span></div>
+      <p class="small muted fragment"><span class="en">“Deep learning” = many layers.</span><span class="de">„Deep Learning“ = viele Schichten.</span></p>
+    </div>
+  </div>
+  <aside class="notes">Generalisation of everything so far. Count parameters together with the class.</aside>
+</section>
+
+<!-- ======================= PART III ======================= -->
+<section class="divider">
+  <div class="roman">III</div>
+  <h2><span class="en">Measuring “wrong”</span><span class="de">„Falsch“ messen</span></h2>
+  <p><span class="en">We found the XOR weights by thinking hard. That doesn’t scale.</span><span class="de">Die XOR-Gewichte haben wir durch scharfes Nachdenken gefunden. Das skaliert nicht.</span></p>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>III · <span class="en">Loss</span><span class="de">Fehler</span></div>
+  <h2><span class="en">Who sets all the knobs?</span><span class="de">Wer stellt all die Knöpfe ein?</span></h2>
+  <div class="cols-3 mt">
+    <div class="box center"><div class="bignum">9</div><div class="bignum-label"><span class="en">our XOR network</span><span class="de">unser XOR-Netz</span></div></div>
+    <div class="box center fragment"><div class="bignum">≈ 100 000</div><div class="bignum-label"><span class="en">small network that reads handwritten digits</span><span class="de">kleines Netz, das handgeschriebene Ziffern liest</span></div></div>
+    <div class="box center fragment"><div class="bignum smaller">175 000 000 000</div><div class="bignum-label"><span class="en">GPT-3 (2020)</span><span class="de">GPT-3 (2020)</span></div></div>
+  </div>
+  <div class="takeaway fragment mt"><span class="en">Nobody can set these by hand. The computer must find $\theta$ <b>itself</b>, from <b>examples</b>. That’s what we call <b>training</b>.</span><span class="de">Niemand kann das von Hand einstellen. Der Computer muss $\theta$ <b>selbst</b> finden, aus <b>Beispielen</b>. Das nennen wir <b>Training</b>.</span></div>
+  <aside class="notes">Digit network: 784 inputs (28x28 pixels), 128 hidden neurons, 10 outputs: 784*128+128+128*10+10 ≈ 101,770 parameters. Modern language models are even larger than GPT-3. To train, we first need to measure how bad the current knob setting is.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>III · <span class="en">Loss</span><span class="de">Fehler</span></div>
+  <h2><span class="en">The loss function</span><span class="de">Die Verlustfunktion (Loss)</span></h2>
+  <div class="cols wide-left">
+    <div>
+      <p class="small"><span class="en">Training data: pairs $(x_i, y_i)$, $i=1,\dots,n$, e.g. point and correct colour (1 = orange, 0 = blue).</span><span class="de">Trainingsdaten: Paare $(x_i, y_i)$, $i=1,\dots,n$, z. B. Punkt und richtige Farbe (1 = orange, 0 = blau).</span></p>
+      <p class="small"><span class="en">Mean squared error:</span><span class="de">Mittlerer quadratischer Fehler:</span></p>
+      $$L(\theta) = \frac1n\sum_{i=1}^{n}\big(\underbrace{f_\theta(x_i)}_{\text{prediction}} - \underbrace{y_i}_{\text{truth}}\big)^2$$
+      <ul class="small">
+        <li class="fragment"><span class="en">$L \ge 0$, and $L = 0$ ⇔ every prediction is perfect</span><span class="de">$L \ge 0$, und $L = 0$ ⇔ alle Vorhersagen perfekt</span></li>
+        <li class="fragment"><span class="en">squaring: big mistakes cost a lot, and the sign doesn’t matter</span><span class="de">Quadrat: große Fehler kosten viel, das Vorzeichen ist egal</span></li>
+      </ul>
+    </div>
+    <div class="box accent fragment">
+      <h3><span class="en">The crucial switch of perspective</span><span class="de">Der entscheidende Perspektivwechsel</span></h3>
+      <p class="small"><span class="en">The data $(x_i, y_i)$ is <b>fixed</b>. What we can change is $\theta$.</span><span class="de">Die Daten $(x_i, y_i)$ sind <b>fest</b>. Was wir ändern können, ist $\theta$.</span></p>
+      <p class="formula-big">$L:\ \theta \longmapsto L(\theta)$</p>
+      <p class="small"><span class="en">So the loss is a function of the <b>parameters</b>!</span><span class="de">Der Loss ist also eine Funktion der <b>Parameter</b>!</span></p>
+    </div>
+  </div>
+  <aside class="notes">Emphasise the switch: in school, x is the variable. Here the data is constant and the parameters are the variables. In practice for classification one often uses cross-entropy instead of squared error (the Lab's station 5 does), but the idea is identical.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>III · <span class="en">Loss</span><span class="de">Fehler</span></div>
+  <h2><span class="en">The loss landscape</span><span class="de">Die Verlustlandschaft</span></h2>
+  <div class="widget lossLinked" data-widget="lossLinked"></div>
+  <p class="small mt"><span class="en">Neuron $\hat y = \sigma(w_1x_1 + w_2x_2)$ with 2 parameters. <b>Every point of the landscape is one choice of $(w_1, w_2)$</b>, which means one classifier. Height = how wrong it is. Move over the map or click the 3D surface.</span><span class="de">Neuron $\hat y = \sigma(w_1x_1 + w_2x_2)$ mit 2 Parametern. <b>Jeder Punkt der Landschaft ist eine Wahl von $(w_1, w_2)$</b>, also ein Klassifikator. Höhe = wie falsch er ist. Fahrt über die Karte oder klickt auf die 3D-Fläche.</span></p>
+  <aside class="notes">This is THE central picture of today. Move the mouse over the middle map: the left picture changes, and the ball in 3D follows. Low = good classifier, high = bad. The star marks the best parameters. We left out the bias so we can draw it in 3D (2 parameters + height = 3 dimensions).</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>III · <span class="en">Loss</span><span class="de">Fehler</span></div>
+  <h2><span class="en">Goal: the lowest point. Problem: fog</span><span class="de">Ziel: der tiefste Punkt. Problem: Nebel</span></h2>
+  <div class="formula-big">$\theta^* = \arg\min_\theta L(\theta)$</div>
+  <div class="cols mt">
+    <div>
+      <p class="small"><span class="en">Why not just compute $L$ everywhere and pick the minimum? Try 10 values per parameter:</span><span class="de">Warum nicht einfach $L$ überall ausrechnen und das Minimum nehmen? Probiere 10 Werte pro Parameter:</span></p>
+      <table class="mini">
+        <tr><th><span class="en">parameters</span><span class="de">Parameter</span></th><th><span class="en">evaluations</span><span class="de">Auswertungen</span></th></tr>
+        <tr><td>2</td><td>$10^2 = 100$</td></tr>
+        <tr class="fragment"><td>9</td><td>$10^9$</td></tr>
+        <tr class="fragment"><td>100 000</td><td>$10^{100\,000}$</td></tr>
+      </table>
+      <p class="small fragment"><span class="en">For comparison: the universe has about $10^{80}$ atoms.</span><span class="de">Zum Vergleich: Das Universum hat etwa $10^{80}$ Atome.</span></p>
+    </div>
+    <div class="box warn fragment">
+      <h3>🌫️ <span class="en">Hiking in the fog</span><span class="de">Wandern im Nebel</span></h3>
+      <p class="small"><span class="en">We can never see the whole landscape. We only feel the <b>slope under our feet</b>, at the current point.</span><span class="de">Wir sehen nie die ganze Landschaft. Wir spüren nur die <b>Neigung unter unseren Füßen</b>, am aktuellen Punkt.</span></p>
+      <p class="small"><b><span class="en">Strategy: always walk downhill.</span><span class="de">Strategie: immer bergab gehen.</span></b></p>
+    </div>
+  </div>
+  <aside class="notes">The "curse of dimensionality". This motivates local methods. The fog game (station 4) in the Lab is exactly this situation.</aside>
+</section>
+
+<!-- ======================= PART IV ======================= -->
+<section class="divider">
+  <div class="roman">IV</div>
+  <h2><span class="en">Training: gradient descent</span><span class="de">Training: Gradientenabstieg</span></h2>
+  <p><span class="en">Walking downhill, mathematically.</span><span class="de">Bergab gehen, mathematisch.</span></p>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Gradient descent</span><span class="de">Gradientenabstieg</span></div>
+  <h2><span class="en">Downhill in 1D: the derivative shows the way</span><span class="de">Bergab in 1D: Die Ableitung zeigt den Weg</span></h2>
+  <div class="formula-big" style="font-size:1.6em">$w_{\text{new}} = w_{\text{old}} - {\color{#22d3ee}\eta}\cdot f'(w_{\text{old}})$</div>
+  <div class="cols mt">
+    <div>
+      <table class="mini" style="font-size:0.8em">
+        <tr><th><span class="en">slope</span><span class="de">Steigung</span></th><th><span class="en">downhill is…</span><span class="de">bergab ist…</span></th><th>$-\eta f'$</th></tr>
+        <tr><td>$f'(w) &gt; 0$ ↗</td><td><span class="en">left</span><span class="de">links</span></td><td><span class="en">$w$ decreases</span><span class="de">$w$ wird kleiner</span></td></tr>
+        <tr><td>$f'(w) &lt; 0$ ↘</td><td><span class="en">right</span><span class="de">rechts</span></td><td><span class="en">$w$ increases</span><span class="de">$w$ wird größer</span></td></tr>
+        <tr><td>$f'(w) = 0$</td><td><span class="en">flat</span><span class="de">flach</span></td><td><span class="en">stop</span><span class="de">Stopp</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <p class="small fragment"><span class="cyan"><b>η</b></span> <span class="en">= <b>learning rate</b> (step size).</span><span class="de">= <b>Lernrate</b> (Schrittweite).</span></p>
+      <p class="small fragment"><span class="en">Steep slope → big step, flat → small step. Near the minimum we automatically slow down.</span><span class="de">Steiler Hang → großer Schritt, flach → kleiner Schritt. Nahe dem Minimum werden wir automatisch langsamer.</span></p>
+    </div>
+  </div>
+  <aside class="notes">Students know derivatives as slopes of tangents. The minus sign is the whole trick: go against the slope.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Gradient descent</span><span class="de">Gradientenabstieg</span></div>
+  <h2><span class="en">Try it: learning rate &amp; local minima</span><span class="de">Probiert es: Lernrate &amp; lokale Minima</span></h2>
+  <div class="widget gd1d" data-widget="gd1d"></div>
+  <div class="cols-3 mt small">
+    <div><b class="orange">η <span class="en">too small</span><span class="de">zu klein</span></b>: <span class="en">takes forever</span><span class="de">dauert ewig</span></div>
+    <div><b class="orange">η <span class="en">too big</span><span class="de">zu groß</span></b>: <span class="en">overshoots, zig-zags, explodes</span><span class="de">schießt über, Zickzack, explodiert</span></div>
+    <div><b class="orange"><span class="en">local minimum</span><span class="de">lokales Minimum</span></b>: <span class="en">downhill everywhere stops in the nearest valley</span><span class="de">überall bergab endet im nächsten Tal</span></div>
+  </div>
+  <aside class="notes">Click on the curve to choose a start. Use the presets. "stuck!" starts on the right: gradient descent ends in the right valley although the left one is deeper. It has no way of knowing. That is the local-minimum problem.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Gradient descent</span><span class="de">Gradientenabstieg</span></div>
+  <h2><span class="en">Several parameters: partial derivatives</span><span class="de">Mehrere Parameter: partielle Ableitungen</span></h2>
+  <div class="cols wide-right" style="grid-template-columns: 0.75fr 1.6fr">
+    <div>
+      <p class="small"><span class="en">Freeze all variables except one, then take the normal derivative:</span><span class="de">Alle Variablen bis auf eine einfrieren, dann ganz normal ableiten:</span></p>
+      <p>$\dfrac{\partial f}{\partial w_1}$ <span class="small"><span class="en">= slope in $w_1$-direction</span><span class="de">= Steigung in $w_1$-Richtung</span></span></p>
+      <p class="small fragment"><span class="en">Example:</span><span class="de">Beispiel:</span> $f = w_1^2 + 3w_1w_2$</p>
+      <p class="small fragment">$\dfrac{\partial f}{\partial w_1} = 2w_1 + 3w_2,\quad \dfrac{\partial f}{\partial w_2} = 3w_1$</p>
+    </div>
+    <div class="widget gd2d" data-widget="gd2d" data-opts='{"mode":"partial"}' style="grid-template-columns: 330px 1fr"></div>
+  </div>
+  <aside class="notes">Drag the point in the map. The cyan slice keeps w2 fixed; its slope is the partial derivative with respect to w1. The pink slice keeps w1 fixed. Together the two slopes form the orange arrow: the gradient.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Gradient descent</span><span class="de">Gradientenabstieg</span></div>
+  <h2><span class="en">The gradient: a compass that points uphill</span><span class="de">Der Gradient: ein Kompass, der bergauf zeigt</span></h2>
+  <div class="cols" style="grid-template-columns: 1fr 1.25fr">
+    <div>
+      $$\nabla L(\theta) = \begin{pmatrix}\partial L/\partial w_1\\ \vdots \\ \partial L/\partial w_P\end{pmatrix}$$
+      <ul class="small">
+        <li><span class="en">points in the direction of <b>steepest ascent</b></span><span class="de">zeigt in Richtung des <b>steilsten Anstiegs</b></span></li>
+        <li><span class="en">its length = how steep</span><span class="de">seine Länge = wie steil</span></li>
+      </ul>
+      <div class="box accent">
+        <p class="small" style="margin:0"><span class="en">Gradient descent:</span><span class="de">Gradientenabstieg:</span></p>
+        <div class="formula-big" style="margin:0; font-size:1.15em">$\theta_{\text{new}} = \theta_{\text{old}} - \eta\,\nabla L(\theta_{\text{old}})$</div>
+      </div>
+    </div>
+    <div class="widget gd2d" data-widget="gd2d" data-opts='{"mode":"gd"}' style="grid-template-columns: 360px 1fr"></div>
+  </div>
+  <aside class="notes">Same formula as in 1D, just with vectors: every parameter takes a step against its own partial derivative. Try different starts and learning rates; the path is always perpendicular to the contour lines.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
+  <h2><span class="en">But how do we get $\partial L / \partial w$?</span><span class="de">Aber wie bekommen wir $\partial L / \partial w$?</span></h2>
+  <div class="cols">
+    <div>
+      <p class="small"><span class="en">A network is a <b>chain</b> of simple functions. The chain rule:</span><span class="de">Ein Netz ist eine <b>Kette</b> einfacher Funktionen. Die Kettenregel:</span></p>
+      <div class="formula-big">$\big(f(g(x))\big)' = f'(g(x))\cdot g'(x)$</div>
+      <p class="small fragment"><span class="en">Read it as <b>rates of change</b>:</span><span class="de">Gelesen als <b>Änderungsraten</b>:</span></p>
+      <div class="formula-big fragment">$\dfrac{dL}{dw} = \dfrac{dL}{dh}\cdot\dfrac{dh}{dw}$</div>
+    </div>
+    <div class="box fragment">
+      <h3>⚙️ <span class="en">Gears</span><span class="de">Zahnräder</span></h3>
+      <p class="small"><span class="en">Gear A turns 3× as fast as B, and B 2× as fast as C.<br>⇒ A turns <b>3 · 2 = 6×</b> as fast as C.</span><span class="de">Rad A dreht 3× so schnell wie B, B 2× so schnell wie C.<br>⇒ A dreht <b>3 · 2 = 6×</b> so schnell wie C.</span></p>
+      <p class="small"><span class="en">Along a chain, rates of change <b>multiply</b>.</span><span class="de">Entlang einer Kette <b>multiplizieren</b> sich Änderungsraten.</span></p>
+    </div>
+  </div>
+  <aside class="notes">The chain rule is usually taught in 11th grade. If not, the gear analogy suffices: "if I wiggle w a little, how much does L wiggle?"</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
+  <h2><span class="en">Backpropagation in a tiny network</span><span class="de">Backpropagation in einem Mini-Netz</span></h2>
+  <p class="small muted"><span class="en">Input $x = 2$, target $y = 3$, weights $w_1 = 0.5$, $w_2 = 1.5$. <span class="cyan">Forward: compute values →</span> &nbsp; <span class="orange">← Backward: multiply rates of change</span></span><span class="de">Eingabe $x = 2$, Ziel $y = 3$, Gewichte $w_1 = 0.5$, $w_2 = 1.5$. <span class="cyan">Vorwärts: Werte berechnen →</span> &nbsp; <span class="orange">← Rückwärts: Änderungsraten multiplizieren</span></span></p>
+  <div class="bp">
+    <div style="grid-column:3;grid-row:1" class="bp-param"><span class="pbox">$w_1 = 0.5$</span><span class="pgrad fragment" data-fragment-index="9">$\frac{\partial L}{\partial w_1} = \mathbf{-9}$<span class="calc">$= -4.5\cdot x$</span></span><span class="down">↓</span></div>
+    <div style="grid-column:7;grid-row:1" class="bp-param"><span class="pbox">$w_2 = 1.5$</span><span class="pgrad fragment" data-fragment-index="6">$\frac{\partial L}{\partial w_2} = \mathbf{-3}$<span class="calc">$= -3\cdot h$</span></span><span class="down">↓</span></div>
+
+    <div style="grid-column:1;grid-row:2" class="bp-node">$x$<span class="sub">2</span></div>
+    <div style="grid-column:2;grid-row:2" class="bp-edge"><div class="fwd"></div><div class="arrow"></div><div class="bwd"></div></div>
+    <div style="grid-column:3;grid-row:2" class="bp-node op">$\cdot\, w_1$</div>
+    <div style="grid-column:4;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="1">$z = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="8">$-4.5$<span class="calc">$= -4.5\cdot \mathrm{ReLU}'(z)$</span></div></div>
+    <div style="grid-column:5;grid-row:2" class="bp-node op">ReLU</div>
+    <div style="grid-column:6;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="2">$h = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="7">$-4.5$<span class="calc">$= -3\cdot w_2$</span></div></div>
+    <div style="grid-column:7;grid-row:2" class="bp-node op">$\cdot\, w_2$</div>
+    <div style="grid-column:8;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="3">$\hat y = 1.5$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="5">$-3$<span class="calc">$= 2(\hat y - y)$</span></div></div>
+    <div style="grid-column:9;grid-row:2" class="bp-node op">$(\hat y - y)^2$</div>
+    <div style="grid-column:10;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="4">$L = 2.25$</div><div class="arrow"></div><div class="bwd"></div></div>
+    <div style="grid-column:11;grid-row:2" class="bp-node loss">$L$</div>
+  </div>
+  <p class="bp-legend"><span class="cyan">■</span> <span class="en">value</span><span class="de">Wert</span> &nbsp;&nbsp; <span class="orange">■</span> $\partial L/\partial(\cdot)$: <span class="en">how strongly $L$ reacts to this value</span><span class="de">wie stark $L$ auf diesen Wert reagiert</span></p>
+  <div class="takeaway fragment" data-fragment-index="10"><span class="en">Both gradients are negative, so <b>increase</b> both weights. And all of this from <b>one</b> backward pass, reusing intermediate results.</span><span class="de">Beide Gradienten sind negativ, also beide Gewichte <b>vergrößern</b>. Und alles aus <b>einem</b> Rückwärtsdurchlauf, mit wiederverwendeten Zwischenergebnissen.</span></div>
+  <aside class="notes">Click through: forward pass (cyan) computes z = w1·x = 1, h = ReLU(1) = 1, ŷ = w2·h = 1.5, L = (1.5−3)² = 2.25. Backward (orange): dL/dŷ = 2(ŷ−y) = −3. For w2: ŷ = w2·h, so dŷ/dw2 = h = 1, giving dL/dw2 = −3. Going further back: dŷ/dh = w2 = 1.5, so dL/dh = −4.5. ReLU'(1) = 1, so dL/dz = −4.5. Finally z = w1·x, so dz/dw1 = x = 2, giving dL/dw1 = −9. Key point: each node only needs its own local derivative, and the products are passed backwards. That is why it's called back-propagation (Rumelhart, Hinton &amp; Williams 1986).</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
+  <h2><span class="en">Check it &amp; take a step</span><span class="de">Nachprüfen &amp; einen Schritt machen</span></h2>
+  <div class="cols">
+    <div class="box">
+      <h3>🔍 <span class="en">Wiggle test</span><span class="de">Wackeltest</span></h3>
+      <p class="small"><span class="en">Increase $w_1$ by $0.01$ to $0.51$:</span><span class="de">$w_1$ um $0.01$ auf $0.51$ erhöhen:</span></p>
+      <p class="small">$z = 1.02,\ h = 1.02,\ \hat y = 1.53,\ L = 2.1609$</p>
+      <p class="fragment">$\dfrac{\Delta L}{\Delta w_1} = \dfrac{2.1609 - 2.25}{0.01} = -8.91 \approx \mathbf{-9}\ \checkmark$</p>
+    </div>
+    <div class="box good fragment">
+      <h3>👣 <span class="en">One gradient step</span><span class="de">Ein Gradientenschritt</span> ($\eta = 0.05$)</h3>
+      <p class="small">$w_1 \leftarrow 0.5 - 0.05\cdot(-9) = 0.95$<br>$w_2 \leftarrow 1.5 - 0.05\cdot(-3) = 1.65$</p>
+      <p class="small fragment"><span class="en">New prediction</span><span class="de">Neue Vorhersage</span>: $\hat y = 1.65\cdot 1.9 = 3.135$</p>
+      <p class="fragment">$L:\ 2.25 \;\longrightarrow\; \mathbf{0.018}$ 🎉</p>
+    </div>
+  </div>
+  <aside class="notes">The derivative is the "exchange rate" between a tiny change of w1 and the change of L. One step already reduces the loss by a factor of about 120.</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Training</span><span class="de">Training</span></div>
+  <h2><span class="en">The training loop</span><span class="de">Die Trainingsschleife</span></h2>
+  <div class="cols">
+    <svg class="loop-fig" viewBox="0 0 460 400">
+      <circle class="ring" cx="230" cy="200" r="140"/>
+      <circle r="9" fill="#facc15"><animateMotion dur="6s" repeatCount="indefinite" path="M230 60 A140 140 0 1 1 229.9 60"/></circle>
+      <g class="st"><rect x="150" y="30" width="160" height="60" stroke="#22d3ee"/><text x="230" y="58" class="en">1 · Forward</text><text x="230" y="58" class="de">1 · Vorwärts</text><text x="230" y="80" class="s">ŷ = f<tspan font-size="11">θ</tspan>(x)</text></g>
+      <g class="st"><rect x="300" y="170" width="150" height="60" stroke="#facc15"/><text x="375" y="198" class="en">2 · Loss</text><text x="375" y="198" class="de">2 · Fehler</text><text x="375" y="220" class="s">L(θ)</text></g>
+      <g class="st"><rect x="150" y="310" width="160" height="60" stroke="#f97316"/><text x="230" y="338" class="en">3 · Backward</text><text x="230" y="338" class="de">3 · Rückwärts</text><text x="230" y="360" class="s">∇L(θ)</text></g>
+      <g class="st"><rect x="10" y="170" width="150" height="60" stroke="#a78bfa"/><text x="85" y="198" class="en">4 · Update</text><text x="85" y="198" class="de">4 · Update</text><text x="85" y="220" class="s">θ ← θ − η∇L</text></g>
+    </svg>
+    <div>
+      <p class="small"><span class="en">Repeat thousands to millions of times.</span><span class="de">Tausende bis Millionen Male wiederholen.</span></p>
+      <ul class="small">
+        <li class="fragment"><span class="en"><b>Mini-batches (SGD):</b> compute the gradient on a small random part of the data, which is faster but “noisy”.</span><span class="de"><b>Mini-Batches (SGD):</b> Gradient auf einem kleinen zufälligen Teil der Daten berechnen, schneller, aber „verrauscht“.</span></li>
+        <li class="fragment"><span class="en"><b>Momentum:</b> the ball gets inertia and rolls through small dips.</span><span class="de"><b>Momentum:</b> Die Kugel bekommt Trägheit und rollt durch kleine Mulden.</span></li>
+        <li class="fragment"><span class="en"><b>Adam:</b> adapts the step size for every parameter individually.</span><span class="de"><b>Adam:</b> passt die Schrittweite für jeden Parameter einzeln an.</span></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">All modern AI training (including large language models) follows this loop. The variants SGD, Momentum and Adam all appear in the Lab (stations 3 and 5).</aside>
+</section>
+
+<section>
+  <div class="kicker"><span class="dot"></span>IV · <span class="en">Training</span><span class="de">Training</span></div>
+  <h2><span class="en">What can go wrong? It depends on the landscape</span><span class="de">Was kann schiefgehen? Es hängt von der Landschaft ab</span></h2>
+  <div class="cols-4">
+    <div class="box">
+      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 15 Q100 200 190 15"/><path class="steps" d="M30 50 L170 48 L45 78 L155 76 L70 98"/><circle cx="70" cy="98" r="6"/></svg>
+      <h3><span class="en">η too big</span><span class="de">η zu groß</span></h3><p class="tiny muted"><span class="en">zig-zag or explosion</span><span class="de">Zickzack oder Explosion</span></p>
+    </div>
+    <div class="box">
+      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 20 C40 120 70 120 90 70 C110 30 130 30 150 100 C165 125 180 80 195 20"/><circle cx="150" cy="104" r="6"/></svg>
+      <h3><span class="en">local minimum</span><span class="de">lokales Minimum</span></h3><p class="tiny muted"><span class="en">stuck in a valley that isn’t the deepest</span><span class="de">steckt in einem Tal fest, das nicht das tiefste ist</span></p>
+    </div>
+    <div class="box">
+      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 20 C50 90 70 60 100 60 C130 60 150 60 190 110"/><circle cx="100" cy="54" r="6"/></svg>
+      <h3><span class="en">saddle / plateau</span><span class="de">Sattel / Plateau</span></h3><p class="tiny muted"><span class="en">gradient ≈ 0, so progress almost stops</span><span class="de">Gradient ≈ 0, Fortschritt stoppt fast</span></p>
+    </div>
+    <div class="box">
+      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 15 C60 115 140 115 190 15" opacity=".5"/><path class="curve" d="M10 30 L60 100 L100 70 L140 105 L190 30" stroke="#22d3ee"/></svg>
+      <h3><span class="en">sharp vs. flat</span><span class="de">spitz vs. flach</span></h3><p class="tiny muted"><span class="en">which minima work well on <em>new</em> data?</span><span class="de">welche Minima funktionieren auf <em>neuen</em> Daten gut?</span></p>
+    </div>
+  </div>
+  <div class="takeaway mt"><span class="en">The <b>shape of the loss landscape</b> decides whether learning works. In millions of dimensions, that is an open research question, and it’s what we study at our institute.</span><span class="de">Die <b>Form der Verlustlandschaft</b> entscheidet, ob Lernen funktioniert. In Millionen Dimensionen ist das eine offene Forschungsfrage, und genau daran forschen wir am Institut.</span></div>
+  <aside class="notes">Teaser for the research part at the end of the workshop. Surprising research results: in high dimensions, most critical points are saddle points rather than bad local minima (Dauphin et al. 2014), and wide networks have surprisingly benign landscapes.</aside>
+</section>
+
+<!-- ======================= WRAP-UP ======================= -->
+<section>
+  <div class="kicker"><span class="dot"></span><span class="en">Summary</span><span class="de">Zusammenfassung</span></div>
+  <h2><span class="en">Everything you need for the Lab</span><span class="de">Alles, was ihr fürs Lab braucht</span></h2>
+  <div class="cols">
+    <div class="box">
+      <p class="small">🧠 <span class="en">Neuron:</span><span class="de">Neuron:</span> $\hat y = \varphi(\vec w\cdot\vec x + b)$, <span class="en">one line</span><span class="de">eine Gerade</span></p>
+      <p class="small">🕸️ <span class="en">Network: layers + <b>non-linear</b> activation (ReLU)</span><span class="de">Netz: Schichten + <b>nichtlineare</b> Aktivierung (ReLU)</span></p>
+      <p class="small">📏 <span class="en">Loss:</span><span class="de">Loss:</span> $L(\theta) = \frac1n\sum (f_\theta(x_i) - y_i)^2$</p>
+      <p class="small">⛰️ <span class="en">Landscape: every point = one parameter setting</span><span class="de">Landschaft: jeder Punkt = eine Parameterwahl</span></p>
+      <p class="small">👣 <span class="en">Training:</span><span class="de">Training:</span> $\theta \leftarrow \theta - \eta\nabla L(\theta)$</p>
+      <p class="small" style="margin:0">🔗 <span class="en">Backprop: chain rule, backwards</span><span class="de">Backprop: Kettenregel, rückwärts</span></p>
+    </div>
+    <div>
+      <h3><span class="en">Questions to explore in the Lab</span><span class="de">Fragen fürs Lab</span></h3>
+      <ul class="small">
+        <li><span class="en">Which learning rate works best?</span><span class="de">Welche Lernrate funktioniert am besten?</span></li>
+        <li><span class="en">Can you escape a local minimum?</span><span class="de">Könnt ihr einem lokalen Minimum entkommen?</span></li>
+        <li><span class="en">What is the smallest network that solves the spiral?</span><span class="de">Was ist das kleinste Netz, das die Spirale löst?</span></li>
+        <li><span class="en">What does the landscape of a <em>real</em> network look like?</span><span class="de">Wie sieht die Landschaft eines <em>echten</em> Netzes aus?</span></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">Quick recap. Hand out the URL / QR code now.</aside>
+</section>
+
+<section class="center">
+  <div class="kicker" style="margin-top:40px"><span class="dot"></span><span class="en">Your turn</span><span class="de">Ihr seid dran</span></div>
+  <h1 style="font-size:2.6em"><span class="en">Into the Loss Landscape Lab!</span><span class="de">Auf ins Loss Landscape Lab!</span></h1>
+  <a class="big-cta" href="./index.html#neuron"><span class="en">Open the Lab →</span><span class="de">Lab öffnen →</span></a>
+  <div class="station-strip">
+    <a href="./index.html#neuron"><span class="n">1</span>🧠<span class="t"><span class="en">Neuron</span><span class="de">Neuron</span></span></a>
+    <a href="./index.html#loss"><span class="n">2</span>📏<span class="t"><span class="en">Loss</span><span class="de">Fehler</span></span></a>
+    <a href="./index.html#descent"><span class="n">3</span>⛰️<span class="t"><span class="en">Descent</span><span class="de">Abstieg</span></span></a>
+    <a href="./index.html#hiker"><span class="n">4</span>🌫️<span class="t"><span class="en">Fog game</span><span class="de">Nebelspiel</span></span></a>
+    <a href="./index.html#network"><span class="n">5</span>🕸️<span class="t"><span class="en">Network</span><span class="de">Netzwerk</span></span></a>
+    <a href="./index.html#research"><span class="n">6</span>🔬<span class="t"><span class="en">Research</span><span class="de">Forschung</span></span></a>
+  </div>
+  <p class="small muted mt">[URL / QR code]</p>
+  <aside class="notes">Put the deployed Netlify URL and a QR code here before the workshop.</aside>
+</section>
+
+</div>
+</div>
+<script type="module" src="/src/slides/main.js"></script>
+</body>
+</html>

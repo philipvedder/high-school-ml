@@ -16,7 +16,7 @@ The story arc is simple and stays the same the whole time:
 
 | Time | Phase | What happens | App station |
 |---|---|---|---|
-| 0–8 | **Hook & intro** (presenter) | "Where is AI in your life?" Show a surprising example. Ask: "How does a computer *learn*?" Introduce the neuron as "weighted vote + threshold". | Home |
+| 0–8 | **Hook & intro** (presenter) | "Where is AI in your life?" Show a surprising example. Ask: "How does a computer *learn*?" Introduce the neuron as "weighted vote + threshold". | Home / slides |
 | 8–15 | **Be the neuron** (pairs) | Tune w₁, w₂, b by hand to separate two classes. Then XOR, which is impossible! *Aha: one neuron = one straight line.* | 1 · Neuron |
 | 15–22 | **What is "wrong"?** (pairs) | Fit a line by hand and watch the error squares. Discover that every (w, b) has a loss, which gives the **loss landscape**. Take gradient steps *yourself*. | 2 · Loss |
 | 22–32 | **Downhill in the fog** (pairs, game) | The blindfolded-hiker game: find the deepest valley with only local information. Teams compete. Reveal → "did you get stuck?" | 4 · Hiker |
@@ -140,3 +140,25 @@ Stations 3 and 4 can be swapped. If time is short, drop station 3 (its ideas als
 
 ### Guide (for teachers)
 Schedule, the purpose of each station and suggested questions to ask the class. It's a short version of this document inside the app.
+
+---
+
+## 4. Intro slide deck (`slides.html`)
+
+If you'd rather start with a ~30-minute math block (and shorten the station time), use the reveal.js deck. It follows this order:
+
+1. **The neuron**: weighted sum, the decision line ($\vec w$ as normal vector), live weight tuning.
+2. **Sigmoid**: confidence, smoothness, and above all differentiability (needed for gradient descent).
+3. **XOR**: one neuron reaches at most 75 %, with a 3-line proof as a deep dive.
+4. **Hidden layer, no activation**: still a straight line. $W_2(W_1x+b_1)+b_2$ is linear, so we need non-linearity.
+5. **ReLU**: the *same* weights now solve XOR. The input → hidden-space morph shows the change of representation.
+6. *(added)* **More neurons → any shape**: sums of ReLUs and the universal approximation theorem. This tells students *why* networks are powerful, and that the hard part is *finding* the weights.
+7. **Who sets the knobs?** 9 vs. 100 000 vs. 175 billion parameters.
+8. **Loss function and loss landscape**: the data is fixed and θ is the variable. Every point of the landscape is one classifier (linked 2D/3D figure).
+9. *(added)* **Why not try everything?** $10^P$ grid points vs. $10^{80}$ atoms. This motivates *local* methods (the fog).
+10. **Gradient descent**: the 1D rule $w \leftarrow w - \eta f'(w)$ with learning rate and local-minimum demos, then partial derivatives as "freeze the other variables" slices, then the gradient.
+11. **Backpropagation**: chain rule as multiplying rates of change (gears), a fully worked numeric example ($x=2$, $w_1=0.5$, $w_2=1.5$ → $\partial L/\partial w_1=-9$), a "wiggle test" that checks it numerically, and one update step that lowers the loss from 2.25 to 0.018.
+12. *(added)* **Training loop & optimizers**: mini-batch SGD, Momentum, Adam. These are the terms students will meet in Stations 3 and 5.
+13. *(added)* **What can go wrong**: learning rate, local minima, saddles, sharp vs. flat. This is the hook for the research talk.
+
+Suggested 60-min variant with the deck: slides 0–28 min, then Fog game + Network + Descent (25 min), then Research (7 min).

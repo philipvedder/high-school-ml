@@ -26,6 +26,7 @@ S('nav.descent', 'Descent', 'Abstieg');
 S('nav.hiker', 'Fog game', 'Nebelspiel');
 S('nav.network', 'Network', 'Netzwerk');
 S('nav.research', 'Research', 'Forschung');
+S('nav.slides', 'Intro slides (math background)', 'Einführungsfolien (Mathe-Hintergrund)');
 S('nav.guide', 'Guide for teachers', 'Leitfaden für Lehrkräfte');
 S('nav.presenter', 'Presenter mode (larger text)', 'Präsentationsmodus (größere Schrift)');
 S('nav.fullscreen', 'Fullscreen', 'Vollbild');
@@ -36,6 +37,7 @@ S('home.lead',
   'How does a computer <em>learn</em>? We go from a single artificial neuron to real neural networks, and hike through the mysterious <b>loss landscapes</b> that mathematicians are still studying today.',
   'Wie <em>lernt</em> ein Computer? Wir gehen vom einzelnen künstlichen Neuron bis zu echten neuronalen Netzen und wandern durch die geheimnisvollen <b>Verlustlandschaften</b>, die Mathematikerinnen und Mathematiker bis heute erforschen.');
 S('home.start', 'Let’s go →', 'Los geht’s →');
+S('home.slides', '🎞️ Intro slides', '🎞️ Einführungsfolien');
 S('home.guide', '📋 Guide for teachers', '📋 Leitfaden für Lehrkräfte');
 S('home.story',
   '<b>The big idea in three sentences:</b> A neural network is a function with many adjustable knobs (<em>parameters</em>). Learning means turning the knobs so that the error (<em>loss</em>) becomes small. The loss forms a landscape over all the knob positions, and training is a hike downhill in the fog.',

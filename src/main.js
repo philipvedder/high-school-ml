@@ -32,6 +32,7 @@ nav.appendChild(h(`
       ${STATION_LIST.map((s) => `<a href="#${s.id}" data-page="${s.id}"><span class="nnum">${s.num}</span><span class="nlabel" data-i18n="nav.${s.id}"></span></a>`).join('')}
     </div>
     <div class="nav-tools">
+      <a href="./slides.html" class="tool" data-i18n-title="nav.slides">🎞️</a>
       <a href="#guide" data-page="guide" class="tool" data-i18n-title="nav.guide">📋</a>
       <button class="tool presenter" data-i18n-title="nav.presenter">A<sup>+</sup></button>
       <button class="tool fullscreen" data-i18n-title="nav.fullscreen">⛶</button>
