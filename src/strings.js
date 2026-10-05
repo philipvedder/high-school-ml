@@ -385,7 +385,6 @@ S('research.notes.interp', `
 <li><b>Two trainings A → B:</b> different random starts lead to different minima, usually with a barrier in between. But they are often connected by <em>curved</em> valleys (Garipov et al. 2018, Draxler et al. 2018: “mode connectivity”).</li>
 <li><b>Permutation symmetry:</b> swapping two hidden neurons (together with their weights) doesn’t change the function. A layer with k neurons has k! = 1·2·…·k equivalent copies of every solution. With 8 neurons that’s 40 320 copies!</li>
 <li>Current research asks whether, <em>after</em> undoing this symmetry, all good solutions lie in one connected valley (Entezari et al. 2022, “Git Re-Basin” 2023).</li>
-<li>Room for <b>your institute’s</b> research here!</li>
 </ul>`,
 `
 <ul>

@@ -29,7 +29,6 @@ A reveal.js deck (about 25–30 min) for the first half of the workshop, linked 
 - 33 main slides + 4 optional **deep dives** (press ↓): geometry of a neuron, sigmoid derivative, proof that XOR is not linearly separable, matrix form.
 - 9 live figures: drag weights, morph input space → hidden space, ReLU sums fitting a curve, a loss landscape linked to its classifier (2D + 3D), 1D/2D gradient descent with learning-rate presets, partial derivatives as slices.
 - Keys: **→/Space** next · **↓** deep dive · **S** speaker notes (English talking points per slide) · **L** switch DE/EN · **F** fullscreen · **Esc** overview.
-- Before the workshop: replace `[Name] · [Institute] · [Date]` on the title slide and `[URL / QR code]` on the last slide in `slides.html`.
 
 ## Run locally
 
