@@ -48,7 +48,7 @@ function drawPoints(ctx, p, data, r = 6, judge = null) {
     ctx.fill();
     const wrong = judge && judge(d) !== d.c;
     ctx.lineWidth = wrong ? 3 : 1.6;
-    ctx.strokeStyle = wrong ? '#ff2d55' : '#fff';
+    ctx.strokeStyle = wrong ? '#001219' : '#E9D8A6';
     ctx.stroke();
   }
 }
@@ -69,13 +69,12 @@ function hero(el) {
     const { w, h: H, ctx } = fitCanvas(canvas);
     ctx.clearRect(0, 0, w, H);
     const X = (x) => ((x + 1.9) / 4.2) * w;
-    const Y = (y) => H * 0.95 - ((y + 0.6) / 2.6) * H * 0.55;
+    const Y = (y) => H * 0.98 - ((y + 0.6) / 2.6) * H * 0.3;
     const path = () => { ctx.beginPath(); for (let k = 0; k <= 300; k++) { const x = -1.9 + (4.2 * k) / 300; k ? ctx.lineTo(X(x), Y(f(x))) : ctx.moveTo(X(x), Y(f(x))); } };
-    const grd = ctx.createLinearGradient(0, H * 0.4, 0, H);
-    grd.addColorStop(0, 'rgba(124,92,255,0.28)'); grd.addColorStop(1, 'rgba(34,211,238,0.0)');
+    const grd = 'rgba(238,155,0,0.08)';
     path(); ctx.lineTo(w, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fillStyle = grd; ctx.fill();
-    path(); ctx.strokeStyle = 'rgba(167,139,250,0.85)'; ctx.lineWidth = 3; ctx.stroke();
-    if (frame++ % 60 === 0 && balls.length < 5) balls.push({ x: -1.6 + Math.random() * 3.6, v: 0, life: 0, c: Math.random() < 0.5 ? ORANGE : '#22d3ee' });
+    path(); ctx.strokeStyle = '#EE9B00'; ctx.lineWidth = 2.5; ctx.stroke();
+    if (frame++ % 60 === 0 && balls.length < 5) balls.push({ x: -1.6 + Math.random() * 3.6, v: 0, life: 0, c: Math.random() < 0.5 ? ORANGE : '#94D2BD' });
     for (const b of balls) {
       b.v = 0.9 * b.v - 0.004 * df(b.x); b.x += b.v; b.life++;
       ctx.globalAlpha = Math.min(1, b.life / 20, (420 - b.life) / 40);
@@ -115,7 +114,7 @@ function neuron(el, o = {}) {
     p.drawAxes(ctx, { xLabel: 'x₁', yLabel: 'x₂', ticks: 4 });
     const [x0, x1] = [p.domain[0], p.domain[1]];
     ctx.save();
-    ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = '#fff';
+    ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = '#E9D8A6';
     ctx.beginPath();
     if (Math.abs(S.w2) > 1e-6) { ctx.moveTo(...p.toPx(x0, -(S.w1 * x0 + S.b) / S.w2)); ctx.lineTo(...p.toPx(x1, -(S.w1 * x1 + S.b) / S.w2)); }
     else if (Math.abs(S.w1) > 1e-6) { const xv = -S.b / S.w1; ctx.moveTo(...p.toPx(xv, p.domain[2])); ctx.lineTo(...p.toPx(xv, p.domain[3])); }
@@ -127,8 +126,8 @@ function neuron(el, o = {}) {
       const len = (dom[1] - dom[0]) * 0.16;
       const n = Math.sqrt(n2);
       const [ax, ay] = p.toPx(fx, fy), [bx, by] = p.toPx(fx + (S.w1 / n) * len, fy + (S.w2 / n) * len);
-      drawArrow(ctx, ax, ay, bx, by, '#facc15', 3.5, 13);
-      ctx.fillStyle = '#facc15'; ctx.font = 'bold 18px Inter Variable, system-ui';
+      drawArrow(ctx, ax, ay, bx, by, '#E9D8A6', 3.5, 13);
+      ctx.fillStyle = '#E9D8A6'; ctx.font = 'bold 18px "Spline Sans Mono Variable", monospace';
       ctx.fillText('w', bx + 6, by - 6);
     }
     drawPoints(ctx, p, data, isXor ? 6 : 6.5, (d) => (z(d.x, d.y) > 0 ? 1 : 0));
@@ -165,27 +164,27 @@ function sigmoidPlot(el) {
     const { w, h: H, ctx } = fitCanvas(canvas);
     ctx.clearRect(0, 0, w, H);
     const X = (z) => ((z + 7) / 14) * w, Y = (v) => H - 30 - ((v + 0.1) / 1.25) * (H - 50);
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(233,216,166,0.15)'; ctx.lineWidth = 1;
     for (const v of [0, 0.5, 1]) { ctx.beginPath(); ctx.moveTo(0, Y(v)); ctx.lineTo(w, Y(v)); ctx.stroke(); }
     ctx.beginPath(); ctx.moveTo(X(0), 0); ctx.lineTo(X(0), H); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '14px Inter Variable, system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.6)'; ctx.font = '14px "Spline Sans Mono Variable", monospace';
     for (const v of [0, 0.5, 1]) ctx.fillText(String(v), X(0) + 6, Y(v) - 5);
     for (let k = -6; k <= 6; k += 2) if (k) ctx.fillText(String(k), X(k) - 4, H - 10);
     ctx.fillText('z', w - 16, H - 10);
     // step
-    ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.setLineDash([7, 6]); ctx.lineWidth = 2.5;
+    ctx.strokeStyle = 'rgba(233,216,166,0.45)'; ctx.setLineDash([7, 6]); ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(X(0), Y(0)); ctx.lineTo(X(0), Y(1)); ctx.lineTo(w, Y(1)); ctx.stroke();
     ctx.setLineDash([]);
     const curve = (f, col, lw) => { ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); for (let k = 0; k <= 300; k++) { const z = -7 + (14 * k) / 300; k ? ctx.lineTo(X(z), Y(f(z))) : ctx.moveTo(X(z), Y(f(z))); } ctx.stroke(); };
     if (S.deriv) curve((z) => sigmoid(z) * (1 - sigmoid(z)), ORANGE, 3);
-    curve(sigmoid, '#22d3ee', 4);
+    curve(sigmoid, '#94D2BD', 4);
     const s = sigmoid(S.z);
-    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#facc15'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(X(S.z), Y(0)); ctx.lineTo(X(S.z), Y(s)); ctx.lineTo(X(0), Y(s)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = '#facc15'; ctx.beginPath(); ctx.arc(X(S.z), Y(s), 8, 0, 7); ctx.fill();
-    ctx.font = 'bold 15px Inter Variable, system-ui';
-    ctx.fillStyle = '#22d3ee'; ctx.fillText('σ(z)', X(4.6), Y(sigmoid(4.6)) - 12);
-    ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fillText(isDe() ? 'Stufe' : 'step', X(-6.6), Y(0) - 10);
+    ctx.fillStyle = '#E9D8A6'; ctx.beginPath(); ctx.arc(X(S.z), Y(s), 8, 0, 7); ctx.fill();
+    ctx.font = 'bold 15px "Spline Sans Mono Variable", monospace';
+    ctx.fillStyle = '#94D2BD'; ctx.fillText('σ(z)', X(4.6), Y(sigmoid(4.6)) - 12);
+    ctx.fillStyle = 'rgba(233,216,166,0.7)'; ctx.fillText(isDe() ? 'Stufe' : 'step', X(-6.6), Y(0) - 10);
     if (S.deriv) { ctx.fillStyle = ORANGE; ctx.fillText('σ′(z)', X(1.2), Y(0.25) - 8); }
     read.innerHTML = `σ(${fmt(S.z)}) = <b>${fmt(s, 3)}</b><br><span class="muted">≈ ${Math.round(s * 100)} % ${L('“orange”', '„orange“')}</span>${S.deriv ? `<br><span style="color:${ORANGE}">σ′ = σ(1−σ) = ${fmt(s * (1 - s), 3)}</span>` : ''}`;
   }
@@ -240,7 +239,7 @@ function xorNet(el, o = {}) {
     drawPoints(ctx, p, data, 6, (d) => (outv(d.x, d.y) > 0 ? 1 : 0));
   };
   hplot.customBackground = (ctx, p) => {
-    ctx.fillStyle = '#0d1330'; ctx.fillRect(0, 0, p.w, p.h);
+    ctx.fillStyle = '#03202A'; ctx.fillRect(0, 0, p.w, p.h);
     p.drawAxes(ctx, { xLabel: S.t > 0.5 ? 'h₁' : 'x₁', yLabel: S.t > 0.5 ? 'h₂' : 'x₂', ticks: 4 });
   };
   hplot.onDraw = (ctx, p) => {
@@ -248,7 +247,7 @@ function xorNet(el, o = {}) {
     if (S.t > 0.6) {
       ctx.globalAlpha = (S.t - 0.6) / 0.4;
       const [x0, x1] = [p.domain[0], p.domain[1]];
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.setLineDash([8, 6]);
+      ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 2.5; ctx.setLineDash([8, 6]);
       ctx.beginPath(); ctx.moveTo(...p.toPx(x0, (x0 - 0.5) / 2)); ctx.lineTo(...p.toPx(x1, (x1 - 0.5) / 2)); ctx.stroke();
       ctx.setLineDash([]); ctx.globalAlpha = 1;
     }
@@ -261,7 +260,7 @@ function xorNet(el, o = {}) {
     const n = 90, vals = sampleGrid(outv, map.domain, n);
     map.setField(vals.map((v) => sigmoid(5 * v)), n, n, classColor);
     map.setContours(vals, n, n, [0]);
-    map.contourStyle = 'rgba(255,255,255,0.95)';
+    map.contourStyle = 'rgba(233,216,166,0.95)';
     map.draw(); hplot.draw();
   }
   return { activate: draw };
@@ -308,13 +307,13 @@ function bricks(el) {
     const { w, h: H, ctx } = fitCanvas(canvas);
     ctx.clearRect(0, 0, w, H);
     const X = (x) => ((x + 3.1) / 6.2) * w, Y = (y) => H / 2 - (y / 3.2) * H;
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(w, Y(0)); ctx.stroke();
+    ctx.strokeStyle = 'rgba(233,216,166,0.15)'; ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(w, Y(0)); ctx.stroke();
     const { knots, a, model, err } = fit(S.k);
     const curve = (f, col, lw, dash = []) => { ctx.setLineDash(dash); ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); for (let i = 0; i <= 300; i++) { const x = -3 + (6 * i) / 300; i ? ctx.lineTo(X(x), Y(f(x))) : ctx.moveTo(X(x), Y(f(x))); } ctx.stroke(); ctx.setLineDash([]); };
-    if (S.parts) knots.forEach((c, i) => { ctx.globalAlpha = 0.45; curve((x) => a[i + 1] * Math.max(0, x - c), i % 2 ? '#a78bfa' : ORANGE, 1.5); ctx.globalAlpha = 1; });
-    curve(target, 'rgba(255,255,255,0.8)', 2.5, [7, 6]);
-    curve(model, '#22d3ee', 4);
-    ctx.fillStyle = '#facc15';
+    if (S.parts) knots.forEach((c, i) => { ctx.globalAlpha = 0.45; curve((x) => a[i + 1] * Math.max(0, x - c), i % 2 ? '#CA6702' : ORANGE, 1.5); ctx.globalAlpha = 1; });
+    curve(target, 'rgba(233,216,166,0.8)', 2.5, [7, 6]);
+    curve(model, '#94D2BD', 4);
+    ctx.fillStyle = '#E9D8A6';
     for (const c of knots) { ctx.beginPath(); ctx.arc(X(c), Y(model(c)), 4, 0, 7); ctx.fill(); }
     read.innerHTML = `ŷ(x) = a₀ + Σ aᵢ·ReLU(x − cᵢ)<br>${L('mean squared error', 'mittlerer quadr. Fehler')}: <b>${fmt(err, 4)}</b>`;
   }
@@ -345,8 +344,8 @@ function lossLinked(el) {
   lplot.setContours(grid, N, N, autoLevels(grid, 14));
   s3d.setGrid(grid, N, N, PD, { contours: 14 });
   s3d.camera.position.set(9, 10, 11);
-  s3d.addMarker(...best, bv, 0xfacc15, '★');
-  const ball = s3d.addBall('#22d3ee', { radius: 0.22, trail: false });
+  s3d.addMarker(...best, bv, 0xe9d8a6, '★');
+  const ball = s3d.addBall('#94D2BD', { radius: 0.22, trail: false });
 
   dplot.onDraw = (ctx, p) => {
     p.drawAxes(ctx, { xLabel: 'x₁', yLabel: 'x₂', ticks: 4 });
@@ -355,9 +354,9 @@ function lossLinked(el) {
   lplot.onDraw = (ctx, p) => {
     p.drawAxes(ctx, { xLabel: 'w₁', yLabel: 'w₂', ticks: 4 });
     const [bx, by] = p.toPx(...best);
-    ctx.fillStyle = '#fff'; ctx.font = '20px system-ui'; ctx.textAlign = 'center'; ctx.fillText('★', bx, by + 7); ctx.textAlign = 'left';
+    ctx.fillStyle = '#E9D8A6'; ctx.font = '20px "Spline Sans Mono Variable", monospace'; ctx.textAlign = 'center'; ctx.fillText('★', bx, by + 7); ctx.textAlign = 'left';
     const [cx, cy] = p.toPx(S.w1, S.w2);
-    ctx.fillStyle = '#22d3ee'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+    ctx.fillStyle = '#94D2BD'; ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(cx, cy, 9, 0, 7); ctx.fill(); ctx.stroke();
   };
   function set(w1, w2) {
@@ -389,7 +388,7 @@ function gd1d(el) {
   const canvas = box.querySelector('canvas');
   const se = slider({ label: raw('learning rate η', 'Lernrate η'), min: 0.01, max: 1.5, log: true, digits: 3, value: S.eta, onInput: (v) => { S.eta = v; draw(); } });
   const read = h('<div class="w-formula mono"></div>');
-  const stepB = button(raw('👣 step', '👣 Schritt'), () => step(), 'primary');
+  const stepB = button(raw('→ step', '→ Schritt'), () => step(), 'primary');
   const runB = button(raw('▶ run', '▶ laufen'), () => run());
   const resetB = button(raw('↺', '↺'), () => reset(S.hist[0]));
   const preset = (en, de, eta, w0) => button(raw(en, de), () => { stop(); S.eta = eta; se.value = eta; reset(w0); run(); });
@@ -417,21 +416,21 @@ function gd1d(el) {
     const { w, h: H, ctx } = fitCanvas(canvas);
     ctx.clearRect(0, 0, w, H);
     const X = (v) => ((v + 3.5) / 7) * w, Y = (v) => H - 20 - ((v + 0.6) / 6) * (H - 30);
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(233,216,166,0.12)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(w, Y(0)); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '13px Inter Variable, system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.55)'; ctx.font = '13px "Spline Sans Mono Variable", monospace';
     for (let k = -3; k <= 3; k++) ctx.fillText(String(k), X(k) - 4, H - 4);
     ctx.fillText('w', w - 14, H - 4);
     ctx.fillText('f(w)', 8, 16);
-    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 4; ctx.beginPath();
+    ctx.strokeStyle = '#CA6702'; ctx.lineWidth = 4; ctx.beginPath();
     for (let i = 0; i <= 300; i++) { const v = -3.5 + (7 * i) / 300; i ? ctx.lineTo(X(v), Y(f(v))) : ctx.moveTo(X(v), Y(f(v))); }
     ctx.stroke();
     // history
-    ctx.strokeStyle = 'rgba(250,204,21,0.7)'; ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(233,216,166,0.7)'; ctx.lineWidth = 2;
     ctx.beginPath();
     S.hist.forEach((v, i) => { const q = [X(v), Y(Math.min(f(v), 7))]; i ? ctx.lineTo(...q) : ctx.moveTo(...q); });
     ctx.stroke();
-    ctx.fillStyle = 'rgba(250,204,21,0.8)';
+    ctx.fillStyle = 'rgba(233,216,166,0.8)';
     for (const v of S.hist) { ctx.beginPath(); ctx.arc(X(v), Y(Math.min(f(v), 7)), 4, 0, 7); ctx.fill(); }
     if (!S.boom) {
       const v = S.w, s0 = df(v), s = Math.abs(s0) < 1e-6 ? 0 : s0;
@@ -440,8 +439,8 @@ function gd1d(el) {
       ctx.beginPath(); ctx.moveTo(X(v - 0.7), Y(f(v) - 0.7 * s)); ctx.lineTo(X(v + 0.7), Y(f(v) + 0.7 * s)); ctx.stroke();
       // step preview on the axis
       const nv = v - S.eta * s;
-      if (Math.abs(nv - v) > 1e-3) drawArrow(ctx, X(v), Y(-0.35), X(clamp(nv, -3.5, 3.5)), Y(-0.35), '#22d3ee', 3, 10);
-      ctx.fillStyle = '#22d3ee'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+      if (Math.abs(nv - v) > 1e-3) drawArrow(ctx, X(v), Y(-0.35), X(clamp(nv, -3.5, 3.5)), Y(-0.35), '#94D2BD', 3, 10);
+      ctx.fillStyle = '#94D2BD'; ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.arc(X(v), Y(f(v)), 10, 0, 7); ctx.fill(); ctx.stroke();
       read.innerHTML = `w = ${fmt(v, 3)}, &nbsp;f′(w) = ${fmt(s, 3)}<br>w<sub>${L('new', 'neu')}</sub> = ${fmt(v, 3)} − ${fmt(S.eta, 3)}·(${fmt(s, 3)}) = <b>${fmt(nv, 3)}</b><br><span class="muted">f(w) = ${fmt(f(v), 3)} · ${L('steps', 'Schritte')}: ${S.hist.length - 1}</span>`;
     } else {
@@ -474,7 +473,7 @@ function gd2d(el, o = {}) {
     side.append(cs1, cs2, read);
   } else {
     const se = slider({ label: raw('learning rate η', 'Lernrate η'), min: 0.02, max: 1.6, log: true, digits: 2, value: S.eta, onInput: (v) => { S.eta = v; draw(); } });
-    const stepB = button(raw('👣 step', '👣 Schritt'), () => step(), 'primary');
+    const stepB = button(raw('→ step', '→ Schritt'), () => step(), 'primary');
     const runB = button(raw('▶ run', '▶ laufen'), () => { if (S.timer) stop(); else { S.timer = setInterval(() => { step(); if (S.path.length > 150) stop(); }, 120); } });
     const resetB = button(raw('↺', '↺'), () => { stop(); setPoint(...S.path[0]); });
     side.append(se.el, row(stepB, runB, resetB), h(`<div class="w-label muted">${L('Click on the map to choose a start.', 'Klicke auf die Karte, um einen Start zu wählen.')}</div>`), read);
@@ -501,24 +500,24 @@ function gd2d(el, o = {}) {
     const sc = 26;
     if (!gdMode) {
       ctx.setLineDash([6, 5]); ctx.lineWidth = 2;
-      ctx.strokeStyle = '#22d3ee'; ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(p.w, py); ctx.stroke();
-      ctx.strokeStyle = '#f472b6'; ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, p.h); ctx.stroke();
+      ctx.strokeStyle = '#94D2BD'; ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(p.w, py); ctx.stroke();
+      ctx.strokeStyle = '#BB3E03'; ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, p.h); ctx.stroke();
       ctx.setLineDash([]);
-      drawArrow(ctx, px, py, px + ga * sc, py, '#22d3ee', 3, 10);
-      drawArrow(ctx, px, py, px, py - gb * sc, '#f472b6', 3, 10);
+      drawArrow(ctx, px, py, px + ga * sc, py, '#94D2BD', 3, 10);
+      drawArrow(ctx, px, py, px, py - gb * sc, '#BB3E03', 3, 10);
       drawArrow(ctx, px, py, px + ga * sc, py - gb * sc, ORANGE, 4, 13);
-      ctx.fillStyle = ORANGE; ctx.font = 'bold 16px Inter Variable, system-ui';
+      ctx.fillStyle = ORANGE; ctx.font = 'bold 16px "Spline Sans Mono Variable", monospace';
       ctx.fillText('∇f', px + ga * sc + 6, py - gb * sc - 6);
     } else {
       if (S.path.length > 1) {
-        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath();
+        ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 2.5; ctx.beginPath();
         S.path.forEach(([a, b], i) => { const q = p.toPx(a, b); i ? ctx.lineTo(...q) : ctx.moveTo(...q); }); ctx.stroke();
-        ctx.fillStyle = '#fff'; for (const [a, b] of S.path) { const q = p.toPx(a, b); ctx.beginPath(); ctx.arc(q[0], q[1], 3, 0, 7); ctx.fill(); }
+        ctx.fillStyle = '#E9D8A6'; for (const [a, b] of S.path) { const q = p.toPx(a, b); ctx.beginPath(); ctx.arc(q[0], q[1], 3, 0, 7); ctx.fill(); }
       }
       const L2 = Math.hypot(ga, gb);
-      if (L2 > 0.02) drawArrow(ctx, px, py, px - (ga / L2) * 50, py + (gb / L2) * 50, '#22d3ee', 4, 13);
+      if (L2 > 0.02) drawArrow(ctx, px, py, px - (ga / L2) * 50, py + (gb / L2) * 50, '#94D2BD', 4, 13);
     }
-    ctx.fillStyle = '#facc15'; ctx.strokeStyle = '#0b1020'; ctx.lineWidth = 3;
+    ctx.fillStyle = '#E9D8A6'; ctx.strokeStyle = '#001219'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(px, py, 9, 0, 7); ctx.fill(); ctx.stroke();
   };
 
@@ -536,18 +535,18 @@ function gd2d(el, o = {}) {
     const y0 = fn(center);
     ctx.strokeStyle = ORANGE; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(X(center - 0.8), Y(y0 - 0.8 * slope)); ctx.lineTo(X(center + 0.8), Y(y0 + 0.8 * slope)); ctx.stroke();
-    ctx.fillStyle = '#facc15'; ctx.beginPath(); ctx.arc(X(center), Y(y0), 6, 0, 7); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = '14px Inter Variable, system-ui';
+    ctx.fillStyle = '#E9D8A6'; ctx.beginPath(); ctx.arc(X(center), Y(y0), 6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#E9D8A6'; ctx.font = '14px "Spline Sans Mono Variable", monospace';
     ctx.fillText(label, 10, 18);
-    ctx.fillStyle = ORANGE; ctx.font = 'bold 14px Inter Variable, system-ui';
+    ctx.fillStyle = ORANGE; ctx.font = 'bold 14px "Spline Sans Mono Variable", monospace';
     ctx.fillText(`${isDe() ? 'Steigung' : 'slope'} = ∂f/∂${varName} = ${fmt(slope)}`, 10, 36);
   }
   function draw() {
     const [ga, gb] = g(S.a, S.b);
     if (!gdMode) {
       const de = isDe();
-      drawSection(cs1, (v) => f(v, S.b), S.a, ga, '#22d3ee', `f(w₁, ${fmt(S.b)})  — ${de ? 'w₂ eingefroren' : 'w₂ frozen'}`, 'w₁');
-      drawSection(cs2, (v) => f(S.a, v), S.b, gb, '#f472b6', `f(${fmt(S.a)}, w₂)  — ${de ? 'w₁ eingefroren' : 'w₁ frozen'}`, 'w₂');
+      drawSection(cs1, (v) => f(v, S.b), S.a, ga, '#94D2BD', `f(w₁, ${fmt(S.b)})  — ${de ? 'w₂ eingefroren' : 'w₂ frozen'}`, 'w₁');
+      drawSection(cs2, (v) => f(S.a, v), S.b, gb, '#BB3E03', `f(${fmt(S.a)}, w₂)  — ${de ? 'w₁ eingefroren' : 'w₁ frozen'}`, 'w₂');
       read.innerHTML = `∇f(${fmt(S.a)}, ${fmt(S.b)}) = (<span style="color:#22d3ee">${fmt(ga)}</span>, <span style="color:#f472b6">${fmt(gb)}</span>)`;
     } else {
       read.innerHTML = `∇f = (${fmt(ga)}, ${fmt(gb)})<br>θ ← θ − ${fmt(S.eta)}·∇f<br><span class="muted">f(θ) = ${fmt(f(S.a, S.b), 3)} · ${L('steps', 'Schritte')}: ${S.path.length - 1}</span>`;

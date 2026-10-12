@@ -122,7 +122,7 @@ export function create() {
         vals[j * n + i] = net.predict(DOMAIN[0] + ((DOMAIN[1] - DOMAIN[0]) * i) / (n - 1), DOMAIN[2] + ((DOMAIN[3] - DOMAIN[2]) * j) / (n - 1));
     map.setField(vals, n, n, classColor);
     map.setContours(vals, n, n, [0.5]);
-    map.contourStyle = 'rgba(255,255,255,0.9)';
+    map.contourStyle = 'rgba(233,216,166,0.9)';
   }
   map.onDraw = (ctx, p) => {
     p.drawAxes(ctx, { xLabel: 'x₁', yLabel: 'x₂' });
@@ -131,7 +131,7 @@ export function create() {
       ctx.beginPath(); ctx.arc(px, py, 4.5, 0, 7);
       ctx.fillStyle = d.c ? ORANGE : BLUE;
       ctx.fill();
-      ctx.lineWidth = 1.2; ctx.strokeStyle = '#fff'; ctx.stroke();
+      ctx.lineWidth = 1.2; ctx.strokeStyle = '#E9D8A6'; ctx.stroke();
     }
   };
 
@@ -202,18 +202,18 @@ export function create() {
         const x = xs[l] - box / 2, y = ys[l][q] - box / 2;
         ctx.imageSmoothingEnabled = true;
         ctx.drawImage(c, x, y, box, box);
-        ctx.strokeStyle = l === L - 1 ? '#facc15' : 'rgba(255,255,255,0.7)';
+        ctx.strokeStyle = l === L - 1 ? '#E9D8A6' : 'rgba(233,216,166,0.7)';
         ctx.lineWidth = l === L - 1 ? 2.5 : 1.2;
         ctx.strokeRect(x, y, box, box);
       }
     }
-    ctx.fillStyle = 'rgba(255,255,255,0.65)';
-    ctx.font = '12px system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.65)';
+    ctx.font = '12px "Spline Sans Mono Variable", monospace';
     ctx.textAlign = 'center';
     ctx.fillText(t('network.input'), xs[0], 16);
     ctx.fillText(t('network.output'), xs[L - 1], 16);
     if (L > 2) ctx.fillText(t('network.hidden'), (xs[1] + xs[L - 2]) / 2, 16);
-    ctx.font = '11px system-ui';
+    ctx.font = '11px "Spline Sans Mono Variable", monospace';
     ctx.fillText('x₁', xs[0], ys[0][0] - box / 2 - 4);
     ctx.fillText('x₂', xs[0], ys[0][1] + box / 2 + 13);
     ctx.textAlign = 'left';
@@ -232,7 +232,7 @@ export function create() {
       <div><span class="muted">Loss</span><b>${lab.data.length ? fmt(loss, 3) : '—'}</b></div>
       <div><span class="muted">${t('common.accuracy')}</span><b>${Math.round(acc * 100)} %</b></div>
       <div class="small muted">${t('network.dims', { n: lab.net.nParams })}</div>`;
-    chart.setSeries([{ color: '#22d3ee', ys: tr.lossHistory }]);
+    chart.setSeries([{ color: '#94D2BD', ys: tr.lossHistory }]);
   }
 
   // ---- loop ----

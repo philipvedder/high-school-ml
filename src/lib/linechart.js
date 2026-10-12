@@ -31,11 +31,11 @@ export class LineChart {
         if (ty < y0) y0 = ty; if (ty > y1) y1 = ty;
       }
     if (this.xRange) [x0, x1] = this.xRange;
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.strokeStyle = 'rgba(233,216,166,0.15)';
     ctx.lineWidth = 1;
     ctx.strokeRect(padL, padT, w - padL - padR, h - padT - padB);
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(233,216,166,0.55)';
+    ctx.font = '11px "Spline Sans Mono Variable", monospace';
     if (!isFinite(x0) || !isFinite(y0)) {
       ctx.textAlign = 'center';
       ctx.fillText('—', w / 2, h / 2);
@@ -53,7 +53,7 @@ export class LineChart {
       const ty = y0 + ((y1 - y0) * k) / 3;
       const py = padT + (1 - k / 3) * (h - padT - padB);
       ctx.fillText(this.log ? sig(Math.pow(10, ty)) : fmt(ty, 2), padL - 4, py + 4);
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = 'rgba(233,216,166,0.06)';
       ctx.beginPath(); ctx.moveTo(padL, py); ctx.lineTo(w - padR, py); ctx.stroke();
     }
     ctx.textAlign = 'center';
@@ -63,11 +63,11 @@ export class LineChart {
     if (this.yLabel) { ctx.textAlign = 'left'; ctx.fillText(this.yLabel, padL + 6, padT + 12); }
     for (const m of this.markers) {
       const px = X(m.x);
-      ctx.strokeStyle = m.color || '#fff';
+      ctx.strokeStyle = m.color || '#E9D8A6';
       ctx.setLineDash([4, 4]);
       ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, h - padB); ctx.stroke();
       ctx.setLineDash([]);
-      if (m.label) { ctx.fillStyle = m.color || '#fff'; ctx.textAlign = 'center'; ctx.fillText(m.label, px, padT + 24); }
+      if (m.label) { ctx.fillStyle = m.color || '#E9D8A6'; ctx.textAlign = 'center'; ctx.fillText(m.label, px, padT + 24); }
     }
     ctx.save();
     ctx.beginPath(); ctx.rect(padL, padT, w - padL - padR, h - padT - padB); ctx.clip();

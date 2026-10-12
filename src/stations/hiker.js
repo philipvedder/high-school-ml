@@ -24,7 +24,7 @@ export function create() {
   viz.classList.add('two');
   viz.innerHTML = `
     <div class="plot-box square"><canvas class="map"></canvas><div class="plot-badge alt"></div><div class="plot-badge steps right"></div></div>
-    <div class="three-box"><div class="lock"><div>🔒</div><div data-i18n="hiker.locked"></div></div></div>
+    <div class="three-box"><div class="lock"><div>???</div><div data-i18n="hiker.locked"></div></div></div>
     <div class="below hiker-below">
       <div class="result card"></div>
       <div class="chart-box"><canvas class="chart"></canvas></div>
@@ -123,9 +123,9 @@ export function create() {
     // reveal 3D
     s3d.surfaceGroup.visible = true;
     lock.style.display = 'none';
-    s3d.addPath(G.path, 0x22d3ee, ls.f);
-    s3d.addMarker(...G.path[0], f0, 0xffffff, t('hiker.start'));
-    s3d.addMarker(...ls.argmin, ls.fmin, 0xfacc15, t('hiker.globalMin'));
+    s3d.addPath(G.path, 0xe9d8a6, ls.f);
+    s3d.addMarker(...G.path[0], f0, 0xe9d8a6, t('hiker.start'));
+    s3d.addMarker(...ls.argmin, ls.fmin, 0xe9d8a6, t('hiker.globalMin'));
     gdBtn.disabled = false;
     doneBtn.disabled = true;
     render();
@@ -144,7 +144,7 @@ export function create() {
     }
     p.push([x, y]);
     G.gdPath = p;
-    s3d.addPath(p, 0xf43f5e, ls.f);
+    s3d.addPath(p, 0xee9b00, ls.f);
     if (ls.f(...pos()) < ls.f(x, y) - 0.01) M.complete('hiker.m3');
     render();
   }
@@ -153,11 +153,9 @@ export function create() {
   map.customBackground = (ctx, p) => {
     if (G.over) { p.drawBackground(ctx); p.drawContours(ctx); return; }
     // fog
-    const g = ctx.createLinearGradient(0, 0, p.w, p.h);
-    g.addColorStop(0, '#141a33'); g.addColorStop(1, '#0c1024');
-    ctx.fillStyle = g;
+    ctx.fillStyle = '#03202A';
     ctx.fillRect(0, 0, p.w, p.h);
-    ctx.fillStyle = 'rgba(255,255,255,0.035)';
+    ctx.fillStyle = 'rgba(233,216,166,0.035)';
     for (let k = 0; k < 140; k++) {
       const x = ((k * 97) % 100) / 100 * p.w, y = ((k * 61) % 100) / 100 * p.h;
       ctx.beginPath(); ctx.arc(x, y, 18 + (k % 5) * 6, 0, 7); ctx.fill();
@@ -176,26 +174,27 @@ export function create() {
     if (!G.ls) return;
     const ls = G.ls;
     const drawPath = (path, color, dots = true) => {
-      ctx.strokeStyle = color; ctx.lineWidth = 3;
       ctx.beginPath();
       path.forEach((q, i) => { const s = p.toPx(...q); i ? ctx.lineTo(...s) : ctx.moveTo(...s); });
-      ctx.stroke();
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = 'rgba(0,18,25,0.8)'; ctx.lineWidth = 6; ctx.stroke();
+      ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.stroke();
       if (dots) {
         ctx.fillStyle = color;
         path.forEach((q, i) => {
           const [px, py] = p.toPx(...q);
           ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
-          if (i > 0) { ctx.fillStyle = '#fff'; ctx.font = 'bold 11px system-ui'; ctx.fillText(i, px + 6, py - 6); ctx.fillStyle = color; }
+          if (i > 0) { ctx.fillStyle = '#E9D8A6'; ctx.font = 'bold 11px "Spline Sans Mono Variable", monospace'; ctx.fillText(i, px + 6, py - 6); ctx.fillStyle = color; }
         });
       }
     };
-    if (G.gdPath) drawPath(G.gdPath, '#f43f5e', false);
-    drawPath(G.path, '#22d3ee');
+    if (G.gdPath) drawPath(G.gdPath, '#EE9B00', false);
+    drawPath(G.path, '#E9D8A6');
     const [cx, cy] = p.toPx(...pos());
     if (!G.over) {
       const R = (MAX_STEP / (p.domain[1] - p.domain[0])) * p.w;
       ctx.setLineDash([6, 6]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.strokeStyle = 'rgba(233,216,166,0.6)';
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.stroke();
       ctx.setLineDash([]);
@@ -204,17 +203,17 @@ export function create() {
         const L = Math.hypot(gx, gy);
         if (L > 1e-4) {
           const len = Math.min(R, 18 + L * 40);
-          drawArrow(ctx, cx, cy, cx - (gx / L) * len, cy + (gy / L) * len, '#f97316', 3.5, 12);
+          drawArrow(ctx, cx, cy, cx - (gx / L) * len, cy + (gy / L) * len, '#EE9B00', 3.5, 12);
         }
       }
     } else {
       const [mx, my] = p.toPx(...ls.argmin);
-      ctx.font = '22px system-ui'; ctx.textAlign = 'center'; ctx.fillStyle = '#facc15';
+      ctx.font = '22px "Spline Sans Mono Variable", monospace'; ctx.textAlign = 'center'; ctx.fillStyle = '#E9D8A6';
       ctx.fillText('★', mx, my + 8);
       ctx.textAlign = 'left';
     }
     // hiker
-    ctx.font = '26px system-ui'; ctx.textAlign = 'center';
+    ctx.font = '26px "Spline Sans Mono Variable", monospace'; ctx.textAlign = 'center';
     ctx.fillText('🧍', cx, cy + 9);
     ctx.textAlign = 'left';
   };
@@ -222,7 +221,7 @@ export function create() {
   function renderScores() {
     const s = loadScores();
     scoreCard.querySelector('.scores').innerHTML = s.length
-      ? s.map((e) => `<li><span>${escapeHtml(e.name)}</span><b>${e.score}</b><span class="muted small">${e.diff === 'hard' ? '🔥' : ''}</span></li>`).join('')
+      ? s.map((e) => `<li><span>${escapeHtml(e.name)}</span><b>${e.score}</b><span class="muted small">${e.diff === 'hard' ? 'hard' : ''}</span></li>`).join('')
       : `<li class="muted small">${t('hiker.noScores')}</li>`;
   }
 
@@ -233,8 +232,8 @@ export function create() {
     const used = G.path.length - 1;
     viz.querySelector('.alt').innerHTML = `${t('hiker.altitude')}: <b>${alt(f)} m</b>`;
     viz.querySelector('.steps').innerHTML = `${t('common.steps')}: <b>${used}/${BUDGET}</b>`;
-    const series = [{ color: '#22d3ee', ys: G.path.map((q) => alt(ls.f(...q))), dots: true }];
-    if (G.gdPath) series.push({ color: '#f43f5e', points: G.gdPath.map((q, i) => [(i / (G.gdPath.length - 1)) * Math.max(used, 1), alt(ls.f(...q))]) });
+    const series = [{ color: '#E9D8A6', ys: G.path.map((q) => alt(ls.f(...q))), dots: true }];
+    if (G.gdPath) series.push({ color: '#EE9B00', points: G.gdPath.map((q, i) => [(i / (G.gdPath.length - 1)) * Math.max(used, 1), alt(ls.f(...q))]) });
     chart.yLabel = t('hiker.altitude') + ' (m)';
     chart.setSeries(series);
     if (!G.over) {
@@ -245,7 +244,7 @@ export function create() {
       if (G.gdPath) {
         const fg = ls.f(...G.gdPath[G.gdPath.length - 1]);
         const win = f < fg - 0.01, tie = Math.abs(f - fg) <= 0.01;
-        gdInfo = `<div class="gd-info">🤖 ${t('hiker.gdResult', { alt: alt(fg) })} ${win ? t('hiker.youWin') : tie ? t('hiker.tie') : t('hiker.gdWins')}</div>`;
+        gdInfo = `<div class="gd-info">${t('hiker.gdResult', { alt: alt(fg) })} ${win ? t('hiker.youWin') : tie ? t('hiker.tie') : t('hiker.gdWins')}</div>`;
       }
       resultEl.innerHTML = `<div class="big-score">${emoji} ${G.score} <span class="muted small">/ 1000</span></div><div>${t('hiker.verdict.' + G.verdict)}</div>${gdInfo}`;
     }

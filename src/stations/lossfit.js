@@ -114,7 +114,7 @@ export function create() {
   // ---- data plot drawing & dragging ----
   const HX = [0.3, 4.3];
   dataPlot.customBackground = (ctx, p) => {
-    ctx.fillStyle = '#0f1530';
+    ctx.fillStyle = '#03202A';
     ctx.fillRect(0, 0, p.w, p.h);
     p.drawAxes(ctx, { xLabel: 'x', yLabel: 'y' });
   };
@@ -127,38 +127,38 @@ export function create() {
       const [, pyh] = p.toPx(d.x, yh);
       const side = pyh - py;
       if (S.showSq && Math.abs(side) < 2000) {
-        ctx.fillStyle = 'rgba(249,115,22,0.18)';
-        ctx.strokeStyle = 'rgba(249,115,22,0.6)';
+        ctx.fillStyle = 'rgba(238,155,0,0.18)';
+        ctx.strokeStyle = 'rgba(238,155,0,0.6)';
         ctx.lineWidth = 1;
         const x0 = px, y0 = Math.min(py, pyh), s = Math.abs(side);
         ctx.fillRect(x0, y0, s, s);
         ctx.strokeRect(x0, y0, s, s);
       }
-      ctx.strokeStyle = '#f97316';
+      ctx.strokeStyle = '#EE9B00';
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, pyh); ctx.stroke();
     }
     // line
     const [x0, x1] = [p.domain[0], p.domain[1]];
-    ctx.strokeStyle = '#22d3ee';
+    ctx.strokeStyle = '#94D2BD';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(...p.toPx(x0, S.w * x0 + S.b)); ctx.lineTo(...p.toPx(x1, S.w * x1 + S.b)); ctx.stroke();
     // points
     for (const d of data) {
       const [px, py] = p.toPx(d.x, d.y);
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = '#E9D8A6';
       ctx.beginPath(); ctx.arc(px, py, 5.5, 0, 7); ctx.fill();
     }
     // handles
     for (const hx of HX) {
       const [px, py] = p.toPx(hx, S.w * hx + S.b);
-      ctx.fillStyle = '#0b1020';
-      ctx.strokeStyle = '#22d3ee';
+      ctx.fillStyle = '#001219';
+      ctx.strokeStyle = '#94D2BD';
       ctx.lineWidth = 3;
       ctx.beginPath(); ctx.arc(px, py, 9, 0, 7); ctx.fill(); ctx.stroke();
     }
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.font = 'bold 14px system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.8)';
+    ctx.font = 'bold 14px "Spline Sans Mono Variable", monospace';
     ctx.textAlign = 'right';
     ctx.fillText(`ŷ = ${fmt(S.w)}·x + ${fmt(S.b)}`, p.w - 10, 22);
     ctx.textAlign = 'left';
@@ -200,18 +200,18 @@ export function create() {
     p.drawAxes(ctx, { xLabel: 'w', yLabel: 'b' });
     // optimum
     const [ox, oy] = p.toPx(wOpt, bOpt);
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.font = '16px system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.9)';
+    ctx.font = '16px "Spline Sans Mono Variable", monospace';
     ctx.textAlign = 'center';
     ctx.fillText('★', ox, oy + 6);
     // trail
     if (S.hist.length > 1) {
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = '#E9D8A6';
       ctx.lineWidth = 2;
       ctx.beginPath();
       S.hist.forEach(([w, b], i) => { const q = p.toPx(w, b); i ? ctx.lineTo(...q) : ctx.moveTo(...q); });
       ctx.stroke();
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = '#E9D8A6';
       for (const [w, b] of S.hist) { const q = p.toPx(w, b); ctx.beginPath(); ctx.arc(q[0], q[1], 3, 0, 7); ctx.fill(); }
     }
     const [cx, cy] = p.toPx(S.w, S.b);
@@ -220,7 +220,7 @@ export function create() {
       // preview of the next step
       const [nx, ny] = p.toPx(S.w - S.lr * gw, S.b - S.lr * gb);
       ctx.setLineDash([5, 5]);
-      ctx.strokeStyle = '#facc15';
+      ctx.strokeStyle = '#E9D8A6';
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(nx, ny); ctx.stroke();
       ctx.beginPath(); ctx.arc(nx, ny, 8, 0, 7); ctx.stroke();
@@ -228,10 +228,10 @@ export function create() {
       // steepest-descent direction (fixed length)
       const gx = -gw, gy = gb; // pixel y is flipped
       const len = Math.hypot(gx, gy) || 1;
-      drawArrow(ctx, cx, cy, cx + (gx / len) * 60, cy + (gy / len) * 60, '#f97316', 3, 12);
+      drawArrow(ctx, cx, cy, cx + (gx / len) * 60, cy + (gy / len) * 60, '#EE9B00', 3, 12);
     }
-    ctx.fillStyle = '#22d3ee';
-    ctx.strokeStyle = '#fff';
+    ctx.fillStyle = '#94D2BD';
+    ctx.strokeStyle = '#E9D8A6';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(cx, cy, 9, 0, 7); ctx.fill(); ctx.stroke();
   };

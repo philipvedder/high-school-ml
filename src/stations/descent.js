@@ -3,13 +3,13 @@ import { stationShell, slider, select, segmented, button, row, card, missions, e
 import { Plot2D, sampleGrid, autoLevels } from '../lib/plot2d.js';
 import { Surface3D } from '../lib/surface3d.js';
 import { LineChart } from '../lib/linechart.js';
-import { terrain, BALL_COLORS, OPT_COLORS } from '../lib/colormap.js';
+import { terrain, BALL_COLORS, OPT_COLORS, CATEGORICAL } from '../lib/colormap.js';
 import { getLandscape, LANDSCAPE_IDS } from '../lib/landscapes.js';
 import { Optimizer } from '../lib/optim.js';
 import { makeRng, fmt, drawArrow, h } from '../lib/util.js';
 import { t, onLangChange } from '../i18n.js';
 
-const CLUSTER_COLORS = ['#facc15', '#22d3ee', '#f43f5e', '#a78bfa', '#4ade80', '#fb923c', '#f472b6', '#60a5fa', '#e879f9', '#a3e635'];
+const CLUSTER_COLORS = CATEGORICAL;
 const MAX_BALLS = 8;
 const OPT_NAMES = { gd: 'GD', momentum: 'Momentum', adam: 'Adam' };
 
@@ -26,7 +26,7 @@ export function create() {
 
   viz.classList.add('descent-grid');
   viz.innerHTML = `
-    <div class="three-box"><div class="hint3d" data-i18n="descent.hint"></div></div>
+    <div class="three-box"><div class="hint3d"><span class="hint-mouse" data-i18n="descent.hint"></span><span class="hint-touch" data-i18n="descent.hintTouch"></span></div></div>
     <div class="plot-box square"><canvas class="map"></canvas></div>
     <div class="below chart-box"><canvas class="chart"></canvas></div>`;
   const s3d = new Surface3D(viz.querySelector('.three-box'));
@@ -131,7 +131,7 @@ export function create() {
   function rain() {
     for (const b of balls.filter((b) => b.rain)) removeBall(b);
     const [x0, x1, y0, y1] = ls.domain;
-    for (let k = 0; k < 80; k++) addBall(x0 + (x1 - x0) * (0.03 + 0.94 * rng()), y0 + (y1 - y0) * (0.03 + 0.94 * rng()), S.opt, '#ffffff', { rain: true });
+    for (let k = 0; k < 80; k++) addBall(x0 + (x1 - x0) * (0.03 + 0.94 * rng()), y0 + (y1 - y0) * (0.03 + 0.94 * rng()), S.opt, '#E9D8A6', { rain: true });
     M.complete('descent.m4');
     setPlaying(true);
   }
@@ -214,7 +214,7 @@ export function create() {
           const L = Math.hypot(gx, gy) || 1;
           const [px, py] = p.toPx(x, y);
           const len = 6 + Math.min(10, L * 4);
-          drawArrow(ctx, px, py, px - (gx / L) * len, py + (gy / L) * len, '#ffffff', 1.3, 5);
+          drawArrow(ctx, px, py, px - (gx / L) * len, py + (gy / L) * len, '#E9D8A6', 1.3, 5);
         }
       ctx.globalAlpha = 1;
     }
@@ -238,13 +238,13 @@ export function create() {
       if (b.status === 'boom') continue;
       const [px, py] = p.toPx(b.x, b.y);
       ctx.fillStyle = b.color;
-      ctx.strokeStyle = '#0b1020';
+      ctx.strokeStyle = '#001219';
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(px, py, b.rain ? 4 : 7, 0, 7); ctx.fill(); ctx.stroke();
       if (S.showGrad && !b.rain && b.status === 'rolling') {
         const [gx, gy] = ls.g(b.x, b.y);
         const L = Math.hypot(gx, gy);
-        if (L > 0.02) drawArrow(ctx, px, py, px - (gx / L) * 40, py + (gy / L) * 40, '#ffffff', 2.5, 9);
+        if (L > 0.02) drawArrow(ctx, px, py, px - (gx / L) * 40, py + (gy / L) * 40, '#E9D8A6', 2.5, 9);
       }
     }
   };
@@ -257,7 +257,7 @@ export function create() {
     const list = ballList.querySelector('.list');
     if (!normal.length) list.innerHTML = `<div class="muted small">${t('descent.noBalls')}</div>`;
     else list.innerHTML = normal.map((b) => {
-      const st = b.status === 'boom' ? '💥' : b.status === 'done' ? '🏁' : '⏳';
+      const st = b.status === 'boom' ? '💥' : b.status === 'done' ? '✓' : '…';
       return `<div class="ball-row"><i style="background:${b.color}"></i><span>${OPT_NAMES[b.type]}</span><span class="mono">L=${fmt(b.losses[b.losses.length - 1], 3)}</span><span class="mono">${b.steps}</span><span>${st}</span></div>`;
     }).join('');
   }

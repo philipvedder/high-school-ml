@@ -3,11 +3,11 @@ export const STRINGS = {};
 const S = (key, en, de) => { STRINGS[key] = { en, de }; };
 
 // ---------- common ----------
-S('common.math', '🧮 The math behind it', '🧮 Die Mathematik dahinter');
-S('common.missions', '🎯 Missions', '🎯 Missionen');
+S('common.math', 'the math behind it', 'die Mathematik dahinter');
+S('common.missions', 'Missions', 'Missionen');
 S('common.missionDone', 'Mission complete:', 'Mission geschafft:');
 S('common.dataset', 'Data set', 'Datensatz');
-S('common.newData', '🎲 New data', '🎲 Neue Daten');
+S('common.newData', '↻ New data', '↻ Neue Daten');
 S('common.accuracy', 'Accuracy', 'Genauigkeit');
 S('common.lr', 'Learning rate η', 'Lernrate η');
 S('common.play', '▶ Run', '▶ Start');
@@ -17,7 +17,7 @@ S('common.step', '⏭ One step', '⏭ Ein Schritt');
 S('common.steps', 'Steps', 'Schritte');
 S('common.speed', 'Speed', 'Tempo');
 S('common.optimizer', 'Optimizer', 'Optimierer');
-S('common.clear', '🧹 Clear', '🧹 Leeren');
+S('common.clear', '✕ Clear', '✕ Leeren');
 
 // ---------- nav ----------
 S('nav.neuron', 'Neuron', 'Neuron');
@@ -37,8 +37,8 @@ S('home.lead',
   'How does a computer <em>learn</em>? We go from a single artificial neuron to real neural networks, and hike through the mysterious <b>loss landscapes</b> that mathematicians are still studying today.',
   'Wie <em>lernt</em> ein Computer? Wir gehen vom einzelnen künstlichen Neuron bis zu echten neuronalen Netzen und wandern durch die geheimnisvollen <b>Verlustlandschaften</b>, die Mathematikerinnen und Mathematiker bis heute erforschen.');
 S('home.start', 'Let’s go →', 'Los geht’s →');
-S('home.slides', '🎞️ Intro slides', '🎞️ Einführungsfolien');
-S('home.guide', '📋 Guide for teachers', '📋 Leitfaden für Lehrkräfte');
+S('home.slides', 'Intro slides', 'Einführungsfolien');
+S('home.guide', 'Guide for teachers', 'Leitfaden für Lehrkräfte');
 S('home.story',
   '<b>The big idea in three sentences:</b> A neural network is a function with many adjustable knobs (<em>parameters</em>). Learning means turning the knobs so that the error (<em>loss</em>) becomes small. The loss forms a landscape over all the knob positions, and training is a hike downhill in the fog.',
   '<b>Die große Idee in drei Sätzen:</b> Ein neuronales Netz ist eine Funktion mit vielen Drehknöpfen (<em>Parametern</em>). Lernen heißt, die Knöpfe so zu drehen, dass der Fehler (<em>Loss</em>) klein wird. Der Fehler bildet eine Landschaft über allen Knopfstellungen, und Training ist eine Wanderung bergab im Nebel.');
@@ -52,7 +52,7 @@ S('home.footer', 'Runs entirely in your browser: no data is sent anywhere.', 'L�
 
 // ---------- guide ----------
 S('guide.body', `
-<h1>📋 Guide for teachers & presenters</h1>
+<h1>Guide for teachers & presenters</h1>
 <p>Format: 60 minutes, students in pairs on laptops or tablets. The presenter uses the same app on the projector (<b>A⁺</b> button = larger text).</p>
 <h2>Schedule</h2>
 <table>
@@ -83,7 +83,7 @@ S('guide.body', `
 </ol>
 <p class="muted">Tip: mission progress is stored per browser tab. Opening a new tab resets it for the next group.</p>`,
 `
-<h1>📋 Leitfaden für Lehrkräfte & Vortragende</h1>
+<h1>Leitfaden für Lehrkräfte & Vortragende</h1>
 <p>Format: 60 Minuten, Schülerinnen und Schüler zu zweit an Laptops oder Tablets. Die vortragende Person nutzt dieselbe App am Beamer (Knopf <b>A⁺</b> = größere Schrift).</p>
 <h2>Ablauf</h2>
 <table>
@@ -122,8 +122,8 @@ S('neuron.classB', 'Class B', 'Klasse B');
 S('neuron.activation', 'Activation function', 'Aktivierungsfunktion');
 S('neuron.act.step', 'Step (0 or 1)', 'Stufe (0 oder 1)');
 S('neuron.ds.separable', 'Two groups', 'Zwei Gruppen');
-S('neuron.random', '🎲 Random weights', '🎲 Zufällige Gewichte');
-S('neuron.learn', '🤖 Let the computer learn', '🤖 Computer lernen lassen');
+S('neuron.random', '↻ Random weights', '↻ Zufällige Gewichte');
+S('neuron.learn', '▶ Let the computer learn', '▶ Computer lernen lassen');
 S('neuron.weights', 'Weights & bias', 'Gewichte & Bias');
 S('neuron.m1', 'Get <b>100 %</b> on “Two groups” by hand.', 'Erreiche <b>100 %</b> bei „Zwei Gruppen“ von Hand.');
 S('neuron.m2', 'Switch to <b>XOR</b> and reach 75 %. Can you get more?', 'Wechsle zu <b>XOR</b> und erreiche 75 %. Schaffst du mehr?');
@@ -149,9 +149,9 @@ S('loss.best', 'best possible', 'bestmöglich');
 S('loss.showSquares', 'Show error squares', 'Fehlerquadrate zeigen');
 S('loss.showGrad', 'Show gradient & next step', 'Gradient & nächsten Schritt zeigen');
 S('loss.model', 'Model ŷ = w·x + b', 'Modell ŷ = w·x + b');
-S('loss.step', '👣 Take one step', '👣 Einen Schritt machen');
+S('loss.step', '→ Take one step', '→ Einen Schritt machen');
 S('loss.resetStart', '↺ Start', '↺ Start');
-S('loss.optimizer', '🧭 You are the optimizer', '🧭 Du bist der Optimierer');
+S('loss.optimizer', 'You are the optimizer', 'Du bist der Optimierer');
 S('loss.stepInfo', 'Gradient steps so far: <b>{n}</b>', 'Bisherige Gradientenschritte: <b>{n}</b>');
 S('loss.exploded', 'Exploded!', 'Explodiert!');
 S('loss.explodedHint', 'The steps got bigger and bigger: the learning rate is too large. Lower η and press ↺ Start.', 'Die Schritte wurden immer größer: Die Lernrate ist zu groß. Verkleinere η und drücke ↺ Start.');
@@ -178,18 +178,19 @@ S('loss.explain', `
 // ---------- station 3: descent ----------
 S('descent.title', 'Gradient descent explorer', 'Gradientenabstieg erkunden');
 S('descent.lead', 'Click on a landscape to drop a ball. It always rolls in the direction of steepest descent. Where does it end up?', 'Klicke auf eine Landschaft, um eine Kugel abzusetzen. Sie rollt immer in Richtung des steilsten Abstiegs. Wo landet sie?');
-S('descent.hint', '🖱️ drag = rotate · scroll = zoom · click = drop a ball', '🖱️ ziehen = drehen · scrollen = zoomen · klicken = Kugel absetzen');
+S('descent.hint', 'drag = rotate · scroll = zoom · click = drop a ball', 'ziehen = drehen · scrollen = zoomen · klicken = Kugel absetzen');
+S('descent.hintTouch', 'drag = rotate · pinch = zoom · tap = drop a ball', 'ziehen = drehen · zwei Finger = zoomen · tippen = Kugel absetzen');
 S('descent.landscape', 'Landscape', 'Landschaft');
-S('descent.newMystery', '🎲 New mystery landscape', '🎲 Neue Mystery-Landschaft');
-S('descent.race', '🏁 Race mode: GD vs Momentum vs Adam', '🏁 Rennmodus: GD vs. Momentum vs. Adam');
+S('descent.newMystery', '↻ New mystery landscape', '↻ Neue Mystery-Landschaft');
+S('descent.race', 'Race mode: GD vs Momentum vs Adam', 'Rennmodus: GD vs. Momentum vs. Adam');
 S('descent.beta', 'Momentum β (inertia)', 'Momentum β (Trägheit)');
 S('descent.noise', 'Noise (like mini-batch SGD)', 'Rauschen (wie Mini-Batch-SGD)');
-S('descent.rain', '🌧️ Rain: 80 balls', '🌧️ Regen: 80 Kugeln');
+S('descent.rain', 'Rain: 80 balls', 'Regen: 80 Kugeln');
 S('descent.showGrad', 'Show gradient arrows', 'Gradientenpfeile zeigen');
 S('descent.showField', 'Show vector field (−∇L)', 'Vektorfeld (−∇L) zeigen');
 S('descent.optTitle', 'Optimizer settings', 'Einstellungen des Optimierers');
 S('descent.balls', 'Balls', 'Kugeln');
-S('descent.noBalls', 'Click on the 3D landscape or the map to drop a ball.', 'Klicke auf die 3D-Landschaft oder die Karte, um eine Kugel abzusetzen.');
+S('descent.noBalls', 'Click or tap the 3D landscape or the map to drop a ball.', 'Klicke oder tippe auf die 3D-Landschaft oder die Karte, um eine Kugel abzusetzen.');
 S('descent.m1', 'Make a ball <b>explode</b> 💥 (learning rate too large).', 'Lass eine Kugel <b>explodieren</b> 💥 (Lernrate zu groß).');
 S('descent.m2', 'Get a ball <b>stuck in a local minimum</b>.', 'Lass eine Kugel in einem <b>lokalen Minimum steckenbleiben</b>.');
 S('descent.m3', '<b>Escape</b> a local minimum with Momentum, Adam or noise (try “Two valleys” or “Bumpy”).', '<b>Entkomme</b> einem lokalen Minimum mit Momentum, Adam oder Rauschen (probiere „Zwei Täler“ oder „Hügelig“).');
@@ -214,7 +215,7 @@ S('ls.twovalleys', 'Two valleys', 'Zwei Täler');
 S('ls.bumpy', 'Bumpy (many minima)', 'Hügelig (viele Minima)');
 S('ls.saddle', 'Saddle point', 'Sattelpunkt');
 S('ls.banana', 'Banana valley (Rosenbrock)', 'Bananental (Rosenbrock)');
-S('ls.mystery', '🎲 Mystery landscape', '🎲 Mystery-Landschaft');
+S('ls.mystery', 'Mystery landscape (random)', 'Mystery-Landschaft (zufällig)');
 
 // ---------- station 4: hiker ----------
 S('hiker.title', 'The blindfolded hiker', 'Wandern mit verbundenen Augen');
@@ -222,15 +223,15 @@ S('hiker.lead', 'You are standing on a mountain in thick fog. You only feel the 
 S('hiker.locked', 'The landscape is revealed at the end of the game', 'Die Landschaft wird am Ende des Spiels enthüllt');
 S('hiker.altitude', 'Altitude', 'Höhe');
 S('hiker.difficulty', 'Difficulty', 'Schwierigkeit');
-S('hiker.easy', '🙂 Easy: slope arrow', '🙂 Leicht: Neigungspfeil');
-S('hiker.hard', '🔥 Hard: altitude only', '🔥 Schwer: nur Höhe');
+S('hiker.easy', 'Easy: slope arrow', 'Leicht: Neigungspfeil');
+S('hiker.hard', 'Hard: altitude only', 'Schwer: nur Höhe');
 S('hiker.team', 'Team name', 'Teamname');
-S('hiker.newGame', '🎲 New game', '🎲 Neues Spiel');
-S('hiker.done', '🏁 I’m done', '🏁 Fertig');
-S('hiker.gd', '🤖 Let gradient descent try', '🤖 Gradientenverfahren probieren lassen');
+S('hiker.newGame', '↻ New game', '↻ Neues Spiel');
+S('hiker.done', '■ I’m done', '■ Fertig');
+S('hiker.gd', '▶ Let gradient descent try', '▶ Gradientenverfahren probieren lassen');
 S('hiker.rulesTitle', 'Rules', 'Regeln');
-S('hiker.rules', 'Click inside the dashed circle to take a step. The orange arrow shows the direction of steepest descent. You can only see where you have been. Your score depends on how low you end up.', 'Klicke in den gestrichelten Kreis, um einen Schritt zu machen. Der orange Pfeil zeigt die Richtung des steilsten Abstiegs. Du siehst nur, wo du schon warst. Deine Punktzahl hängt davon ab, wie tief du am Ende stehst.');
-S('hiker.highscores', '🏆 High scores (this device)', '🏆 Bestenliste (dieses Gerät)');
+S('hiker.rules', 'Click or tap inside the dashed circle to take a step. The orange arrow shows the direction of steepest descent. You can only see where you have been. Your score depends on how low you end up.', 'Klicke oder tippe in den gestrichelten Kreis, um einen Schritt zu machen. Der orange Pfeil zeigt die Richtung des steilsten Abstiegs. Du siehst nur, wo du schon warst. Deine Punktzahl hängt davon ab, wie tief du am Ende stehst.');
+S('hiker.highscores', 'High scores (this device)', 'Bestenliste (dieses Gerät)');
 S('hiker.clearScores', 'Clear list', 'Liste leeren');
 S('hiker.clearConfirm', 'Click again to confirm', 'Zum Bestätigen erneut klicken');
 S('hiker.noScores', 'No scores yet. Be the first!', 'Noch keine Einträge. Sei die oder der Erste!');
@@ -263,7 +264,7 @@ S('hiker.explain', `
 S('network.title', 'Neural network', 'Neuronales Netz');
 S('network.lead', 'Several neurons in layers can draw curved borders. Build a network and watch it learn!', 'Mehrere Neuronen in Schichten können gekrümmte Grenzen zeichnen. Baue ein Netz und sieh ihm beim Lernen zu!');
 S('network.noise', 'Noise', 'Rauschen');
-S('network.clearData', '🧽 Empty', '🧽 Leeren');
+S('network.clearData', '✕ Empty', '✕ Leeren');
 S('network.clickAdds', 'Click on the map adds:', 'Klick auf die Karte fügt hinzu:');
 S('network.data', 'Data', 'Daten');
 S('network.layers', 'Hidden layers', 'Versteckte Schichten');
@@ -279,7 +280,7 @@ S('network.output', 'Output', 'Ausgabe');
 S('network.hidden', 'Hidden layers', 'Versteckte Schichten');
 S('network.paramCount', '<b>{n}</b> parameters', '<b>{n}</b> Parameter');
 S('network.dims', 'The loss landscape of this network lives in <b>{n} dimensions</b>!', 'Die Verlustlandschaft dieses Netzes lebt in <b>{n} Dimensionen</b>!');
-S('network.toResearch', '🔬 Look at this network’s landscape →', '🔬 Landschaft dieses Netzes ansehen →');
+S('network.toResearch', 'Look at this network’s landscape →', 'Landschaft dieses Netzes ansehen →');
 S('network.m1', 'Solve the <b>circle</b> (≥ 97 %) with only <b>one</b> hidden layer.', 'Löse den <b>Kreis</b> (≥ 97 %) mit nur <b>einer</b> versteckten Schicht.');
 S('network.m2', 'Solve <b>XOR</b> (≥ 97 %). What is the smallest network that works?', 'Löse <b>XOR</b> (≥ 97 %). Was ist das kleinste Netz, das funktioniert?');
 S('network.m3', 'Tame the <b>spiral</b> (≥ 95 %).', 'Bezwinge die <b>Spirale</b> (≥ 95 %).');
@@ -308,7 +309,7 @@ S('research.lead', 'Your network from Station 5 has dozens of parameters. How ca
 S('research.untrained', 'The network from Station 5 has not been trained yet.', 'Das Netz aus Station 5 ist noch nicht trainiert.');
 S('research.untrainedHint', 'Train it there first, or let the computer do it quickly.', 'Trainiere es zuerst dort, oder lass den Computer das schnell erledigen.');
 S('research.goTrain', '← Go to Station 5', '← Zu Station 5');
-S('research.quickTrain', '⚡ Quick-train now', '⚡ Jetzt schnell trainieren');
+S('research.quickTrain', '▶ Quick-train now', '▶ Jetzt schnell trainieren');
 S('research.tab.slice', 'Random slice', 'Zufälliger Schnitt');
 S('research.tab.traj', 'Training path', 'Trainingspfad');
 S('research.tab.interp', 'Between solutions', 'Zwischen Lösungen');
@@ -317,15 +318,15 @@ S('research.range', 'Range (distance from ★)', 'Bereich (Abstand vom ★)');
 S('research.resolution', 'Resolution', 'Auflösung');
 S('research.filterNorm', 'Filter normalization (Li et al. 2018)', 'Filter-Normalisierung (Li et al. 2018)');
 S('research.log', 'Logarithmic height', 'Logarithmische Höhe');
-S('research.compute', '⚙️ Compute', '⚙️ Berechnen');
-S('research.newDirs', '🎲 New random directions', '🎲 Neue Zufallsrichtungen');
+S('research.compute', '▶ Compute', '▶ Berechnen');
+S('research.newDirs', '↻ New random directions', '↻ Neue Zufallsrichtungen');
 S('research.sliceSettings', 'Slice settings', 'Einstellungen des Schnitts');
 S('research.interpMode', 'Which straight line?', 'Welche Gerade?');
 S('research.mode.twoRuns', 'A → B: two separate trainings', 'A → B: zwei getrennte Trainings');
 S('research.mode.init', 'Start → trained network', 'Start → trainiertes Netz');
 S('research.mode.perm', 'A → A with shuffled neurons', 'A → A mit vertauschten Neuronen');
 S('research.interpSettings', 'Interpolation θ(t) = (1−t)·θ₀ + t·θ₁', 'Interpolation θ(t) = (1−t)·θ₀ + t·θ₁');
-S('research.notesTitle', '🎓 Research notes', '🎓 Forschungsnotizen');
+S('research.notesTitle', 'Research notes', 'Forschungsnotizen');
 S('research.training', 'Training…', 'Training…');
 S('research.trainingB', 'Training a second network B from a different random start…', 'Trainiere ein zweites Netz B mit anderem zufälligem Start…');
 S('research.computing', 'Computing the loss for every grid point…', 'Berechne den Loss für jeden Gitterpunkt…');

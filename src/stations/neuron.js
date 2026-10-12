@@ -42,19 +42,19 @@ export function create() {
     <div class="side">
       <div class="card diagram-card">
         <svg viewBox="0 0 380 210" class="neuron-svg">
-          <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa4c7"/></marker></defs>
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6F908D"/></marker></defs>
           <line class="e1" x1="58" y1="50" x2="172" y2="100"/>
           <line class="e2" x1="58" y1="160" x2="172" y2="100"/>
-          <line x1="190" y1="182" x2="190" y2="122" stroke="#9aa4c7" stroke-width="2" marker-end="url(#arr)"/>
-          <line x1="212" y1="100" x2="248" y2="100" stroke="#9aa4c7" stroke-width="2" marker-end="url(#arr)"/>
-          <line x1="312" y1="100" x2="330" y2="100" stroke="#9aa4c7" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="190" y1="182" x2="190" y2="122" stroke="#6F908D" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="212" y1="100" x2="248" y2="100" stroke="#6F908D" stroke-width="2" marker-end="url(#arr)"/>
+          <line x1="312" y1="100" x2="330" y2="100" stroke="#6F908D" stroke-width="2" marker-end="url(#arr)"/>
           <circle cx="40" cy="50" r="22" class="node"/><text x="40" y="46" class="nl">x₁</text><text x="40" y="62" class="nv v-x1"></text>
           <circle cx="40" cy="160" r="22" class="node"/><text x="40" y="156" class="nl">x₂</text><text x="40" y="172" class="nv v-x2"></text>
           <text x="110" y="62" class="wl l-w1"></text>
           <text x="110" y="150" class="wl l-w2"></text>
           <text x="190" y="200" class="wl l-b"></text>
           <circle cx="190" cy="100" r="22" class="node sum"/><text x="190" y="96" class="nl">Σ</text><text x="190" y="112" class="nv v-z"></text>
-          <rect x="250" y="76" width="60" height="48" rx="10" class="node"/><path class="act-icon" fill="none" stroke="#e6e9f5" stroke-width="2"/>
+          <rect x="250" y="76" width="60" height="48" rx="10" class="node"/><path class="act-icon" fill="none" stroke="#E9D8A6" stroke-width="2"/>
           <circle cx="352" cy="100" r="22" class="node out"/><text x="352" y="96" class="nl">ŷ</text><text x="352" y="112" class="nv v-y"></text>
         </svg>
         <div class="calc"></div>
@@ -144,7 +144,7 @@ export function create() {
     // decision line w1 x + w2 y + b = 0
     const [x0, x1, y0, y1] = p.domain;
     ctx.save();
-    ctx.strokeStyle = '#fff';
+    ctx.strokeStyle = '#E9D8A6';
     ctx.lineWidth = 2.5;
     ctx.setLineDash([8, 6]);
     ctx.beginPath();
@@ -165,16 +165,16 @@ export function create() {
       ctx.fillStyle = d.c ? ORANGE : BLUE;
       ctx.fill();
       ctx.lineWidth = pred === d.c ? 2 : 3;
-      ctx.strokeStyle = pred === d.c ? '#fff' : '#ff2d55';
+      ctx.strokeStyle = pred === d.c ? '#E9D8A6' : '#001219';
       ctx.stroke();
       if (pred !== d.c) {
-        ctx.strokeStyle = '#ff2d55';
+        ctx.strokeStyle = '#001219';
         ctx.beginPath(); ctx.moveTo(px - 4, py - 4); ctx.lineTo(px + 4, py + 4); ctx.moveTo(px + 4, py - 4); ctx.lineTo(px - 4, py + 4); ctx.stroke();
       }
     }
     const pr = probe();
     const [qx, qy] = p.toPx(pr.x, pr.y);
-    ctx.strokeStyle = '#facc15';
+    ctx.strokeStyle = '#E9D8A6';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(qx, qy, 12, 0, 7); ctx.stroke();
   };
@@ -238,9 +238,9 @@ export function create() {
     const X = (zz) => ((zz + 5) / 10) * w;
     const lo = S.act === 'tanh' ? -1.2 : -0.2, hi = S.act === 'relu' ? 3 : 1.2;
     const Y = (v) => hh - 16 - ((v - lo) / (hi - lo)) * (hh - 26);
-    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.strokeStyle = 'rgba(233,216,166,0.2)';
     ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(w, Y(0)); ctx.moveTo(X(0), 0); ctx.lineTo(X(0), hh); ctx.stroke();
-    ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#94D2BD'; ctx.lineWidth = 2.5;
     ctx.beginPath();
     for (let k = 0; k <= 200; k++) {
       const zz = -5 + k / 20;
@@ -249,10 +249,10 @@ export function create() {
     }
     ctx.stroke();
     const zc = clamp(z, -5, 5);
-    ctx.fillStyle = '#facc15';
+    ctx.fillStyle = '#E9D8A6';
     ctx.beginPath(); ctx.arc(X(zc), Y(ACT[S.act](zc)), 6, 0, 7); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.font = '12px system-ui';
+    ctx.fillStyle = 'rgba(233,216,166,0.7)';
+    ctx.font = '12px "Spline Sans Mono Variable", monospace';
     ctx.fillText(`${ACT_SYMBOL[S.act]}(z)`, 8, 14);
     ctx.fillText('z', w - 12, Y(0) - 6);
   }

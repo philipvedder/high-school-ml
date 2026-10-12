@@ -1,4 +1,7 @@
-import '@fontsource-variable/inter';
+import '@fontsource-variable/newsreader/wght.css';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '@fontsource-variable/figtree';
+import '@fontsource-variable/spline-sans-mono';
 import 'reveal.js/reset.css';
 import 'reveal.js/reveal.css';
 import 'katex/dist/katex.min.css';

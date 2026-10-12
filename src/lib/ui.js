@@ -110,7 +110,7 @@ export function missions(keys, stationId) {
       refresh();
       items[k].classList.add('pop');
       confetti(items[k]);
-      toast('🎉 ' + t('common.missionDone') + ' ' + stripHtml(t(k)));
+      toast(t('common.missionDone') + ' ' + stripHtml(t(k)));
     },
     isDone: (k) => done.has(k),
   };
@@ -130,11 +130,10 @@ export function stationShell(num, id) {
   const root = h(`
     <section class="station" id="st-${id}">
       <header class="station-head">
-        <div class="badge">${num}</div>
-        <div>
-          <h1 data-i18n="${id}.title"></h1>
-          <p class="lead" data-i18n="${id}.lead"></p>
-        </div>
+        <div class="badge">${String(num).padStart(2, '0')}</div>
+        <div class="kicker">station_${String(num).padStart(2, '0')} · ${id}</div>
+        <h1 data-i18n="${id}.title"></h1>
+        <p class="lead" data-i18n="${id}.lead"></p>
       </header>
       <div class="station-body">
         <div class="viz"></div>
@@ -162,7 +161,7 @@ export function confetti(fromEl) {
   const ctx = c.getContext('2d');
   let ox = W / 2, oy = H / 2;
   if (fromEl) { const r = fromEl.getBoundingClientRect(); ox = r.left + r.width / 2; oy = r.top + r.height / 2; }
-  const cols = ['#f97316', '#3b82f6', '#22d3ee', '#a78bfa', '#facc15', '#4ade80', '#f43f5e'];
+  const cols = ['#EE9B00', '#0A9396', '#94D2BD', '#CA6702', '#E9D8A6', '#BB3E03', '#AE2012'];
   const P = Array.from({ length: 90 }, () => {
     const a = Math.random() * Math.PI * 2, s = 3 + Math.random() * 7;
     return { x: ox, y: oy, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 4, r: 3 + Math.random() * 4, c: cols[(Math.random() * cols.length) | 0], rot: Math.random() * 6 };

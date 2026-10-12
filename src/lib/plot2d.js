@@ -58,7 +58,7 @@ export class Plot2D {
     this.bg = null;
     this.segs = null;
     this.onDraw = null;
-    this.contourStyle = 'rgba(255,255,255,0.28)';
+    this.contourStyle = 'rgba(0,18,25,0.38)';
     this.ro = new ResizeObserver(() => this.draw());
     this.ro.observe(canvas);
   }
@@ -138,12 +138,12 @@ export class Plot2D {
     this.onDraw?.(ctx, this);
   }
   /** Light axes with tick labels. */
-  drawAxes(ctx, { xLabel = '', yLabel = '', ticks = 5, color = 'rgba(255,255,255,0.55)' } = {}) {
+  drawAxes(ctx, { xLabel = '', yLabel = '', ticks = 5, color = 'rgba(233,216,166,0.55)' } = {}) {
     const [x0, x1, y0, y1] = this.domain;
     ctx.save();
     ctx.fillStyle = color;
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-    ctx.font = '11px system-ui, sans-serif';
+    ctx.strokeStyle = 'rgba(233,216,166,0.12)';
+    ctx.font = '11px "Spline Sans Mono Variable", monospace';
     ctx.lineWidth = 1;
     const nice = (a, b) => {
       const raw = (b - a) / ticks;
@@ -164,7 +164,7 @@ export class Plot2D {
       ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(5, py); ctx.stroke();
       ctx.fillText(+y.toFixed(6) + '', 8, py + 4);
     }
-    ctx.font = 'bold 13px system-ui, sans-serif';
+    ctx.font = 'bold 13px "Spline Sans Mono Variable", monospace';
     ctx.textAlign = 'right';
     if (xLabel) ctx.fillText(xLabel, this.w - 8, this.h - 22);
     ctx.textAlign = 'left';

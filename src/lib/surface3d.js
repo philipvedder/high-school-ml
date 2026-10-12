@@ -26,11 +26,11 @@ export class Surface3D {
     this.controls.minDistance = 5;
     this.controls.maxDistance = 40;
 
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.75));
-    const dl = new THREE.DirectionalLight(0xffffff, 1.6);
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+    const dl = new THREE.DirectionalLight(0xffffff, 1.4);
     dl.position.set(6, 12, 8);
     this.scene.add(dl);
-    const dl2 = new THREE.DirectionalLight(0x99bbff, 0.5);
+    const dl2 = new THREE.DirectionalLight(0x94d2bd, 0.4);
     dl2.position.set(-8, 5, -6);
     this.scene.add(dl2);
 
@@ -46,7 +46,7 @@ export class Surface3D {
     this.ballGeo = new THREE.SphereGeometry(1, 24, 16);
 
     // floor grid for orientation
-    const grid = new THREE.GridHelper(SIZE * 1.2, 12, 0x334166, 0x1f2847);
+    const grid = new THREE.GridHelper(SIZE * 1.2, 12, 0x16404b, 0x0a2c37);
     grid.position.y = -0.02;
     this.scene.add(grid);
 
@@ -181,7 +181,7 @@ export class Surface3D {
         }
       const lg = new THREE.BufferGeometry();
       lg.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
-      this.surfaceGroup.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08 })));
+      this.surfaceGroup.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: 0xe9d8a6, transparent: true, opacity: 0.08 })));
     }
 
     if (contours) {
@@ -200,7 +200,7 @@ export class Surface3D {
       }
       const cg = new THREE.BufferGeometry();
       cg.setAttribute('position', new THREE.Float32BufferAttribute(cp, 3));
-      this.surfaceGroup.add(new THREE.LineSegments(cg, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 })));
+      this.surfaceGroup.add(new THREE.LineSegments(cg, new THREE.LineBasicMaterial({ color: 0x001219, transparent: true, opacity: 0.4 })));
     }
   }
 
@@ -287,7 +287,7 @@ export class Surface3D {
   }
 
   /** A vertical flag/pin marker. */
-  addMarker(x, y, v, color = 0xffffff, label = null) {
+  addMarker(x, y, v, color = 0xe9d8a6, label = null) {
     const p = this.toWorld(x, y, v);
     const g = new THREE.Group();
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 1.1, 8), new THREE.MeshBasicMaterial({ color }));
@@ -312,13 +312,13 @@ function makeTextSprite(text) {
   const c = document.createElement('canvas');
   c.width = 256; c.height = 64;
   const ctx = c.getContext('2d');
-  ctx.font = 'bold 34px system-ui, sans-serif';
+  ctx.font = 'bold 34px "Spline Sans Mono Variable", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = 'rgba(10,14,30,0.75)';
+  ctx.fillStyle = 'rgba(0,18,25,0.75)';
   const w = ctx.measureText(text).width + 24;
   ctx.fillRect(128 - w / 2, 8, w, 48);
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = '#E9D8A6';
   ctx.fillText(text, 128, 33);
   const tex = new THREE.CanvasTexture(c);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false }));

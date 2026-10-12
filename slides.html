@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="lang-toggle"><button data-lang="de">DE</button><button data-lang="en">EN</button><a href="./index.html">Lab →</a></div>
-<div class="brandmark">Loss Landscape Lab</div>
+<div class="brandmark">loss-landscape-lab</div>
 
 <div class="reveal">
 <div class="slides">
@@ -31,14 +31,14 @@
   <div class="cols wide-left">
     <div>
       <div class="box">
-        <p>🖼️ <span class="en">image</span><span class="de">Bild</span> $\;\longmapsto\;$ <span class="en">“cat”</span><span class="de">„Katze“</span></p>
-        <p>🗣️ <span class="en">audio</span><span class="de">Audio</span> $\;\longmapsto\;$ <span class="en">text</span><span class="de">Text</span></p>
-        <p>♟️ <span class="en">board position</span><span class="de">Spielstellung</span> $\;\longmapsto\;$ <span class="en">best move</span><span class="de">bester Zug</span></p>
-        <p style="margin:0">💬 <span class="en">sentence</span><span class="de">Satz</span> $\;\longmapsto\;$ <span class="en">next word</span><span class="de">nächstes Wort</span></p>
+        <p><span class="mono muted">[img]</span> <span class="en">image</span><span class="de">Bild</span> $\;\longmapsto\;$ <span class="en">“cat”</span><span class="de">„Katze“</span></p>
+        <p><span class="mono muted">[wav]</span> <span class="en">audio</span><span class="de">Audio</span> $\;\longmapsto\;$ <span class="en">text</span><span class="de">Text</span></p>
+        <p><span class="mono muted">[pos]</span> <span class="en">board position</span><span class="de">Spielstellung</span> $\;\longmapsto\;$ <span class="en">best move</span><span class="de">bester Zug</span></p>
+        <p style="margin:0"><span class="mono muted">[txt]</span> <span class="en">sentence</span><span class="de">Satz</span> $\;\longmapsto\;$ <span class="en">next word</span><span class="de">nächstes Wort</span></p>
       </div>
     </div>
     <div>
-      <div class="formula-big">$$\hat y = f_{\color{#a78bfa}\theta}(x)$$</div>
+      <div class="formula-big">$$\hat y = f_{\color{#EE9B00}\theta}(x)$$</div>
       <p class="small"><b>$x$</b> <span class="en">input</span><span class="de">Eingabe</span><br>
         <b>$\hat y$</b> <span class="en">prediction</span><span class="de">Vorhersage</span><br>
         <b class="violet">$\theta$</b> <span class="en">parameters: the “knobs”</span><span class="de">Parameter: die „Drehknöpfe“</span></p>
@@ -82,7 +82,7 @@
       <circle cx="300" cy="150" r="38" class="nd sum"/><text x="300" y="160">Σ</text>
       <text x="300" y="290" class="lbl">+ b</text>
       <rect x="402" y="110" width="96" height="80" rx="16" class="nd act"/>
-      <path d="M414 172 C440 172 445 128 486 128" stroke="#facc15" stroke-width="3" fill="none"/>
+      <path d="M414 172 C440 172 445 128 486 128" stroke="#E9D8A6" stroke-width="3" fill="none"/>
       <circle cx="590" cy="150" r="32" class="nd"/><text x="590" y="159">ŷ</text>
       <text x="300" y="98" class="lbl">z</text><text x="450" y="94" class="lbl">φ</text>
     </svg>
@@ -100,9 +100,9 @@
 <section>
   <section>
     <div class="kicker"><span class="dot"></span>I · <span class="en">The neuron</span><span class="de">Das Neuron</span></div>
-    <h2><span class="en">Task: separate orange from blue</span><span class="de">Aufgabe: Trenne Orange von Blau</span></h2>
+    <h2><span class="en">Task: separate orange from teal</span><span class="de">Aufgabe: Trenne Orange von Türkis</span></h2>
     <div class="widget neuron" data-widget="neuron" data-opts='{"data":"fruit","act":"step","vector":true,"w":[1.5,-0.4,0.3]}'></div>
-    <p class="small muted mt"><span class="en">Rule: $z &gt; 0 \Rightarrow$ orange, otherwise blue. The border $z = 0$ is a <b>straight line</b>. Who finds weights for 100 %?</span><span class="de">Regel: $z &gt; 0 \Rightarrow$ orange, sonst blau. Die Grenze $z = 0$ ist eine <b>Gerade</b>. Wer findet Gewichte für 100 %?</span></p>
+    <p class="small muted mt"><span class="en">Rule: $z &gt; 0 \Rightarrow$ orange, otherwise teal. The border $z = 0$ is a <b>straight line</b>. Who finds weights for 100 %?</span><span class="de">Regel: $z &gt; 0 \Rightarrow$ orange, sonst türkis. Die Grenze $z = 0$ ist eine <b>Gerade</b>. Wer findet Gewichte für 100 %?</span></p>
     <div class="deep">⬇ deep dive</div>
     <aside class="notes">Live demo: move w1, w2, b. Let students shout instructions. Observe: w turns the line (yellow arrow = normal vector), b shifts it. With the step activation the neuron is a "perceptron" (Rosenblatt 1958).</aside>
   </section>
@@ -266,13 +266,13 @@
       </ul>
     </div>
     <svg viewBox="0 0 420 300" style="width:100%">
-      <line x1="20" y1="230" x2="400" y2="230" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-      <line x1="210" y1="20" x2="210" y2="290" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-      <path d="M30 230 L210 230 L380 60" stroke="#facc15" stroke-width="7" fill="none" stroke-linejoin="round"/>
-      <circle cx="210" cy="230" r="9" fill="#f97316"/>
-      <text x="390" y="255" fill="#9aa4c7" font-size="22" font-family="Inter Variable">z</text>
-      <text x="225" y="42" fill="#facc15" font-size="22" font-family="Inter Variable">ReLU(z)</text>
-      <text x="150" y="268" fill="#f97316" font-size="18" font-family="Inter Variable">kink</text>
+      <line x1="20" y1="230" x2="400" y2="230" stroke="rgba(233,216,166,.3)" stroke-width="2"/>
+      <line x1="210" y1="20" x2="210" y2="290" stroke="rgba(233,216,166,.3)" stroke-width="2"/>
+      <path d="M30 230 L210 230 L380 60" stroke="#E9D8A6" stroke-width="7" fill="none" stroke-linejoin="round"/>
+      <circle cx="210" cy="230" r="9" fill="#EE9B00"/>
+      <text x="390" y="255" fill="#6F908D" font-size="22" font-family="Spline Sans Mono Variable, monospace">z</text>
+      <text x="225" y="42" fill="#E9D8A6" font-size="22" font-family="Spline Sans Mono Variable, monospace">ReLU(z)</text>
+      <text x="150" y="268" fill="#EE9B00" font-size="18" font-family="Spline Sans Mono Variable, monospace">kink</text>
     </svg>
   </div>
   <aside class="notes">ReLU is the activation used in most modern networks. Its derivative is 0 for z&lt;0 and 1 for z&gt;0, which will be easy for backpropagation later.</aside>
@@ -310,7 +310,7 @@
   <h2><span class="en">Neural networks in general</span><span class="de">Neuronale Netze allgemein</span></h2>
   <div class="cols">
     <svg viewBox="0 0 460 300" style="width:100%">
-      <g stroke="rgba(154,164,199,.45)" stroke-width="2">
+      <g stroke="rgba(127,160,156,.45)" stroke-width="2">
         <line x1="50" y1="110" x2="180" y2="60"/><line x1="50" y1="110" x2="180" y2="130"/><line x1="50" y1="110" x2="180" y2="200"/><line x1="50" y1="110" x2="180" y2="270"/>
         <line x1="50" y1="200" x2="180" y2="60"/><line x1="50" y1="200" x2="180" y2="130"/><line x1="50" y1="200" x2="180" y2="200"/><line x1="50" y1="200" x2="180" y2="270"/>
         <line x1="180" y1="60" x2="310" y2="95"/><line x1="180" y1="60" x2="310" y2="165"/><line x1="180" y1="60" x2="310" y2="235"/>
@@ -319,13 +319,13 @@
         <line x1="180" y1="270" x2="310" y2="95"/><line x1="180" y1="270" x2="310" y2="165"/><line x1="180" y1="270" x2="310" y2="235"/>
         <line x1="310" y1="95" x2="420" y2="165"/><line x1="310" y1="165" x2="420" y2="165"/><line x1="310" y1="235" x2="420" y2="165"/>
       </g>
-      <g fill="#0d1330" stroke-width="3">
-        <circle cx="50" cy="110" r="18" stroke="#9aa4c7"/><circle cx="50" cy="200" r="18" stroke="#9aa4c7"/>
-        <circle cx="180" cy="60" r="18" stroke="#22d3ee"/><circle cx="180" cy="130" r="18" stroke="#22d3ee"/><circle cx="180" cy="200" r="18" stroke="#22d3ee"/><circle cx="180" cy="270" r="18" stroke="#22d3ee"/>
-        <circle cx="310" cy="95" r="18" stroke="#22d3ee"/><circle cx="310" cy="165" r="18" stroke="#22d3ee"/><circle cx="310" cy="235" r="18" stroke="#22d3ee"/>
-        <circle cx="420" cy="165" r="18" stroke="#facc15"/>
+      <g fill="#001219" stroke-width="3">
+        <circle cx="50" cy="110" r="18" stroke="#6F908D"/><circle cx="50" cy="200" r="18" stroke="#6F908D"/>
+        <circle cx="180" cy="60" r="18" stroke="#94D2BD"/><circle cx="180" cy="130" r="18" stroke="#94D2BD"/><circle cx="180" cy="200" r="18" stroke="#94D2BD"/><circle cx="180" cy="270" r="18" stroke="#94D2BD"/>
+        <circle cx="310" cy="95" r="18" stroke="#94D2BD"/><circle cx="310" cy="165" r="18" stroke="#94D2BD"/><circle cx="310" cy="235" r="18" stroke="#94D2BD"/>
+        <circle cx="420" cy="165" r="18" stroke="#E9D8A6"/>
       </g>
-      <g fill="#9aa4c7" font-size="16" font-family="Inter Variable" text-anchor="middle">
+      <g fill="#6F908D" font-size="16" font-family="Spline Sans Mono Variable, monospace" text-anchor="middle">
         <text x="50" y="40" class="en">input</text><text x="50" y="40" class="de">Eingabe</text>
         <text x="245" y="25" class="en">hidden layers</text><text x="245" y="25" class="de">versteckte Schichten</text>
         <text x="420" y="130" class="en">output</text><text x="420" y="130" class="de">Ausgabe</text>
@@ -366,7 +366,7 @@
   <h2><span class="en">The loss function</span><span class="de">Die Verlustfunktion (Loss)</span></h2>
   <div class="cols wide-left">
     <div>
-      <p class="small"><span class="en">Training data: pairs $(x_i, y_i)$, $i=1,\dots,n$, e.g. point and correct colour (1 = orange, 0 = blue).</span><span class="de">Trainingsdaten: Paare $(x_i, y_i)$, $i=1,\dots,n$, z. B. Punkt und richtige Farbe (1 = orange, 0 = blau).</span></p>
+      <p class="small"><span class="en">Training data: pairs $(x_i, y_i)$, $i=1,\dots,n$, e.g. point and correct colour (1 = orange, 0 = teal).</span><span class="de">Trainingsdaten: Paare $(x_i, y_i)$, $i=1,\dots,n$, z. B. Punkt und richtige Farbe (1 = orange, 0 = türkis).</span></p>
       <p class="small"><span class="en">Mean squared error:</span><span class="de">Mittlerer quadratischer Fehler:</span></p>
       $$L(\theta) = \frac1n\sum_{i=1}^{n}\big(\underbrace{f_\theta(x_i)}_{\text{prediction}} - \underbrace{y_i}_{\text{truth}}\big)^2$$
       <ul class="small">
@@ -408,7 +408,7 @@
       <p class="small fragment"><span class="en">For comparison: the universe has about $10^{80}$ atoms.</span><span class="de">Zum Vergleich: Das Universum hat etwa $10^{80}$ Atome.</span></p>
     </div>
     <div class="box warn fragment">
-      <h3>🌫️ <span class="en">Hiking in the fog</span><span class="de">Wandern im Nebel</span></h3>
+      <h3><span class="en">Hiking in the fog</span><span class="de">Wandern im Nebel</span></h3>
       <p class="small"><span class="en">We can never see the whole landscape. We only feel the <b>slope under our feet</b>, at the current point.</span><span class="de">Wir sehen nie die ganze Landschaft. Wir spüren nur die <b>Neigung unter unseren Füßen</b>, am aktuellen Punkt.</span></p>
       <p class="small"><b><span class="en">Strategy: always walk downhill.</span><span class="de">Strategie: immer bergab gehen.</span></b></p>
     </div>
@@ -426,7 +426,7 @@
 <section>
   <div class="kicker"><span class="dot"></span>IV · <span class="en">Gradient descent</span><span class="de">Gradientenabstieg</span></div>
   <h2><span class="en">Downhill in 1D: the derivative shows the way</span><span class="de">Bergab in 1D: Die Ableitung zeigt den Weg</span></h2>
-  <div class="formula-big" style="font-size:1.6em">$w_{\text{new}} = w_{\text{old}} - {\color{#22d3ee}\eta}\cdot f'(w_{\text{old}})$</div>
+  <div class="formula-big" style="font-size:1.6em">$w_{\text{new}} = w_{\text{old}} - {\color{#94D2BD}\eta}\cdot f'(w_{\text{old}})$</div>
   <div class="cols mt">
     <div>
       <table class="mini" style="font-size:0.8em">
@@ -502,7 +502,7 @@
       <div class="formula-big fragment">$\dfrac{dL}{dw} = \dfrac{dL}{dh}\cdot\dfrac{dh}{dw}$</div>
     </div>
     <div class="box fragment">
-      <h3>⚙️ <span class="en">Gears</span><span class="de">Zahnräder</span></h3>
+      <h3><span class="en">Gears</span><span class="de">Zahnräder</span></h3>
       <p class="small"><span class="en">Gear A turns 3× as fast as B, and B 2× as fast as C.<br>⇒ A turns <b>3 · 2 = 6×</b> as fast as C.</span><span class="de">Rad A dreht 3× so schnell wie B, B 2× so schnell wie C.<br>⇒ A dreht <b>3 · 2 = 6×</b> so schnell wie C.</span></p>
       <p class="small"><span class="en">Along a chain, rates of change <b>multiply</b>.</span><span class="de">Entlang einer Kette <b>multiplizieren</b> sich Änderungsraten.</span></p>
     </div>
@@ -540,13 +540,13 @@
   <h2><span class="en">Check it &amp; take a step</span><span class="de">Nachprüfen &amp; einen Schritt machen</span></h2>
   <div class="cols">
     <div class="box">
-      <h3>🔍 <span class="en">Wiggle test</span><span class="de">Wackeltest</span></h3>
+      <h3><span class="en">Wiggle test</span><span class="de">Wackeltest</span></h3>
       <p class="small"><span class="en">Increase $w_1$ by $0.01$ to $0.51$:</span><span class="de">$w_1$ um $0.01$ auf $0.51$ erhöhen:</span></p>
       <p class="small">$z = 1.02,\ h = 1.02,\ \hat y = 1.53,\ L = 2.1609$</p>
       <p class="fragment">$\dfrac{\Delta L}{\Delta w_1} = \dfrac{2.1609 - 2.25}{0.01} = -8.91 \approx \mathbf{-9}\ \checkmark$</p>
     </div>
     <div class="box good fragment">
-      <h3>👣 <span class="en">One gradient step</span><span class="de">Ein Gradientenschritt</span> ($\eta = 0.05$)</h3>
+      <h3><span class="en">One gradient step</span><span class="de">Ein Gradientenschritt</span> ($\eta = 0.05$)</h3>
       <p class="small">$w_1 \leftarrow 0.5 - 0.05\cdot(-9) = 0.95$<br>$w_2 \leftarrow 1.5 - 0.05\cdot(-3) = 1.65$</p>
       <p class="small fragment"><span class="en">New prediction</span><span class="de">Neue Vorhersage</span>: $\hat y = 1.65\cdot 1.9 = 3.135$</p>
       <p class="fragment">$L:\ 2.25 \;\longrightarrow\; \mathbf{0.018}$ 🎉</p>
@@ -561,11 +561,11 @@
   <div class="cols">
     <svg class="loop-fig" viewBox="0 0 460 400">
       <circle class="ring" cx="230" cy="200" r="140"/>
-      <circle r="9" fill="#facc15"><animateMotion dur="6s" repeatCount="indefinite" path="M230 60 A140 140 0 1 1 229.9 60"/></circle>
-      <g class="st"><rect x="150" y="30" width="160" height="60" stroke="#22d3ee"/><text x="230" y="58" class="en">1 · Forward</text><text x="230" y="58" class="de">1 · Vorwärts</text><text x="230" y="80" class="s">ŷ = f<tspan font-size="11">θ</tspan>(x)</text></g>
-      <g class="st"><rect x="300" y="170" width="150" height="60" stroke="#facc15"/><text x="375" y="198" class="en">2 · Loss</text><text x="375" y="198" class="de">2 · Fehler</text><text x="375" y="220" class="s">L(θ)</text></g>
-      <g class="st"><rect x="150" y="310" width="160" height="60" stroke="#f97316"/><text x="230" y="338" class="en">3 · Backward</text><text x="230" y="338" class="de">3 · Rückwärts</text><text x="230" y="360" class="s">∇L(θ)</text></g>
-      <g class="st"><rect x="10" y="170" width="150" height="60" stroke="#a78bfa"/><text x="85" y="198" class="en">4 · Update</text><text x="85" y="198" class="de">4 · Update</text><text x="85" y="220" class="s">θ ← θ − η∇L</text></g>
+      <circle r="9" fill="#E9D8A6"><animateMotion dur="6s" repeatCount="indefinite" path="M230 60 A140 140 0 1 1 229.9 60"/></circle>
+      <g class="st"><rect x="150" y="30" width="160" height="60" stroke="#94D2BD"/><text x="230" y="58" class="en">1 · Forward</text><text x="230" y="58" class="de">1 · Vorwärts</text><text x="230" y="80" class="s">ŷ = f<tspan font-size="11">θ</tspan>(x)</text></g>
+      <g class="st"><rect x="300" y="170" width="150" height="60" stroke="#E9D8A6"/><text x="375" y="198" class="en">2 · Loss</text><text x="375" y="198" class="de">2 · Fehler</text><text x="375" y="220" class="s">L(θ)</text></g>
+      <g class="st"><rect x="150" y="310" width="160" height="60" stroke="#EE9B00"/><text x="230" y="338" class="en">3 · Backward</text><text x="230" y="338" class="de">3 · Rückwärts</text><text x="230" y="360" class="s">∇L(θ)</text></g>
+      <g class="st"><rect x="10" y="170" width="150" height="60" stroke="#CA6702"/><text x="85" y="198" class="en">4 · Update</text><text x="85" y="198" class="de">4 · Update</text><text x="85" y="220" class="s">θ ← θ − η∇L</text></g>
     </svg>
     <div>
       <p class="small"><span class="en">Repeat thousands to millions of times.</span><span class="de">Tausende bis Millionen Male wiederholen.</span></p>
@@ -596,7 +596,7 @@
       <h3><span class="en">saddle / plateau</span><span class="de">Sattel / Plateau</span></h3><p class="tiny muted"><span class="en">gradient ≈ 0, so progress almost stops</span><span class="de">Gradient ≈ 0, Fortschritt stoppt fast</span></p>
     </div>
     <div class="box">
-      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 15 C60 115 140 115 190 15" opacity=".5"/><path class="curve" d="M10 30 L60 100 L100 70 L140 105 L190 30" stroke="#22d3ee"/></svg>
+      <svg class="sketch" viewBox="0 0 200 120"><path class="curve" d="M10 15 C60 115 140 115 190 15" opacity=".5"/><path class="curve" d="M10 30 L60 100 L100 70 L140 105 L190 30" stroke="#94D2BD"/></svg>
       <h3><span class="en">sharp vs. flat</span><span class="de">spitz vs. flach</span></h3><p class="tiny muted"><span class="en">which minima work well on <em>new</em> data?</span><span class="de">welche Minima funktionieren auf <em>neuen</em> Daten gut?</span></p>
     </div>
   </div>
@@ -610,12 +610,12 @@
   <h2><span class="en">Everything you need for the Lab</span><span class="de">Alles, was ihr fürs Lab braucht</span></h2>
   <div class="cols">
     <div class="box">
-      <p class="small">🧠 <span class="en">Neuron:</span><span class="de">Neuron:</span> $\hat y = \varphi(\vec w\cdot\vec x + b)$, <span class="en">one line</span><span class="de">eine Gerade</span></p>
-      <p class="small">🕸️ <span class="en">Network: layers + <b>non-linear</b> activation (ReLU)</span><span class="de">Netz: Schichten + <b>nichtlineare</b> Aktivierung (ReLU)</span></p>
-      <p class="small">📏 <span class="en">Loss:</span><span class="de">Loss:</span> $L(\theta) = \frac1n\sum (f_\theta(x_i) - y_i)^2$</p>
-      <p class="small">⛰️ <span class="en">Landscape: every point = one parameter setting</span><span class="de">Landschaft: jeder Punkt = eine Parameterwahl</span></p>
-      <p class="small">👣 <span class="en">Training:</span><span class="de">Training:</span> $\theta \leftarrow \theta - \eta\nabla L(\theta)$</p>
-      <p class="small" style="margin:0">🔗 <span class="en">Backprop: chain rule, backwards</span><span class="de">Backprop: Kettenregel, rückwärts</span></p>
+      <p class="small"><span class="mono orange">01</span> <span class="en">Neuron:</span><span class="de">Neuron:</span> $\hat y = \varphi(\vec w\cdot\vec x + b)$, <span class="en">one line</span><span class="de">eine Gerade</span></p>
+      <p class="small"><span class="mono orange">02</span> <span class="en">Network: layers + <b>non-linear</b> activation (ReLU)</span><span class="de">Netz: Schichten + <b>nichtlineare</b> Aktivierung (ReLU)</span></p>
+      <p class="small"><span class="mono orange">03</span> <span class="en">Loss:</span><span class="de">Loss:</span> $L(\theta) = \frac1n\sum (f_\theta(x_i) - y_i)^2$</p>
+      <p class="small"><span class="mono orange">04</span> <span class="en">Landscape: every point = one parameter setting</span><span class="de">Landschaft: jeder Punkt = eine Parameterwahl</span></p>
+      <p class="small"><span class="mono orange">05</span> <span class="en">Training:</span><span class="de">Training:</span> $\theta \leftarrow \theta - \eta\nabla L(\theta)$</p>
+      <p class="small" style="margin:0"><span class="mono orange">06</span> <span class="en">Backprop: chain rule, backwards</span><span class="de">Backprop: Kettenregel, rückwärts</span></p>
     </div>
     <div>
       <h3><span class="en">Questions to explore in the Lab</span><span class="de">Fragen fürs Lab</span></h3>
@@ -635,12 +635,12 @@
   <h1 style="font-size:2.6em"><span class="en">Into the Loss Landscape Lab!</span><span class="de">Auf ins Loss Landscape Lab!</span></h1>
   <a class="big-cta" href="./index.html#neuron"><span class="en">Open the Lab →</span><span class="de">Lab öffnen →</span></a>
   <div class="station-strip">
-    <a href="./index.html#neuron"><span class="n">1</span>🧠<span class="t"><span class="en">Neuron</span><span class="de">Neuron</span></span></a>
-    <a href="./index.html#loss"><span class="n">2</span>📏<span class="t"><span class="en">Loss</span><span class="de">Fehler</span></span></a>
-    <a href="./index.html#descent"><span class="n">3</span>⛰️<span class="t"><span class="en">Descent</span><span class="de">Abstieg</span></span></a>
-    <a href="./index.html#hiker"><span class="n">4</span>🌫️<span class="t"><span class="en">Fog game</span><span class="de">Nebelspiel</span></span></a>
-    <a href="./index.html#network"><span class="n">5</span>🕸️<span class="t"><span class="en">Network</span><span class="de">Netzwerk</span></span></a>
-    <a href="./index.html#research"><span class="n">6</span>🔬<span class="t"><span class="en">Research</span><span class="de">Forschung</span></span></a>
+    <a href="./index.html#neuron"><span class="n">1</span><span class="t"><span class="en">Neuron</span><span class="de">Neuron</span></span></a>
+    <a href="./index.html#loss"><span class="n">2</span><span class="t"><span class="en">Loss</span><span class="de">Fehler</span></span></a>
+    <a href="./index.html#descent"><span class="n">3</span><span class="t"><span class="en">Descent</span><span class="de">Abstieg</span></span></a>
+    <a href="./index.html#hiker"><span class="n">4</span><span class="t"><span class="en">Fog game</span><span class="de">Nebelspiel</span></span></a>
+    <a href="./index.html#network"><span class="n">5</span><span class="t"><span class="en">Network</span><span class="de">Netzwerk</span></span></a>
+    <a href="./index.html#research"><span class="n">6</span><span class="t"><span class="en">Research</span><span class="de">Forschung</span></span></a>
   </div>
   <p class="small muted mt">[URL / QR code]</p>
   <aside class="notes">Put the deployed Netlify URL and a QR code here before the workshop.</aside>

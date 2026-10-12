@@ -73,21 +73,32 @@ export function drawArrow(ctx, x1, y1, x2, y2, color, width = 2.5, head = 9) {
   if (len < 1) return;
   const ux = dx / len, uy = dy / len;
   const hd = Math.min(head, len * 0.6);
+  const shape = () => {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2 - ux * hd * 0.8, y2 - uy * hd * 0.8);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - ux * hd - uy * hd * 0.55, y2 - uy * hd + ux * hd * 0.55);
+    ctx.lineTo(x2 - ux * hd + uy * hd * 0.55, y2 - uy * hd - ux * hd * 0.55);
+    ctx.closePath();
+    ctx.fill();
+  };
   ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  // dark outline first, so the arrow reads on any background
+  ctx.strokeStyle = 'rgba(0,18,25,0.75)';
+  ctx.fillStyle = 'rgba(0,18,25,0.75)';
+  ctx.lineWidth = width + 3;
+  shape();
+  ctx.lineWidth = 3;
+  ctx.stroke();
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
   ctx.lineWidth = width;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2 - ux * hd * 0.8, y2 - uy * hd * 0.8);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - ux * hd - uy * hd * 0.55, y2 - uy * hd + ux * hd * 0.55);
-  ctx.lineTo(x2 - ux * hd + uy * hd * 0.55, y2 - uy * hd - ux * hd * 0.55);
-  ctx.closePath();
-  ctx.fill();
+  shape();
   ctx.restore();
 }
 

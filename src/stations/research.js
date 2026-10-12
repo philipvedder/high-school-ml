@@ -237,25 +237,25 @@ export function create() {
     rmap.setDomain(domain);
     rmap.setField(disp, n, n, (v) => terrain((v - lo) / (hi - lo || 1)));
     rmap.setContours(disp.map((v) => Math.min(v, hi)), n, n, autoLevels(disp.map((v) => Math.min(v, hi)), 16));
-    s3d.addMarker(0, 0, center, 0xfacc15, '★');
+    s3d.addMarker(0, 0, center, 0xe9d8a6, '★');
     if (path) {
       const pts = path.map(([a, b]) => [a, b]);
-      s3d.addPath(pts, 0xffffff);
-      s3d.addMarker(...pts[0], s3d.valueAt(...pts[0]), 0x22d3ee, 'Start');
+      s3d.addPath(pts, 0xe9d8a6);
+      s3d.addMarker(...pts[0], s3d.valueAt(...pts[0]), 0x94d2bd, 'Start');
     }
     rmap.onDraw = (ctx, p) => {
       p.drawAxes(ctx, { xLabel: mode === 'traj' ? 'PC 1' : 'α', yLabel: mode === 'traj' ? 'PC 2' : 'β' });
       if (path) {
-        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 2.5;
         ctx.beginPath();
         path.forEach(([a, b], i) => { const q = p.toPx(a, b); i ? ctx.lineTo(...q) : ctx.moveTo(...q); });
         ctx.stroke();
-        ctx.fillStyle = '#22d3ee';
+        ctx.fillStyle = '#94D2BD';
         const [sx, sy] = p.toPx(...path[0]);
         ctx.beginPath(); ctx.arc(sx, sy, 6, 0, 7); ctx.fill();
       }
       const [cx, cy] = p.toPx(0, 0);
-      ctx.fillStyle = '#facc15'; ctx.font = '22px system-ui'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#E9D8A6'; ctx.font = '22px "Spline Sans Mono Variable", monospace'; ctx.textAlign = 'center';
       ctx.fillText('★', cx, cy + 8);
       ctx.textAlign = 'left';
     };
@@ -312,9 +312,9 @@ export function create() {
   function drawInterp() {
     if (!interp) { ichart.setSeries([]); imap.clearField(); imap.onDraw = null; imap.draw(); return; }
     const { ts, losses, labels, evalNet, mode } = interp;
-    ichart.markers = [{ x: 0, color: '#22d3ee', label: labels[0] }, { x: 1, color: '#f97316', label: labels[1] }, { x: S.tScrub, color: '#facc15' }];
+    ichart.markers = [{ x: 0, color: '#94D2BD', label: labels[0] }, { x: 1, color: '#EE9B00', label: labels[1] }, { x: S.tScrub, color: '#E9D8A6' }];
     ichart.xRange = [-0.25, 1.25];
-    ichart.setSeries([{ color: '#a78bfa', points: ts.map((tt, i) => [tt, losses[i]]), width: 3 }]);
+    ichart.setSeries([{ color: '#CA6702', points: ts.map((tt, i) => [tt, losses[i]]), width: 3 }]);
     const p = paramsAt(S.tScrub);
     const n = 56, D = imap.domain;
     const vals = new Float64Array(n * n);
@@ -322,13 +322,13 @@ export function create() {
       for (let i = 0; i < n; i++) vals[j * n + i] = evalNet.predict(D[0] + ((D[1] - D[0]) * i) / (n - 1), D[2] + ((D[3] - D[2]) * j) / (n - 1), p);
     imap.setField(vals, n, n, classColor);
     imap.setContours(vals, n, n, [0.5]);
-    imap.contourStyle = 'rgba(255,255,255,0.9)';
+    imap.contourStyle = 'rgba(233,216,166,0.9)';
     imap.onDraw = (ctx) => {
       for (const d of lab.data) {
         const [px, py] = imap.toPx(d.x, d.y);
         ctx.beginPath(); ctx.arc(px, py, 3.5, 0, 7);
         ctx.fillStyle = d.c ? ORANGE : BLUE; ctx.fill();
-        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.strokeStyle = '#E9D8A6'; ctx.lineWidth = 1; ctx.stroke();
       }
     };
     imap.draw();

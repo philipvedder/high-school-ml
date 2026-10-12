@@ -1,3 +1,7 @@
+import '@fontsource-variable/newsreader/wght.css';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '@fontsource-variable/figtree';
+import '@fontsource-variable/spline-sans-mono';
 import './style.css';
 import { applyI18n, setLang, getLang } from './i18n.js';
 import { h } from './lib/util.js';
@@ -27,13 +31,13 @@ let current = null;
 
 nav.appendChild(h(`
   <div class="nav-inner">
-    <a href="#home" class="brand"><img src="./favicon.svg" alt=""><span>Loss Landscape Lab</span></a>
+    <a href="#home" class="brand"><img src="./favicon.svg" alt=""><span class="brand-name"><span class="tilde">~/</span>loss-landscape-<b>lab</b></span></a>
     <div class="nav-stations">
       ${STATION_LIST.map((s) => `<a href="#${s.id}" data-page="${s.id}"><span class="nnum">${s.num}</span><span class="nlabel" data-i18n="nav.${s.id}"></span></a>`).join('')}
     </div>
     <div class="nav-tools">
-      <a href="./slides.html" class="tool" data-i18n-title="nav.slides">🎞️</a>
-      <a href="#guide" data-page="guide" class="tool" data-i18n-title="nav.guide">📋</a>
+      <a href="./slides.html" class="tool" data-i18n-title="nav.slides">slides</a>
+      <a href="#guide" data-page="guide" class="tool" data-i18n-title="nav.guide">guide</a>
       <button class="tool presenter" data-i18n-title="nav.presenter">A<sup>+</sup></button>
       <button class="tool fullscreen" data-i18n-title="nav.fullscreen">⛶</button>
       <div class="lang"><button data-lang="de">DE</button><button data-lang="en">EN</button></div>
@@ -68,6 +72,10 @@ function route() {
   pages[key].root.hidden = false;
   current = key;
   nav.querySelectorAll('[data-page]').forEach((a) => a.classList.toggle('active', a.dataset.page === key));
+  // on phones the station tabs scroll horizontally: keep the active one visible
+  const strip = nav.querySelector('.nav-stations');
+  const act = strip.querySelector('a.active');
+  if (act && strip.scrollWidth > strip.clientWidth) strip.scrollTo({ left: act.offsetLeft - strip.offsetLeft - 8, behavior: 'smooth' });
   window.scrollTo(0, 0);
   // wait one frame so the layout exists before drawing
   requestAnimationFrame(() => pages[key].show());
