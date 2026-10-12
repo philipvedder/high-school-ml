@@ -7,9 +7,10 @@ The development of this project was AI assisted, specifically using the Claude O
 
 An interactive web app for a 60-minute **Math & AI workshop**. It goes from a single neuron, through loss and gradient descent, to real neural networks and their loss landscapes.
 
-- 📋 Didactic concept, schedule and full feature spec: **[WORKSHOP.md](WORKSHOP.md)**
-- 🌐 Bilingual (DE/EN), presenter mode, works on laptops and tablets
-- 🔒 100 % client-side: no backend, no tracking, works offline once loaded
+## Features
+
+- Bilingual (DE/EN), presenter mode, works on laptops and tablets. Works equally on phones, but screens are a little small for the lab, so I do not recommend this. 
+- 100 % client-side: no backend, no tracking, works offline once loaded
 
 | # | Station | What students do |
 |---|---|---|
@@ -22,7 +23,7 @@ An interactive web app for a 60-minute **Math & AI workshop**. It goes from a si
 
 ## Intro slides (`slides.html`)
 
-A reveal.js deck (about 25–30 min) for the first half of the workshop, linked from the app (🎞️ button) and deployed alongside it at `…/slides.html`.
+A reveal.js deck (about 25–30 min) for the first half of the workshop, linked from the app and deployed alongside it at `…/slides.html`.
 
 **Story:** neuron & decision line → sigmoid → XOR fails → hidden layer without activation (still linear!) → ReLU solves XOR → loss function → loss landscape → gradient descent (1D, partial derivatives, gradient) → backpropagation on a numeric example → training loop → what can go wrong → into the Lab.
 
@@ -32,7 +33,7 @@ A reveal.js deck (about 25–30 min) for the first half of the workshop, linked 
 
 ## Run locally
 
-Requires Node.js ≥ 20.
+Requires Node.js >= 20.
 
 ```bash
 npm install
@@ -97,3 +98,18 @@ slides.html          slide content (EN + DE side by side, speaker notes in <asid
 ```
 
 To add your institute's own content, put research text in `research.notes.*` in `src/strings.js` and talking points in `guide.body`.
+
+## Lab Screenshots
+![Picture of the home screen](/screenshots/home.jpg?raw=true "Home Screen")
+
+![Picture of station 1: Shows how a single neuron works.](/screenshots/lab-01.jpg?raw=true "Station 1: The Neuron")
+
+![Picture of station 2: Shows the L2 loss and a loss landscape.](/screenshots/lab-02.jpg?raw=true "Station 2: The Loss")
+
+![Picture of station 3: Shows how gradient descent walks through a loss landscape.](/screenshots/lab-03.jpg?raw=true "Station 3: Gradient descent explorer")
+
+![Picture of station 4: Game where you try to find the local minimum yourself on a foggy landscape.](/screenshots/lab-04.jpg?raw=true "Station 4: Blindfolded hiker game")
+
+![Picture of station 5: Shows a wider and deeper MLP, which can be trained on different problems.](/screenshots/lab-05.jpg?raw=true "Station 5: The MLP")
+
+![Picture of station 6: Shows a real loss landscape, plotted using random directions.](/screenshots/lab-06.jpg?raw=true "Station 6: Real loss landscapes")

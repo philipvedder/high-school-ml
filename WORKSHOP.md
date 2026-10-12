@@ -1,14 +1,10 @@
 # Loss Landscape Lab: Workshop Concept
 
-**Audience:** 11th grade (about 16–17 years old), with school maths: functions, derivatives, maybe vectors
+AI-generated workshop proposal. You can get some ideas here, but I, of course, recommend creating one hy hand. 
+
+**Audience:** 11th/12th grade (about 16–17 years old), with school maths: functions, derivatives, maybe vectors and matrices.
 **Duration:** 60 minutes, with about 30 minutes of hands-on work
 **Setting:** students work in pairs on laptops or tablets with the web app; one presenter screen uses the same app in *presenter mode*.
-
-The story arc is simple and stays the same the whole time:
-
-> **A neural network is a function with knobs (parameters).
-> Learning = turning the knobs so that the error (loss) gets small.
-> The loss is a landscape over the knobs, and training is a hike downhill in the fog.**
 
 ---
 
