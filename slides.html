@@ -244,11 +244,81 @@
   </section>
   <section>
     <div class="deep-badge">deep dive</div>
-    <h2><span class="en">The same in matrix form</span><span class="de">Dasselbe in Matrixschreibweise</span></h2>
-    <p><span class="en">A layer computes $\vec h = W_1\vec x + \vec b_1$, the next one $\hat z = W_2 \vec h + b_2$:</span><span class="de">Eine Schicht berechnet $\vec h = W_1\vec x + \vec b_1$, die nächste $\hat z = W_2 \vec h + b_2$:</span></p>
-    $$\hat z = W_2(W_1\vec x + \vec b_1) + b_2 = \underbrace{(W_2W_1)}_{W'}\,\vec x + \underbrace{(W_2\vec b_1 + b_2)}_{b'}$$
-    <p class="fragment"><span class="en">Our example:</span><span class="de">Unser Beispiel:</span> $\;W_1 = \begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix},\; \vec b_1 = \binom{0}{-1},\; W_2 = (1\;\;{-2}),\; b_2 = -\tfrac12$</p>
-    <p class="fragment">$W' = (1\;\;{-2})\begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix} = (-1\;\;{-1}),\qquad b' = 2 - \tfrac12 = \tfrac32 \;\checkmark$</p>
+    <h2><span class="en">A network written as matrices</span><span class="de">Ein Netz in Matrixschreibweise</span></h2>
+    <div class="mx-grid">
+      <div>
+        <svg class="mx-net" viewBox="0 0 470 370" aria-label="network 2-2-1">
+          <text class="cap" x="60" y="22">input</text><text class="cap" x="235" y="22"><tspan class="en">hidden</tspan><tspan class="de">versteckt</tspan></text><text class="cap" x="405" y="22">output</text>
+          <line class="r1" x1="90" y1="100" x2="205" y2="100"/>
+          <line class="r1" x1="84" y1="262" x2="211" y2="118"/>
+          <line class="r2" x1="84" y1="118" x2="211" y2="262"/>
+          <line class="r2" x1="90" y1="280" x2="205" y2="280"/>
+          <line class="ro" x1="264" y1="112" x2="377" y2="178"/>
+          <line class="ro" x1="264" y1="268" x2="377" y2="202"/>
+          <circle class="nd" cx="60" cy="100" r="30"/><circle class="nd" cx="60" cy="280" r="30"/>
+          <circle class="nd h1" cx="235" cy="100" r="30"/><circle class="nd h2" cx="235" cy="280" r="30"/>
+          <circle class="nd out" cx="405" cy="190" r="30"/>
+          <text class="nl" x="60" y="108">x<tspan class="sb" dy="5">1</tspan></text>
+          <text class="nl" x="60" y="288">x<tspan class="sb" dy="5">2</tspan></text>
+          <text class="nl" x="235" y="108">h<tspan class="sb" dy="5">1</tspan></text>
+          <text class="nl" x="235" y="288">h<tspan class="sb" dy="5">2</tspan></text>
+          <text class="nl" x="405" y="198">ŷ</text>
+          <text class="wl c1" x="160" y="88">w<tspan class="sb" dy="5">11</tspan></text>
+          <text class="wl c1" x="178" y="160">w<tspan class="sb" dy="5">12</tspan></text>
+          <text class="wl c2" x="178" y="232">w<tspan class="sb" dy="5">21</tspan></text>
+          <text class="wl c2" x="160" y="304">w<tspan class="sb" dy="5">22</tspan></text>
+          <text class="wl co" x="330" y="128">v<tspan class="sb" dy="5">1</tspan></text>
+          <text class="wl co" x="330" y="268">v<tspan class="sb" dy="5">2</tspan></text>
+          <text class="bl" x="235" y="58">+b<tspan class="sb" dy="5">1</tspan></text>
+          <text class="bl" x="235" y="338">+b<tspan class="sb" dy="5">2</tspan></text>
+          <text class="bl" x="405" y="148">+c</text>
+        </svg>
+        <p class="tiny muted mx-legend"><span class="en">$w_{ij}$: weight <b>into</b> neuron $h_i$ <b>from</b> input $x_j$</span><span class="de">$w_{ij}$: Gewicht <b>in</b> Neuron $h_i$ <b>von</b> Eingabe $x_j$</span></p>
+      </div>
+      <div>
+        <h3><span class="en">neuron by neuron</span><span class="de">Neuron für Neuron</span></h3>
+        <p class="mx-eq">$h_1 = \color{#EE9B00}{w_{11}}\,x_1 + \color{#EE9B00}{w_{12}}\,x_2 + b_1$</p>
+        <p class="mx-eq">$h_2 = \color{#94D2BD}{w_{21}}\,x_1 + \color{#94D2BD}{w_{22}}\,x_2 + b_2$</p>
+        <p class="mx-eq">$\hat y\, = v_1\,h_1 + v_2\,h_2 + c$</p>
+        <div class="fragment">
+          <h3 class="mt"><span class="en">the same as matrices &amp; vectors</span><span class="de">dasselbe mit Matrizen &amp; Vektoren</span></h3>
+          <p class="mx-eq">$\begin{pmatrix}h_1\\ h_2\end{pmatrix} = \begin{pmatrix}\color{#EE9B00}{w_{11}} & \color{#EE9B00}{w_{12}}\\ \color{#94D2BD}{w_{21}} & \color{#94D2BD}{w_{22}}\end{pmatrix}\begin{pmatrix}x_1\\ x_2\end{pmatrix} + \begin{pmatrix}b_1\\ b_2\end{pmatrix}$ &nbsp;&nbsp; <span class="mx-short">$\vec h = W\vec x + \vec b$</span></p>
+          <p class="mx-eq">$\hat y = \begin{pmatrix}v_1 & v_2\end{pmatrix}\begin{pmatrix}h_1\\ h_2\end{pmatrix} + c$ &nbsp;&nbsp; <span class="mx-short">$\hat y = \vec v^{\top}\vec h + c$</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="takeaway fragment"><span class="en">Row $i$ of $W$ holds exactly the weights of neuron $h_i$. Whole layer = <b>one</b> matrix.</span><span class="de">Zeile $i$ von $W$ enthält genau die Gewichte von Neuron $h_i$. Ganze Schicht = <b>eine</b> Matrix.</span></div>
+    <aside class="notes">Point at the figure: every arrow is one number. All arrows going INTO h1 (amber) have first index 1, all into h2 (mint) first index 2. Write the three neuron formulas first, then reveal the matrix form and show that the amber row of W belongs to h1, the mint row to h2. The output neuron is a matrix with just one row (a row vector v transposed). Next slide: why the product gives exactly the neuron formulas.</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">Why is that the same? Row times column</span><span class="de">Warum ist das dasselbe? Zeile mal Spalte</span></h2>
+    <p class="small"><span class="en">Matrix times vector: each <b>row</b> of the matrix is multiplied entry by entry with the vector, and the products are added up.</span><span class="de">Matrix mal Vektor: Jede <b>Zeile</b> der Matrix wird Eintrag für Eintrag mit dem Vektor multipliziert, und die Produkte werden addiert.</span></p>
+    $$\begin{pmatrix}\color{#EE9B00}{w_{11}} & \color{#EE9B00}{w_{12}}\\ \color{#94D2BD}{w_{21}} & \color{#94D2BD}{w_{22}}\end{pmatrix}\begin{pmatrix}x_1\\ x_2\end{pmatrix} + \begin{pmatrix}b_1\\ b_2\end{pmatrix} = \begin{pmatrix}\color{#EE9B00}{w_{11}}\,x_1 + \color{#EE9B00}{w_{12}}\,x_2 + b_1\\ \color{#94D2BD}{w_{21}}\,x_1 + \color{#94D2BD}{w_{22}}\,x_2 + b_2\end{pmatrix} = \begin{pmatrix}h_1\\ h_2\end{pmatrix}$$
+    <p class="small center fragment"><span class="en">Line 1 is <b>exactly</b> the formula of neuron $h_1$, line 2 exactly that of $h_2$. Nothing new, just shorter.</span><span class="de">Zeile 1 ist <b>genau</b> die Formel von Neuron $h_1$, Zeile 2 genau die von $h_2$. Nichts Neues, nur kürzer.</span></p>
+    <div class="cols-3 mt fragment">
+      <div class="box">
+        <h3><span class="en">example: our XOR net</span><span class="de">Beispiel: unser XOR-Netz</span></h3>
+        <p class="small">$W = \begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix},\ \vec b = \begin{pmatrix}0\\-1\end{pmatrix}$<br>$\vec v^{\top} = (1\ \ {-2}),\ c = -\tfrac12$</p>
+      </div>
+      <div class="box">
+        <h3><span class="en">with activation</span><span class="de">mit Aktivierung</span></h3>
+        <p class="small">$\vec h = \mathrm{ReLU}(W\vec x + \vec b)$<br><span class="en">ReLU is applied to each entry separately.</span><span class="de">ReLU wird auf jeden Eintrag einzeln angewendet.</span></p>
+      </div>
+      <div class="box accent">
+        <h3><span class="en">why bother?</span><span class="de">wozu?</span></h3>
+        <p class="small"><span class="en">1000 neurons? Still <b>one</b> line: $W\vec x + \vec b$. And graphics cards are extremely fast at matrix products.</span><span class="de">1000 Neuronen? Immer noch <b>eine</b> Zeile: $W\vec x + \vec b$. Und Grafikkarten sind extrem schnell bei Matrixprodukten.</span></p>
+      </div>
+    </div>
+    <aside class="notes">Do the multiplication slowly with gestures: amber row across, x vector down, multiply pairs, add. Students in 11th grade may not have seen matrix-vector products yet; this slide is the whole definition they need. The XOR example uses the weights from the hidden-layer slide (h1 = x1 + x2, h2 = x1 + x2 − 1).</aside>
+  </section>
+  <section>
+    <div class="deep-badge">deep dive</div>
+    <h2><span class="en">Linear + linear = linear, in matrix form</span><span class="de">Linear + linear = linear, in Matrixform</span></h2>
+    <p><span class="en">Without activation, the two layers are $\vec h = W\vec x + \vec b$ and $\hat y = \vec v^{\top}\vec h + c$. Plug one into the other:</span><span class="de">Ohne Aktivierung sind die beiden Schichten $\vec h = W\vec x + \vec b$ und $\hat y = \vec v^{\top}\vec h + c$. Einsetzen:</span></p>
+    $$\hat y = \vec v^{\top}(W\vec x + \vec b) + c = \underbrace{(\vec v^{\top}W)}_{\vec w'^{\top}}\,\vec x + \underbrace{(\vec v^{\top}\vec b + c)}_{b'}$$
+    <p class="fragment"><span class="en">Our example:</span><span class="de">Unser Beispiel:</span> $\;\vec w'^{\top} = (1\;\;{-2})\begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix} = (-1\;\;{-1}),\qquad b' = (1\;\;{-2})\begin{pmatrix}0\\-1\end{pmatrix} - \tfrac12 = \tfrac32 \;\checkmark$</p>
+    <p class="small fragment"><span class="en">One row vector and one number: that is a <b>single</b> neuron, no matter how many layers we stack.</span><span class="de">Ein Zeilenvektor und eine Zahl: Das ist ein <b>einzelnes</b> Neuron, egal wie viele Schichten wir stapeln.</span></p>
   </section>
 </section>
 
@@ -494,26 +564,45 @@
 <section>
   <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
   <h2><span class="en">But how do we get $\partial L / \partial w$?</span><span class="de">Aber wie bekommen wir $\partial L / \partial w$?</span></h2>
-  <div class="cols">
+  <p class="small"><span class="en">A mini network: one input, one hidden neuron with ReLU, one output, then the loss. <span class="cyan">Forward, the values flow to the right →</span></span><span class="de">Ein Mini-Netz: eine Eingabe, ein verstecktes Neuron mit ReLU, eine Ausgabe, dann der Loss. <span class="cyan">Vorwärts: Werte nach rechts →</span></span></p>
+  <div class="cr">
+    <div class="cr-cap" style="grid-column:1">input</div>
+    <div class="cr-cap" style="grid-column:3"><span class="en">hidden neuron</span><span class="de">verstecktes Neuron</span></div>
+    <div class="cr-cap" style="grid-column:5"><span class="en">output neuron</span><span class="de">Ausgabeneuron</span></div>
+    <div class="cr-cap" style="grid-column:7">loss</div>
+
+    <div class="cr-node" style="grid-column:1">$x$</div>
+    <div class="cr-edge" style="grid-column:2"><span class="cr-w">$w_1$</span><div class="cr-arrow"></div></div>
+    <div class="cr-node hid" style="grid-column:3">$h$<span class="cr-f">$h = \mathrm{ReLU}(w_1 x)$</span></div>
+    <div class="cr-edge" style="grid-column:4"><span class="cr-w">$w_2$</span><div class="cr-arrow"></div></div>
+    <div class="cr-node out" style="grid-column:5">$\hat y$<span class="cr-f">$\hat y = w_2\, h$</span></div>
+    <div class="cr-edge" style="grid-column:6"><span class="cr-w">&nbsp;</span><div class="cr-arrow"></div></div>
+    <div class="cr-node loss" style="grid-column:7">$L$<span class="cr-f">$L = (\hat y - y)^2$</span></div>
+
+    <div class="cr-back fragment" data-fragment-index="3" style="grid-column:2 / 4"><div class="cr-barrow"></div><span class="cr-step">(3)</span>$\dfrac{\partial h}{\partial w_1}$</div>
+    <div class="cr-back fragment" data-fragment-index="2" style="grid-column:4 / 6"><div class="cr-barrow"></div><span class="cr-step">(2)</span>$\dfrac{\partial \hat y}{\partial h}$</div>
+    <div class="cr-back fragment" data-fragment-index="1" style="grid-column:6 / 8"><div class="cr-barrow"></div><span class="cr-step">(1)</span>$\dfrac{\partial L}{\partial \hat y}$</div>
+  </div>
+  <div class="cols wide-left cr-below">
     <div>
-      <p class="small"><span class="en">A network is a <b>chain</b> of simple functions. The chain rule:</span><span class="de">Ein Netz ist eine <b>Kette</b> einfacher Funktionen. Die Kettenregel:</span></p>
-      <div class="formula-big">$\big(f(g(x))\big)' = f'(g(x))\cdot g'(x)$</div>
-      <p class="small fragment"><span class="en">Read it as <b>rates of change</b>:</span><span class="de">Gelesen als <b>Änderungsraten</b>:</span></p>
-      <div class="formula-big fragment">$\dfrac{dL}{dw} = \dfrac{dL}{dh}\cdot\dfrac{dh}{dw}$</div>
+      <p class="small"><span class="en">$w_1$ does not touch $L$ directly. A wiggle of $w_1$ travels along the chain <span class="nowrap">$w_1 \to h \to \hat y \to L$</span>, and at each link it gets multiplied by the local rate of change:</span><span class="de">$w_1$ berührt $L$ nicht direkt. Ein Wackeln an $w_1$ wandert die Kette <span class="nowrap">$w_1 \to h \to \hat y \to L$</span> entlang und wird an jedem Glied mit der lokalen Änderungsrate multipliziert:</span></p>
+      <div class="formula-big fragment" data-fragment-index="4">$\dfrac{\partial L}{\partial w_1} = \underbrace{\dfrac{\partial L}{\partial \hat y}}_{\mathbf{(1)}}\cdot\underbrace{\dfrac{\partial \hat y}{\partial h}}_{\mathbf{(2)}}\cdot\underbrace{\dfrac{\partial h}{\partial w_1}}_{\mathbf{(3)}}$</div>
+      <p class="tiny muted fragment" data-fragment-index="4"><span class="en">That is the chain rule $\big(f(g(x))\big)' = f'(g(x))\cdot g'(x)$, applied link by link. Like gears: A turns 3× as fast as B, B 2× as fast as C ⇒ A turns 6× as fast as C.</span><span class="de">Das ist die Kettenregel $\big(f(g(x))\big)' = f'(g(x))\cdot g'(x)$, Glied für Glied angewendet. Wie Zahnräder: A dreht 3× so schnell wie B, B 2× so schnell wie C ⇒ A dreht 6× so schnell wie C.</span></p>
     </div>
-    <div class="box fragment">
-      <h3><span class="en">Gears</span><span class="de">Zahnräder</span></h3>
-      <p class="small"><span class="en">Gear A turns 3× as fast as B, and B 2× as fast as C.<br>⇒ A turns <b>3 · 2 = 6×</b> as fast as C.</span><span class="de">Rad A dreht 3× so schnell wie B, B 2× so schnell wie C.<br>⇒ A dreht <b>3 · 2 = 6×</b> so schnell wie C.</span></p>
-      <p class="small"><span class="en">Along a chain, rates of change <b>multiply</b>.</span><span class="de">Entlang einer Kette <b>multiplizieren</b> sich Änderungsraten.</span></p>
+    <div class="box accent fragment" data-fragment-index="5">
+      <h3><span class="en">why backwards?</span><span class="de">warum rückwärts?</span></h3>
+      <p class="small"><span class="en">Every weight's chain ends at $L$, so factor (1) is needed for <b>all</b> weights:</span><span class="de">Die Kette jedes Gewichts endet bei $L$, Faktor (1) braucht man also für <b>alle</b> Gewichte:</span></p>
+      <p class="small">$\dfrac{\partial L}{\partial w_2} = \underbrace{\dfrac{\partial L}{\partial \hat y}}_{\mathbf{(1)}}\cdot\dfrac{\partial \hat y}{\partial w_2}$</p>
+      <p class="small"><span class="en">Start at $L$, compute each factor <b>once</b>, pass it back and reuse it.</span><span class="de">Bei $L$ starten, jeden Faktor <b>einmal</b> berechnen, nach hinten weiterreichen und wiederverwenden.</span></p>
     </div>
   </div>
-  <aside class="notes">The chain rule is usually taught in 11th grade. If not, the gear analogy suffices: "if I wiggle w a little, how much does L wiggle?"</aside>
+  <aside class="notes">Walk through the figure: forward, x goes through w1 into the hidden neuron h, through w2 into the output ŷ, and the loss compares ŷ with the target y. Then click: the amber arrows go BACKWARDS, one per link ((1), (2), (3)). Ask: "If I turn the knob w1 a tiny bit, how much does L change?" w1 only changes h, h only changes ŷ, ŷ only changes L. Each link has its own exchange rate, and exchange rates multiply (gears). The formula reads exactly the path from L back to w1. Why backwards: factor (1) is shared by every weight, so starting at L avoids recomputing it. The next slide computes this with numbers.</aside>
 </section>
 
 <section>
   <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
   <h2><span class="en">Backpropagation in a tiny network</span><span class="de">Backpropagation in einem Mini-Netz</span></h2>
-  <p class="small muted"><span class="en">Input $x = 2$, target $y = 3$, weights $w_1 = 0.5$, $w_2 = 1.5$. <span class="cyan">Forward: compute values →</span> &nbsp; <span class="orange">← Backward: multiply rates of change</span></span><span class="de">Eingabe $x = 2$, Ziel $y = 3$, Gewichte $w_1 = 0.5$, $w_2 = 1.5$. <span class="cyan">Vorwärts: Werte berechnen →</span> &nbsp; <span class="orange">← Rückwärts: Änderungsraten multiplizieren</span></span></p>
+  <p class="small muted"><span class="en">The <b>same mini network</b>, now with numbers: $x = 2$, target $y = 3$, $w_1 = 0.5$, $w_2 = 1.5$. Each neuron is split into its single calculation steps (brackets below). <span class="cyan">Forward: compute values →</span> &nbsp; <span class="orange">← Backward: multiply rates of change</span></span><span class="de">Das <b>gleiche Mini-Netz</b>, jetzt mit Zahlen: $x = 2$, Ziel $y = 3$, $w_1 = 0.5$, $w_2 = 1.5$. Jedes Neuron ist in seine einzelnen Rechenschritte zerlegt (Klammern unten). <span class="cyan">Vorwärts: Werte berechnen →</span> &nbsp; <span class="orange">← Rückwärts: Änderungsraten multiplizieren</span></span></p>
   <div class="bp">
     <div style="grid-column:3;grid-row:1" class="bp-param"><span class="pbox">$w_1 = 0.5$</span><span class="pgrad fragment" data-fragment-index="9">$\frac{\partial L}{\partial w_1} = \mathbf{-9}$<span class="calc">$= -4.5\cdot x$</span></span><span class="down">↓</span></div>
     <div style="grid-column:7;grid-row:1" class="bp-param"><span class="pbox">$w_2 = 1.5$</span><span class="pgrad fragment" data-fragment-index="6">$\frac{\partial L}{\partial w_2} = \mathbf{-3}$<span class="calc">$= -3\cdot h$</span></span><span class="down">↓</span></div>
@@ -523,12 +612,17 @@
     <div style="grid-column:3;grid-row:2" class="bp-node op">$\cdot\, w_1$</div>
     <div style="grid-column:4;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="1">$z = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="8">$-4.5$<span class="calc">$= -4.5\cdot \mathrm{ReLU}'(z)$</span></div></div>
     <div style="grid-column:5;grid-row:2" class="bp-node op">ReLU</div>
-    <div style="grid-column:6;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="2">$h = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="7">$-4.5$<span class="calc">$= -3\cdot w_2$</span></div></div>
+    <div style="grid-column:6;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="2">$h = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="7">$-4.5$<span class="calc">(1)·(2) $= -3\cdot w_2$</span></div></div>
     <div style="grid-column:7;grid-row:2" class="bp-node op">$\cdot\, w_2$</div>
-    <div style="grid-column:8;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="3">$\hat y = 1.5$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="5">$-3$<span class="calc">$= 2(\hat y - y)$</span></div></div>
+    <div style="grid-column:8;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="3">$\hat y = 1.5$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="5">$-3$<span class="calc">(1) $= 2(\hat y - y)$</span></div></div>
     <div style="grid-column:9;grid-row:2" class="bp-node op">$(\hat y - y)^2$</div>
     <div style="grid-column:10;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="4">$L = 2.25$</div><div class="arrow"></div><div class="bwd"></div></div>
     <div style="grid-column:11;grid-row:2" class="bp-node loss">$L$</div>
+
+    <div style="grid-column:1;grid-row:3" class="bp-group in"><span>input</span></div>
+    <div style="grid-column:3 / 6;grid-row:3" class="bp-group hid"><span><span class="en">hidden neuron</span><span class="de">verstecktes Neuron</span> $h = \mathrm{ReLU}(w_1 x)$</span></div>
+    <div style="grid-column:7;grid-row:3" class="bp-group out"><span><span class="en">output neuron</span><span class="de">Ausgabeneuron</span><br>$\hat y = w_2 h$</span></div>
+    <div style="grid-column:9 / 12;grid-row:3" class="bp-group loss"><span>loss $L = (\hat y - y)^2$</span></div>
   </div>
   <p class="bp-legend"><span class="cyan">■</span> <span class="en">value</span><span class="de">Wert</span> &nbsp;&nbsp; <span class="orange">■</span> $\partial L/\partial(\cdot)$: <span class="en">how strongly $L$ reacts to this value</span><span class="de">wie stark $L$ auf diesen Wert reagiert</span></p>
   <div class="takeaway fragment" data-fragment-index="10"><span class="en">Both gradients are negative, so <b>increase</b> both weights. And all of this from <b>one</b> backward pass, reusing intermediate results.</span><span class="de">Beide Gradienten sind negativ, also beide Gewichte <b>vergrößern</b>. Und alles aus <b>einem</b> Rückwärtsdurchlauf, mit wiederverwendeten Zwischenergebnissen.</span></div>
@@ -642,7 +736,7 @@
     <a href="./index.html#network"><span class="n">5</span><span class="t"><span class="en">Network</span><span class="de">Netzwerk</span></span></a>
     <a href="./index.html#research"><span class="n">6</span><span class="t"><span class="en">Research</span><span class="de">Forschung</span></span></a>
   </div>
-  <p class="small muted mt">[URL / QR code]</p>
+  <p class="small muted mt">https://loss-landscape-lab.netlify.app/</p>
   <aside class="notes">Put the deployed Netlify URL and a QR code here before the workshop.</aside>
 </section>
 
