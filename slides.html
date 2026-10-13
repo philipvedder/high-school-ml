@@ -213,8 +213,12 @@
 <section>
   <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
   <h2><span class="en">Idea: a hidden layer with two neurons</span><span class="de">Idee: eine versteckte Schicht mit zwei Neuronen</span></h2>
-  <div class="widget xorNet" data-widget="xorNet" data-opts='{"act":"none","toggle":false}'></div>
-  <p class="small mt"><span class="en">Two neurons $h_1, h_2$ compute new features, and the output neuron combines them. The result is… <b>still a straight line?!</b> Slide the morph to see what the hidden layer does to the points.</span><span class="de">Zwei Neuronen $h_1, h_2$ berechnen neue Merkmale, das Ausgabeneuron kombiniert sie. Das Ergebnis ist… <b>immer noch eine Gerade?!</b> Schiebt den Regler, um zu sehen, was die versteckte Schicht mit den Punkten macht.</span></p>
+  <div class="widget xorNet" data-widget="xorNet" data-opts='{"act":"none","toggle":false,"terms":true}'></div>
+  <div class="xor-terms">
+    <span>$h_1 = w_{11}x_1 + w_{12}x_2 + b_1$</span><span>$h_2 = w_{21}x_1 + w_{22}x_2 + b_2$</span><span>$\hat y = v_1h_1 + v_2h_2 + c$</span>
+    <span class="num">$\phantom{h_1} = x_1 + x_2$</span><span class="num">$\phantom{h_2} = x_1 + x_2 - 1$</span><span class="num">$\phantom{\hat y} = h_1 - 2h_2 - \tfrac12$</span>
+  </div>
+  <p class="small"><span class="en">Two neurons $h_1, h_2$ compute new features, and the output neuron combines them. The result is… <b>still a straight line?!</b> Slide the morph to see what the hidden layer does to the points.</span><span class="de">Zwei Neuronen $h_1, h_2$ berechnen neue Merkmale, das Ausgabeneuron kombiniert sie. Das Ergebnis ist… <b>immer noch eine Gerade?!</b> Schiebt den Regler, um zu sehen, was die versteckte Schicht mit den Punkten macht.</span></p>
   <aside class="notes">Weights are chosen by hand (they will turn out to be the correct ones later!). Without activation, the hidden layer maps all points onto one line (the morph slider) and the classes stay mixed. Ask the class: why?</aside>
 </section>
 
@@ -324,13 +328,13 @@
 
 <section>
   <div class="kicker"><span class="dot"></span>II · <span class="en">Networks</span><span class="de">Netze</span></div>
-  <h2><span class="en">The simplest kink: ReLU</span><span class="de">Der einfachste Knick: ReLU</span></h2>
+  <h2><span class="en">The simplest non-linear function: ReLU</span><span class="de">Der einfachste Knick: ReLU</span></h2>
   <div class="cols">
     <div>
       <div class="formula-big">$\mathrm{ReLU}(z) = \max(0, z)$</div>
       <p class="small"><span class="en">“Rectified Linear Unit”: negative values become 0, positive values pass unchanged.</span><span class="de">„Rectified Linear Unit“: Negative Werte werden 0, positive bleiben unverändert.</span></p>
       <ul class="small">
-        <li><span class="en">piecewise linear, but <b>not</b> linear (there is a kink at 0)</span><span class="de">stückweise linear, aber <b>nicht</b> linear (Knick bei 0)</span></li>
+        <li><span class="en">piecewise linear, but <b>not</b> linear (it has a corner at 0)</span><span class="de">stückweise linear, aber <b>nicht</b> linear (Knick bei 0)</span></li>
         <li><span class="en">super cheap to compute, and the most used activation today</span><span class="de">extrem billig zu berechnen, heute die meistgenutzte Aktivierung</span></li>
         <li><span class="en">others: sigmoid $\sigma$, $\tanh$, …</span><span class="de">andere: Sigmoid $\sigma$, $\tanh$, …</span></li>
       </ul>
@@ -342,7 +346,7 @@
       <circle cx="210" cy="230" r="9" fill="#EE9B00"/>
       <text x="390" y="255" fill="#6F908D" font-size="22" font-family="Spline Sans Mono Variable, monospace">z</text>
       <text x="225" y="42" fill="#E9D8A6" font-size="22" font-family="Spline Sans Mono Variable, monospace">ReLU(z)</text>
-      <text x="150" y="268" fill="#EE9B00" font-size="18" font-family="Spline Sans Mono Variable, monospace">kink</text>
+      <text x="150" y="268" fill="#EE9B00" font-size="18" font-family="Spline Sans Mono Variable, monospace"><tspan class="en">corner</tspan><tspan class="de">Knick</tspan></text>
     </svg>
   </div>
   <aside class="notes">ReLU is the activation used in most modern networks. Its derivative is 0 for z&lt;0 and 1 for z&gt;0, which will be easy for backpropagation later.</aside>
@@ -372,7 +376,7 @@
   <h2><span class="en">More neurons → (almost) any shape</span><span class="de">Mehr Neuronen → (fast) jede Form</span></h2>
   <div class="widget bricks" data-widget="bricks"></div>
   <p class="small mt"><span class="en"><b>Universal approximation theorem</b> (Cybenko 1989, Hornik 1991, Leshno et al. 1993): one hidden layer with enough neurons can approximate every continuous function on a bounded region as accurately as we like.</span><span class="de"><b>Universeller Approximationssatz</b> (Cybenko 1989, Hornik 1991, Leshno et al. 1993): Eine versteckte Schicht mit genug Neuronen kann jede stetige Funktion auf einem beschränkten Bereich beliebig genau annähern.</span></p>
-  <aside class="notes">Each ReLU neuron contributes one kink. Sums of kinks are piecewise linear functions, which can follow any curve. Increase the number of neurons. Caveat for strong students: the theorem says such weights EXIST, but not how to FIND them. That leads to Part III.</aside>
+  <aside class="notes">Each ReLU neuron contributes one corner (a point where the graph bends). Sums of such functions are piecewise linear functions, which can follow any curve. Increase the number of neurons. Caveat for strong students: the theorem says such weights EXIST, but not how to FIND them. That leads to Part III.</aside>
 </section>
 
 <section>
@@ -604,17 +608,17 @@
   <h2><span class="en">Backpropagation in a tiny network</span><span class="de">Backpropagation in einem Mini-Netz</span></h2>
   <p class="small muted"><span class="en">The <b>same mini network</b>, now with numbers: $x = 2$, target $y = 3$, $w_1 = 0.5$, $w_2 = 1.5$. Each neuron is split into its single calculation steps (brackets below). <span class="cyan">Forward: compute values →</span> &nbsp; <span class="orange">← Backward: multiply rates of change</span></span><span class="de">Das <b>gleiche Mini-Netz</b>, jetzt mit Zahlen: $x = 2$, Ziel $y = 3$, $w_1 = 0.5$, $w_2 = 1.5$. Jedes Neuron ist in seine einzelnen Rechenschritte zerlegt (Klammern unten). <span class="cyan">Vorwärts: Werte berechnen →</span> &nbsp; <span class="orange">← Rückwärts: Änderungsraten multiplizieren</span></span></p>
   <div class="bp">
-    <div style="grid-column:3;grid-row:1" class="bp-param"><span class="pbox">$w_1 = 0.5$</span><span class="pgrad fragment" data-fragment-index="9">$\frac{\partial L}{\partial w_1} = \mathbf{-9}$<span class="calc">$= -4.5\cdot x$</span></span><span class="down">↓</span></div>
-    <div style="grid-column:7;grid-row:1" class="bp-param"><span class="pbox">$w_2 = 1.5$</span><span class="pgrad fragment" data-fragment-index="6">$\frac{\partial L}{\partial w_2} = \mathbf{-3}$<span class="calc">$= -3\cdot h$</span></span><span class="down">↓</span></div>
+    <div style="grid-column:3;grid-row:1" class="bp-param"><span class="pbox">$w_1 = 0.5$</span><span class="pgrad fragment" data-fragment-index="9">$\frac{\partial L}{\partial w_1} = \mathbf{-9}$</span><span class="down">↓</span></div>
+    <div style="grid-column:7;grid-row:1" class="bp-param"><span class="pbox">$w_2 = 1.5$</span><span class="pgrad fragment" data-fragment-index="6">$\frac{\partial L}{\partial w_2} = \mathbf{-3}$</span><span class="down">↓</span></div>
 
     <div style="grid-column:1;grid-row:2" class="bp-node">$x$<span class="sub">2</span></div>
     <div style="grid-column:2;grid-row:2" class="bp-edge"><div class="fwd"></div><div class="arrow"></div><div class="bwd"></div></div>
     <div style="grid-column:3;grid-row:2" class="bp-node op">$\cdot\, w_1$</div>
-    <div style="grid-column:4;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="1">$z = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="8">$-4.5$<span class="calc">$= -4.5\cdot \mathrm{ReLU}'(z)$</span></div></div>
+    <div style="grid-column:4;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="1">$z = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="8">$\frac{\partial L}{\partial z} = -4.5$</div></div>
     <div style="grid-column:5;grid-row:2" class="bp-node op">ReLU</div>
-    <div style="grid-column:6;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="2">$h = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="7">$-4.5$<span class="calc">(1)·(2) $= -3\cdot w_2$</span></div></div>
+    <div style="grid-column:6;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="2">$h = 1$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="7">$\frac{\partial L}{\partial h} = -4.5$</div></div>
     <div style="grid-column:7;grid-row:2" class="bp-node op">$\cdot\, w_2$</div>
-    <div style="grid-column:8;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="3">$\hat y = 1.5$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="5">$-3$<span class="calc">(1) $= 2(\hat y - y)$</span></div></div>
+    <div style="grid-column:8;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="3">$\hat y = 1.5$</div><div class="arrow"></div><div class="bwd fragment" data-fragment-index="5">$\frac{\partial L}{\partial \hat y} = -3$</div></div>
     <div style="grid-column:9;grid-row:2" class="bp-node op">$(\hat y - y)^2$</div>
     <div style="grid-column:10;grid-row:2" class="bp-edge"><div class="fwd fragment" data-fragment-index="4">$L = 2.25$</div><div class="arrow"></div><div class="bwd"></div></div>
     <div style="grid-column:11;grid-row:2" class="bp-node loss">$L$</div>
@@ -624,29 +628,81 @@
     <div style="grid-column:7;grid-row:3" class="bp-group out"><span><span class="en">output neuron</span><span class="de">Ausgabeneuron</span><br>$\hat y = w_2 h$</span></div>
     <div style="grid-column:9 / 12;grid-row:3" class="bp-group loss"><span>loss $L = (\hat y - y)^2$</span></div>
   </div>
-  <p class="bp-legend"><span class="cyan">■</span> <span class="en">value</span><span class="de">Wert</span> &nbsp;&nbsp; <span class="orange">■</span> $\partial L/\partial(\cdot)$: <span class="en">how strongly $L$ reacts to this value</span><span class="de">wie stark $L$ auf diesen Wert reagiert</span></p>
-  <div class="takeaway fragment" data-fragment-index="10"><span class="en">Both gradients are negative, so <b>increase</b> both weights. And all of this from <b>one</b> backward pass, reusing intermediate results.</span><span class="de">Beide Gradienten sind negativ, also beide Gewichte <b>vergrößern</b>. Und alles aus <b>einem</b> Rückwärtsdurchlauf, mit wiederverwendeten Zwischenergebnissen.</span></div>
-  <aside class="notes">Click through: forward pass (cyan) computes z = w1·x = 1, h = ReLU(1) = 1, ŷ = w2·h = 1.5, L = (1.5−3)² = 2.25. Backward (orange): dL/dŷ = 2(ŷ−y) = −3. For w2: ŷ = w2·h, so dŷ/dw2 = h = 1, giving dL/dw2 = −3. Going further back: dŷ/dh = w2 = 1.5, so dL/dh = −4.5. ReLU'(1) = 1, so dL/dz = −4.5. Finally z = w1·x, so dz/dw1 = x = 2, giving dL/dw1 = −9. Key point: each node only needs its own local derivative, and the products are passed backwards. That is why it's called back-propagation (Rumelhart, Hinton &amp; Williams 1986).</aside>
-</section>
-
-<section>
-  <div class="kicker"><span class="dot"></span>IV · <span class="en">Backpropagation</span><span class="de">Backpropagation</span></div>
-  <h2><span class="en">Check it &amp; take a step</span><span class="de">Nachprüfen &amp; einen Schritt machen</span></h2>
-  <div class="cols">
-    <div class="box">
-      <h3><span class="en">Wiggle test</span><span class="de">Wackeltest</span></h3>
-      <p class="small"><span class="en">Increase $w_1$ by $0.01$ to $0.51$:</span><span class="de">$w_1$ um $0.01$ auf $0.51$ erhöhen:</span></p>
-      <p class="small">$z = 1.02,\ h = 1.02,\ \hat y = 1.53,\ L = 2.1609$</p>
-      <p class="fragment">$\dfrac{\Delta L}{\Delta w_1} = \dfrac{2.1609 - 2.25}{0.01} = -8.91 \approx \mathbf{-9}\ \checkmark$</p>
+  <p class="bp-legend"><span class="cyan">■</span> <span class="en">value</span><span class="de">Wert</span> &nbsp;&nbsp; <span class="orange">■</span> $\partial L/\partial(\cdot)$: <span class="en">how strongly $L$ reacts when this value changes a little</span><span class="de">wie stark $L$ reagiert, wenn sich dieser Wert ein wenig ändert</span></p>
+  <div class="bp-steps">
+    <div class="bp-step intro fragment fade-out" data-fragment-index="1">
+      <div class="st-tag"><span class="en">how to read this slide</span><span class="de">so liest man diese Folie</span></div>
+      <p class="st-line small"><span class="en">First <span class="cyan">forward</span>: compute all values from left to right. Then <span class="orange">backward</span>, one box at a time, always with the same rule:</span><span class="de">Erst <span class="cyan">vorwärts</span>: alle Werte von links nach rechts ausrechnen. Dann <span class="orange">rückwärts</span>, Kasten für Kasten, immer mit derselben Regel:</span></p>
+      <p class="st-rule"><span class="en">(local derivative of the box) × (value arriving from the right)</span><span class="de">(lokale Ableitung des Kastens) × (Wert, der von rechts ankommt)</span></p>
     </div>
-    <div class="box good fragment">
-      <h3><span class="en">One gradient step</span><span class="de">Ein Gradientenschritt</span> ($\eta = 0.05$)</h3>
-      <p class="small">$w_1 \leftarrow 0.5 - 0.05\cdot(-9) = 0.95$<br>$w_2 \leftarrow 1.5 - 0.05\cdot(-3) = 1.65$</p>
-      <p class="small fragment"><span class="en">New prediction</span><span class="de">Neue Vorhersage</span>: $\hat y = 1.65\cdot 1.9 = 3.135$</p>
-      <p class="fragment">$L:\ 2.25 \;\longrightarrow\; \mathbf{0.018}$ 🎉</p>
+    <div class="bp-step fwd fragment current-visible" data-fragment-index="1">
+      <div class="st-tag"><span class="en">→ forward 1/4</span><span class="de">→ vorwärts 1/4</span></div>
+      <p class="st-line">$z = w_1\cdot x = 0.5\cdot 2 = \mathbf{1}$</p>
+      <p class="st-mean"><span class="en">The hidden neuron first multiplies its input by its weight.</span><span class="de">Das versteckte Neuron multipliziert zuerst seine Eingabe mit seinem Gewicht.</span></p>
     </div>
+    <div class="bp-step fwd fragment current-visible" data-fragment-index="2">
+      <div class="st-tag"><span class="en">→ forward 2/4</span><span class="de">→ vorwärts 2/4</span></div>
+      <p class="st-line">$h = \mathrm{ReLU}(z) = \mathrm{ReLU}(1) = \mathbf{1}$</p>
+      <p class="st-mean"><span class="en">$z$ is positive, so ReLU lets it pass unchanged.</span><span class="de">$z$ ist positiv, also lässt ReLU es unverändert durch.</span></p>
+    </div>
+    <div class="bp-step fwd fragment current-visible" data-fragment-index="3">
+      <div class="st-tag"><span class="en">→ forward 3/4</span><span class="de">→ vorwärts 3/4</span></div>
+      <p class="st-line">$\hat y = w_2\cdot h = 1.5\cdot 1 = \mathbf{1.5}$</p>
+      <p class="st-mean"><span class="en">The output neuron makes the prediction.</span><span class="de">Das Ausgabeneuron macht die Vorhersage.</span></p>
+    </div>
+    <div class="bp-step fwd fragment current-visible" data-fragment-index="4">
+      <div class="st-tag"><span class="en">→ forward 4/4</span><span class="de">→ vorwärts 4/4</span></div>
+      <p class="st-line">$L = (\hat y - y)^2 = (1.5 - 3)^2 = \mathbf{2.25}$</p>
+      <p class="st-mean"><span class="en">The prediction is too small. Question: how should we change $w_1$ and $w_2$? So now we go <b>backwards</b>.</span><span class="de">Die Vorhersage ist zu klein. Frage: Wie sollen wir $w_1$ und $w_2$ ändern? Dafür gehen wir jetzt <b>rückwärts</b>.</span></p>
+    </div>
+    <div class="bp-step fragment current-visible" data-fragment-index="5">
+      <div class="st-tag"><span class="en">← backward 1/5</span><span class="de">← rückwärts 1/5</span></div>
+      <div class="st-grid">
+        <div><span class="st-h"><span class="en">we want</span><span class="de">gesucht</span></span>$\dfrac{\partial L}{\partial \hat y}$</div>
+        <div><span class="st-h"><span class="en">local derivative of this box</span><span class="de">lokale Ableitung dieses Kastens</span></span>$L = (\hat y - y)^2 \;\Rightarrow\; \dfrac{\partial L}{\partial \hat y} = 2(\hat y - y)$</div>
+        <div><span class="st-h"><span class="en">insert the numbers</span><span class="de">Zahlen einsetzen</span></span>$2\cdot(1.5 - 3) = \mathbf{-3}$</div>
+      </div>
+      <p class="st-mean"><span class="en">We start at the end, so nothing arrives from the right yet. Meaning: if $\hat y$ grows by a tiny amount $\varepsilon$, $L$ changes by about $-3\varepsilon$, so it gets smaller.</span><span class="de">Wir starten am Ende, von rechts kommt also noch nichts an. Bedeutung: Wächst $\hat y$ um ein winziges $\varepsilon$, ändert sich $L$ um etwa $-3\varepsilon$, wird also kleiner.</span></p>
+    </div>
+    <div class="bp-step fragment current-visible" data-fragment-index="6">
+      <div class="st-tag"><span class="en">← backward 2/5</span><span class="de">← rückwärts 2/5</span></div>
+      <div class="st-grid">
+        <div><span class="st-h"><span class="en">we want</span><span class="de">gesucht</span></span>$\dfrac{\partial L}{\partial w_2}$</div>
+        <div><span class="st-h"><span class="en">local derivative of this box</span><span class="de">lokale Ableitung dieses Kastens</span></span>$\hat y = w_2\cdot h \;\Rightarrow\; \dfrac{\partial \hat y}{\partial w_2} = h = 1$</div>
+        <div><span class="st-h"><span class="en">local derivative × value from the right</span><span class="de">lokale Ableitung × Wert von rechts</span></span>$\dfrac{\partial L}{\partial w_2} = 1\cdot(-3) = \mathbf{-3}$</div>
+      </div>
+      <p class="st-mean"><span class="en">For the derivative with respect to $w_2$, $h$ is just a constant factor (like $(3x)' = 3$). This is our first weight gradient!</span><span class="de">Bei der Ableitung nach $w_2$ ist $h$ nur ein konstanter Faktor (wie $(3x)' = 3$). Das ist unser erster Gewichts-Gradient!</span></p>
+    </div>
+    <div class="bp-step fragment current-visible" data-fragment-index="7">
+      <div class="st-tag"><span class="en">← backward 3/5</span><span class="de">← rückwärts 3/5</span></div>
+      <div class="st-grid">
+        <div><span class="st-h"><span class="en">we want</span><span class="de">gesucht</span></span>$\dfrac{\partial L}{\partial h}$</div>
+        <div><span class="st-h"><span class="en">local derivative of this box</span><span class="de">lokale Ableitung dieses Kastens</span></span>$\hat y = w_2\cdot h \;\Rightarrow\; \dfrac{\partial \hat y}{\partial h} = w_2 = 1.5$</div>
+        <div><span class="st-h"><span class="en">local derivative × value from the right</span><span class="de">lokale Ableitung × Wert von rechts</span></span>$\dfrac{\partial L}{\partial h} = 1.5\cdot(-3) = \mathbf{-4.5}$</div>
+      </div>
+      <p class="st-mean"><span class="en">Same box, but now we differentiate with respect to $h$. We cannot change $h$ directly, but we need this number to keep walking back towards $w_1$.</span><span class="de">Gleicher Kasten, aber jetzt leiten wir nach $h$ ab. $h$ können wir nicht direkt ändern, aber wir brauchen die Zahl, um weiter zurück zu $w_1$ zu laufen.</span></p>
+    </div>
+    <div class="bp-step fragment current-visible" data-fragment-index="8">
+      <div class="st-tag"><span class="en">← backward 4/5</span><span class="de">← rückwärts 4/5</span></div>
+      <div class="st-grid">
+        <div><span class="st-h"><span class="en">we want</span><span class="de">gesucht</span></span>$\dfrac{\partial L}{\partial z}$</div>
+        <div><span class="st-h"><span class="en">local derivative of this box</span><span class="de">lokale Ableitung dieses Kastens</span></span>$h = \mathrm{ReLU}(z) \;\Rightarrow\; \dfrac{\partial h}{\partial z} = 1$ <span class="tiny muted">(z &gt; 0)</span></div>
+        <div><span class="st-h"><span class="en">local derivative × value from the right</span><span class="de">lokale Ableitung × Wert von rechts</span></span>$\dfrac{\partial L}{\partial z} = 1\cdot(-4.5) = \mathbf{-4.5}$</div>
+      </div>
+      <p class="st-mean"><span class="en">ReLU has slope 1 for positive inputs and slope 0 for negative ones. Here $z = 1 > 0$, so the value passes unchanged. (For $z &lt; 0$ the signal would stop here.)</span><span class="de">ReLU hat Steigung 1 für positive Eingaben und Steigung 0 für negative. Hier ist $z = 1 > 0$, der Wert geht also unverändert durch. (Für $z &lt; 0$ wäre hier Schluss.)</span></p>
+    </div>
+    <div class="bp-step fragment current-visible" data-fragment-index="9">
+      <div class="st-tag"><span class="en">← backward 5/5</span><span class="de">← rückwärts 5/5</span></div>
+      <div class="st-grid">
+        <div><span class="st-h"><span class="en">we want</span><span class="de">gesucht</span></span>$\dfrac{\partial L}{\partial w_1}$</div>
+        <div><span class="st-h"><span class="en">local derivative of this box</span><span class="de">lokale Ableitung dieses Kastens</span></span>$z = w_1\cdot x \;\Rightarrow\; \dfrac{\partial z}{\partial w_1} = x = 2$</div>
+        <div><span class="st-h"><span class="en">local derivative × value from the right</span><span class="de">lokale Ableitung × Wert von rechts</span></span>$\dfrac{\partial L}{\partial w_1} = 2\cdot(-4.5) = \mathbf{-9}$</div>
+      </div>
+      <p class="st-mean"><span class="en">Done! The whole chain at once: $(-3)\cdot 1.5\cdot 1\cdot 2 = -9$, that is exactly the chain rule (1)·(2)·(3) from the last slide.</span><span class="de">Fertig! Die ganze Kette auf einmal: $(-3)\cdot 1.5\cdot 1\cdot 2 = -9$, das ist genau die Kettenregel (1)·(2)·(3) von der letzten Folie.</span></p>
+    </div>
+    <div class="takeaway fragment" data-fragment-index="10"><span class="en">Both gradients are negative, so gradient descent will <b>increase</b> both weights. And we got all of this from <b>one</b> backward pass, reusing each intermediate result.</span><span class="de">Beide Gradienten sind negativ, also wird der Gradientenabstieg beide Gewichte <b>vergrößern</b>. Und alles kam aus <b>einem</b> Rückwärtsdurchlauf, mit wiederverwendeten Zwischenergebnissen.</span></div>
   </div>
-  <aside class="notes">The derivative is the "exchange rate" between a tiny change of w1 and the change of L. One step already reduces the loss by a factor of about 120.</aside>
+  <aside class="notes">The panel at the bottom explains the current click. Forward (clicks 1–4): z = w1·x = 1, h = ReLU(1) = 1, ŷ = w2·h = 1.5, L = (1.5−3)² = 2.25. Backward (clicks 5–9), always "local derivative of the box × value from the right": dL/dŷ = 2(ŷ−y) = −3; dL/dw2 = h·(−3) = −3; dL/dh = w2·(−3) = −4.5; dL/dz = ReLU'(1)·(−4.5) = −4.5; dL/dw1 = x·(−4.5) = −9. Stress that each box only needs its OWN small derivative (power rule, constant factor, slope of ReLU), and the product is handed further back. That is why it's called back-propagation (Rumelhart, Hinton &amp; Williams 1986). Optional check for strong students: w1 = 0.51 gives L = 2.1609, so ΔL/Δw1 ≈ −8.9 ≈ −9.</aside>
 </section>
 
 <section>

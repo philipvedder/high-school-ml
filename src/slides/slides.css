@@ -260,3 +260,24 @@ table.mini td.c0 { color: var(--teal); font-weight: 700; }
 .bp-group.hid::before, .bp-group.hid::after { border-color: var(--mint); }
 .bp-group.out::before, .bp-group.out::after { border-color: var(--sand); }
 .bp-group.loss::before, .bp-group.loss::after { border-color: var(--amber); }
+.net-svg .terms text { fill: var(--text); font-family: KaTeX_Math, var(--f-display); font-style: italic; font-size: 14px; text-anchor: middle; paint-order: stroke; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round; }
+.net-svg .terms tspan { font-family: KaTeX_Main, var(--f-display); font-style: normal; }
+.net-svg .terms .sb { font-size: 0.72em; }
+.xor-terms { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 8px 44px; margin: 0.5em 0 0.5em; font-size: 0.8em; }
+.xor-terms .num { color: var(--muted); }
+
+/* backprop: step-by-step explanation panel (one step visible at a time) */
+.bp-steps { display: grid; margin-top: 0.5em; }
+.bp-steps > * { grid-area: 1 / 1; align-self: start; }
+.bp-step { background: var(--panel); border: 1px solid var(--line2); border-left: 5px solid var(--amber); border-radius: var(--radius); padding: 10px 18px 8px; font-size: 0.72em; }
+.bp-step.fwd { border-left-color: var(--mint); }
+.bp-step.intro { border-left-color: var(--sand); }
+.bp-step .st-tag { font: 600 0.72em var(--f-mono); color: var(--amber); margin-bottom: 4px; }
+.bp-step.fwd .st-tag { color: var(--mint); }
+.bp-step.intro .st-tag { color: var(--sand); }
+.bp-step .st-grid { display: grid; grid-template-columns: 0.6fr 1.3fr 1.1fr; gap: 22px; align-items: start; }
+.bp-step .st-h { display: block; font: 500 0.68em var(--f-mono); color: var(--muted); margin-bottom: 2px; }
+.bp-step .st-line { margin: 0.1em 0 0.2em; font-size: 1.1em; }
+.bp-step .st-rule { font: 600 0.95em var(--f-mono); color: var(--amber); margin: 0.2em 0; }
+.bp-step .st-mean { margin: 0.35em 0 0; font-size: 0.85em; color: var(--text); }
+.reveal .bp-steps .takeaway { margin-top: 0; }

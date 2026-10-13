@@ -207,16 +207,21 @@ function xorNet(el, o = {}) {
         <line x1="45" y1="180" x2="160" y2="70"/><line x1="45" y1="180" x2="160" y2="180"/>
         <line x1="185" y1="70" x2="285" y2="125" class="pos"/><line x1="185" y1="180" x2="285" y2="125" class="neg"/>
       </g>
+      ${o.terms ? `<g class="terms">
+      <text x="100" y="60">w<tspan class="sb" dy="4">11</tspan><tspan dy="-4"> = </tspan>1</text><text x="100" y="204">w<tspan class="sb" dy="4">22</tspan><tspan dy="-4"> = </tspan>1</text>
+      <text x="120" y="106">w<tspan class="sb" dy="4">12</tspan><tspan dy="-4"> = </tspan>1</text><text x="120" y="162">w<tspan class="sb" dy="4">21</tspan><tspan dy="-4"> = </tspan>1</text>
+      <text x="238" y="86">v<tspan class="sb" dy="4">1</tspan><tspan dy="-4"> = </tspan>1</text><text x="226" y="192">v<tspan class="sb" dy="4">2</tspan><tspan dy="-4"> = </tspan>−2</text>
+      <text x="172" y="33">b<tspan class="sb" dy="4">1</tspan><tspan dy="-4"> = </tspan>0</text><text x="172" y="228">b<tspan class="sb" dy="4">2</tspan><tspan dy="-4"> = </tspan>−1</text></g>` : `
       <text x="100" y="58" class="wt">1</text><text x="100" y="200" class="wt">1</text>
       <text x="80" y="108" class="wt">1</text><text x="80" y="152" class="wt">1</text>
-      <text x="238" y="86" class="wt">1</text><text x="238" y="176" class="wt">−2</text>
+      <text x="238" y="86" class="wt">1</text><text x="238" y="176" class="wt">−2</text>`}
       <circle cx="35" cy="70" r="20" class="nd"/><text x="35" y="76" class="nl">x₁</text>
       <circle cx="35" cy="180" r="20" class="nd"/><text x="35" y="186" class="nl">x₂</text>
       <circle cx="172" cy="70" r="24" class="nd hid"/><text x="172" y="76" class="nl">h₁</text>
       <circle cx="172" cy="180" r="24" class="nd hid"/><text x="172" y="186" class="nl">h₂</text>
-      <text x="172" y="35" class="bl">b = 0</text><text x="172" y="225" class="bl">b = −1</text>
+      ${o.terms ? '' : '<text x="172" y="35" class="bl">b = 0</text><text x="172" y="225" class="bl">b = −1</text>'}
       <circle cx="298" cy="125" r="22" class="nd out"/><text x="298" y="131" class="nl">ŷ</text>
-      <text x="298" y="168" class="bl">b = −½</text>
+      <text x="${o.terms ? 306 : 298}" y="${o.terms ? 92 : 168}" class="bl">${o.terms ? 'c' : 'b'} = −½</text>
       <text x="172" y="250" class="actl"></text>
     </svg></div>`);
   const mapBox = canvasBox();
